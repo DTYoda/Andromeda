@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        playerBody.MovePosition(playerBody.position + direction * Time.deltaTime);
+        playerBody.MovePosition(playerBody.transform.localPosition+ direction * Time.deltaTime);
 
         RotateTowardsPlanet();
         PlanetGravity();
