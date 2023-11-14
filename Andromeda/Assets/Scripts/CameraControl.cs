@@ -34,7 +34,7 @@ public class CameraControl : MonoBehaviour
     {
         if (Time.timeScale == 1)
         {
-            transform.localEulerAngles = new Vector3(0, rotY, 0);
+            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, rotY, transform.localEulerAngles.z);
             cam.transform.localEulerAngles = new Vector3(-rotX, 0, 0);
         }
 

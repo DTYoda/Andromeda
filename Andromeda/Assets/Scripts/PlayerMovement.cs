@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     public float checkRadius;
 
     private bool isGrounded;
+    public bool gravityTrue;
 
     private void Start()
     {
@@ -77,11 +78,15 @@ public class PlayerMovement : MonoBehaviour
     private void RotateTowardsPlanet()
     {
         Quaternion orientationDirection = Quaternion.FromToRotation(-transform.up, -transform.position + planet.transform.position) * transform.rotation;
-        transform.rotation = orientationDirection;
+        transform.eulerAngles = orientationDirection.eulerAngles;
     }
 
     private void PlanetGravity()
     {
-        playerBody.AddForce((-transform.position + planet.transform.position).normalized * gravity * playerBody.mass);
+        if(!isGrounded && gravityTrue == true) { playerBody.AddForce((-transform.position + planet.transform.position).normalized * gravity * playerBody.mass); }
+        if(isGrounded && direction == Vector3.zero)
+        {
+            playerBody.velocity = Vector3.zero;
+        }
     }
 }
