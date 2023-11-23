@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    private bool grounded;
     private GameObject player;
 
     private Rigidbody rb;
@@ -30,15 +29,5 @@ public class EnemyMovement : MonoBehaviour
         yield return new WaitForSeconds(2);
         rb.AddForce((player.transform.position - transform.position).normalized * 500);
         isJumping = false;
-    }
-
-    private void FixedUpdate()
-    {
-        grounded = false;
-    }
-
-    void OnCollisionStay()
-    {
-        grounded = true;
     }
 }
