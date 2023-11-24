@@ -219,7 +219,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5593195909017292591}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0.05378515, y: 1.144495, z: -0.31659797}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1000, y: 1000, z: 1000}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -830,7 +830,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5593195909017292625}
   m_LocalRotation: {x: -0.7071067, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.016786402, y: 0.612682, z: -0.067526706}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 437.6699, y: 437.6699, z: 437.6699}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -874,6 +874,7 @@ Transform:
   - {fileID: 5593195909017195377}
   - {fileID: 5593195909017195343}
   - {fileID: 5588582362184778252}
+  - {fileID: 6006604614150944501}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -955,12 +956,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cee098210a3e244d8f1163ae3ed5e25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canMultiJump: 1
+  multiJump: 1
+  numberOfJumps: 5
   speed: 5
-  canJump: 1
-  jumpHeight: 2
+  jumpHeight: 5
   playerCamera: {fileID: 5608799410331176448}
   lookSpeed: 2
   lookXLimit: 60
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &5593195909017292629
 GameObject:
   m_ObjectHideFlags: 0
@@ -1150,4 +1156,35 @@ Transform:
   - {fileID: 5593195909017195381}
   m_Father: {fileID: 5593195909017195373}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8507298601097992446
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6006604614150944501}
+  m_Layer: 0
+  m_Name: GoundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6006604614150944501
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8507298601097992446}
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1000, y: 1000, z: 1000}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5593195909017195379}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

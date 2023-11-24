@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class sc_RigidbodyWalker : MonoBehaviour
 {
+    //upgrades
+    public float numberOfJumps = 1;
     public float speed = 5.0f;
-    public bool canJump = true;
     public float jumpHeight = 2.0f;
+
     public Camera playerCamera;
     public float lookSpeed = 2.0f;
     public float lookXLimit = 60.0f;
+    private float currentJumps = 0;
 
     bool grounded = false;
     Rigidbody r;
@@ -17,52 +20,58 @@ public class sc_RigidbodyWalker : MonoBehaviour
     float maxVelocityChange = 10.0f;
 
     private Animator anim;
-    private CharacterController controller;
+    private Transform groundCheck;
+    public LayerMask groundMask;
 
+    //called as game starts
     void Start()
     {
-        controller = GetComponent<CharacterController>();
         anim = gameObject.GetComponentInChildren<Animator>();
+        groundCheck = transform.Find("GroundCheck");
     }
 
+    //Called right before game starts
     void Awake()
     {
+        //set up rigidbody for proper use
         r = GetComponent<Rigidbody>();
         r.freezeRotation = true;
         r.useGravity = false;
         r.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         rotation.y = transform.eulerAngles.y;
 
+        //set the cursor to be invisible and locked to the center
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
+    //Called once every frame
     void Update()
     {
-        // Player and Camera rotation
-        rotation.x += -Input.GetAxis("Mouse Y") * lookSpeed;
-        rotation.x = Mathf.Clamp(rotation.x, -lookXLimit, lookXLimit);
-        playerCamera.transform.localRotation = Quaternion.Euler(rotation.x, 0, 0);
-        Quaternion localRotation = Quaternion.Euler(0f, Input.GetAxis("Mouse X") * lookSpeed, 0f);
-        transform.rotation = transform.rotation * localRotation;
+        PlayerRotation();
 
-        if (Input.GetKey("w") || Input.GetKey("w"))
+        AnimateMovement();
+
+        if (Input.GetButtonDown("Jump") && currentJumps < numberOfJumps)
         {
-            anim.SetInteger("AnimationPar", 1);
-        }
-        else
-        {
-            anim.SetInteger("AnimationPar", 0);
+            r.velocity = Vector3.zero;
+            r.AddForce(transform.up * jumpHeight, ForceMode.Impulse);
+            anim.SetTrigger("jump");
+            currentJumps++;
         }
 
-        anim.SetBool("isGrounded", grounded);
-
+        grounded = Physics.CheckSphere(groundCheck.position, 0.2f, groundMask);
+        if(grounded)
+        {
+            currentJumps = 0;
+        }
 
     }
 
+    //Called every physics frame
     void FixedUpdate()
     {
-        if (grounded)
+        if (true)
         {
             // Calculate how fast we should be moving
             Vector3 forwardDir = Vector3.Cross(transform.up, -playerCamera.transform.right).normalized;
@@ -79,21 +88,33 @@ public class sc_RigidbodyWalker : MonoBehaviour
             velocityChange = transform.TransformDirection(velocityChange);
 
             r.AddForce(velocityChange, ForceMode.VelocityChange);
-
-            
-
-            if (Input.GetButton("Jump") && canJump)
-            {
-                r.AddForce(transform.up * jumpHeight, ForceMode.VelocityChange);
-                anim.SetTrigger("jump");
-            }
         }
 
-        grounded = false;
+
     }
 
-    void OnCollisionStay()
+    //Sets the animation perameters
+    private void AnimateMovement()
     {
-        grounded = true;
+        if (Input.GetKey("w") || Input.GetKey("s"))
+        {
+            anim.SetInteger("AnimationPar", 1);
+        }
+        else
+        {
+            anim.SetInteger("AnimationPar", 0);
+        }
+
+        anim.SetBool("isGrounded", grounded);
+    }
+
+    //rotates the player and camera
+    private void PlayerRotation()
+    {
+        rotation.x += -Input.GetAxis("Mouse Y") * lookSpeed;
+        rotation.x = Mathf.Clamp(rotation.x, -lookXLimit, lookXLimit);
+        playerCamera.transform.localRotation = Quaternion.Euler(rotation.x, 0, 0);
+        Quaternion localRotation = Quaternion.Euler(0f, Input.GetAxis("Mouse X") * lookSpeed, 0f);
+        transform.rotation = transform.rotation * localRotation;
     }
 }
