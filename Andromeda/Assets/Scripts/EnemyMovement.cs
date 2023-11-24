@@ -5,17 +5,22 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
+    //Initialized variables
     private GameObject player;
-
     private Rigidbody rb;
+
+    //helper variable
     private bool isJumping = false;
 
+    //called right before game starts
     private void Start()
     {
+        //initialize all needed variables
         rb = GetComponent<Rigidbody>();
         player = GameObject.Find("Player");
     }
 
+    //called once every frame
     private void Update()
     {
         if(!isJumping)
@@ -24,6 +29,8 @@ public class EnemyMovement : MonoBehaviour
             StartCoroutine(Jump());
         }
     }
+
+    //Called when enemy jumps
     IEnumerator Jump()
     {
         yield return new WaitForSeconds(2);

@@ -1,33 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class sc_RigidbodyWalker : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     //upgrades
-    public float numberOfJumps = 1;
-    public float speed = 5.0f;
-    public float jumpHeight = 2.0f;
+    [System.NonSerialized] public float numberOfJumps = 1;
+    [System.NonSerialized] public float speed = 5.0f;
+    [System.NonSerialized] public float jumpHeight = 5.0f;
+    [System.NonSerialized] public bool canMultiJump = false;
 
-    public Camera playerCamera;
+    //Settings
+    public LayerMask groundMask;
     public float lookSpeed = 2.0f;
-    public float lookXLimit = 60.0f;
-    private float currentJumps = 0;
+    public float lookXLimit = 90.0f;
 
+    //Helper Variables
     bool grounded = false;
-    Rigidbody r;
-    Vector2 rotation = Vector2.zero;
+    private float currentJumps = 0;
+    private Vector2 rotation = Vector2.zero;
     float maxVelocityChange = 10.0f;
 
+    //Initialzed objects
     private Animator anim;
+    private Rigidbody r;
+    private Camera playerCamera;
     private Transform groundCheck;
-    public LayerMask groundMask;
+    private GameObject flashLight;
 
-    //called as game starts
+    //Input System
+    public PlayerControls controls;
+    private InputAction flashLightInput;
+    private InputAction jumpInput;
+
+    
+
+    //called as game starts, initializes needed items
     void Start()
     {
         anim = gameObject.GetComponentInChildren<Animator>();
         groundCheck = transform.Find("GroundCheck");
+        playerCamera = Camera.main;
+        flashLight = playerCamera.gameObject.transform.Find("Flashlight").gameObject;
     }
 
     //Called right before game starts
@@ -43,6 +58,27 @@ public class sc_RigidbodyWalker : MonoBehaviour
         //set the cursor to be invisible and locked to the center
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        controls = new PlayerControls();
+    }
+
+    //Enables all input actions
+    private void OnEnable()
+    {
+        flashLightInput = controls.Player.Flashlight;
+        flashLightInput.Enable();
+        flashLightInput.performed += FlashLightControl;
+
+        jumpInput = controls.Player.Jump;
+        jumpInput.Enable();
+        jumpInput.performed += JumpAction;
+    }
+
+    //Disables all Input Actions
+    private void OnDisable()
+    {
+        flashLightInput.Disable();
+        jumpInput.Disable();
     }
 
     //Called once every frame
@@ -52,20 +88,7 @@ public class sc_RigidbodyWalker : MonoBehaviour
 
         AnimateMovement();
 
-        if (Input.GetButtonDown("Jump") && currentJumps < numberOfJumps)
-        {
-            r.velocity = Vector3.zero;
-            r.AddForce(transform.up * jumpHeight, ForceMode.Impulse);
-            anim.SetTrigger("jump");
-            currentJumps++;
-        }
-
-        grounded = Physics.CheckSphere(groundCheck.position, 0.2f, groundMask);
-        if(grounded)
-        {
-            currentJumps = 0;
-        }
-
+        SetGrounded();
     }
 
     //Called every physics frame
@@ -117,4 +140,33 @@ public class sc_RigidbodyWalker : MonoBehaviour
         Quaternion localRotation = Quaternion.Euler(0f, Input.GetAxis("Mouse X") * lookSpeed, 0f);
         transform.rotation = transform.rotation * localRotation;
     }
+
+    //Set the grounded status
+    private void SetGrounded()
+    {
+        grounded = Physics.CheckSphere(groundCheck.position, 0.2f, groundMask);
+        if (grounded)
+        {
+            currentJumps = 0;
+        }
+    }
+
+    //Called everytime jump input is activated
+    private void JumpAction(InputAction.CallbackContext context)
+    {
+        if ((currentJumps < numberOfJumps && canMultiJump) || (!canMultiJump && grounded))
+        {
+            r.velocity = Vector3.zero;
+            r.AddForce(transform.up * jumpHeight, ForceMode.Impulse);
+            anim.SetTrigger("jump");
+            currentJumps++;
+        }
+    }
+
+    //Flashlight controls with Input System
+    private void FlashLightControl(InputAction.CallbackContext context)
+    {
+        flashLight.SetActive(!flashLight.activeSelf);
+    }
+
 }
