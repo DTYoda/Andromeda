@@ -1,5 +1,5 @@
 {
-    "name": "PlayerActions",
+    "name": "PlayerControls",
     "maps": [
         {
             "name": "Player",
@@ -45,6 +45,24 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "b3ebb77c-f394-4b01-8807-14696d6057d1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeModeUp",
+                    "type": "Button",
+                    "id": "f42ded36-1c3e-4b8c-b583-d8519b922ac0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeModeDown",
+                    "type": "Button",
+                    "id": "de9d5b78-9952-4a2c-8e48-c8e2b41224bb",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -232,7 +250,7 @@
                     "name": "",
                     "id": "05f6913d-c316-48b2-a6bb-e225f14c7960",
                     "path": "<Mouse>/leftButton",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Fire",
@@ -286,7 +304,7 @@
                 {
                     "name": "",
                     "id": "56e3c5d5-fb31-4eaf-ae2c-185953d7c9c5",
-                    "path": "<XInputController>/rightShoulder",
+                    "path": "<XInputController>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",

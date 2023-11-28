@@ -7,6 +7,7 @@ public class PlanetGravity : MonoBehaviour
     //Set these variables
     public Transform planet;
     public bool alignToPlanet = true;
+    public bool useGravity = true;
     public float gravityConstant = 9.8f;
 
     //Initialized variables
@@ -17,6 +18,7 @@ public class PlanetGravity : MonoBehaviour
     {
         //Initialzed needed variables
         r = GetComponent<Rigidbody>();
+        r.useGravity = false;
     }
 
     //called every physics frame
@@ -26,8 +28,11 @@ public class PlanetGravity : MonoBehaviour
         Vector3 toCenter = planet.position - transform.position;
         toCenter.Normalize();
 
-        Gravity(toCenter);
-        
+        if(useGravity)
+        {
+            Gravity(toCenter);
+        }
+
         if (alignToPlanet)
         {
             AlignToPlanet(toCenter);

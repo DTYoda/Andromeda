@@ -6,10 +6,10 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     //upgrades
-    [System.NonSerialized] public float numberOfJumps = 1;
+    [System.NonSerialized] public float numberOfJumps = 4;
     [System.NonSerialized] public float speed = 5.0f;
     [System.NonSerialized] public float jumpHeight = 5.0f;
-    [System.NonSerialized] public bool canMultiJump = false;
+    [System.NonSerialized] public bool canMultiJump = true;
 
     //Settings
     public LayerMask groundMask;
