@@ -13,26 +13,31 @@ public class PlayerArmController: MonoBehaviour
     public int damage;
     public float attackSpeed;
 
+    //helping variables
     private int currentMode = 0;
-
     private string[] modes = { "mining", "attack" };
-
-    public PlayerControls controls;
-    private InputAction fire;
     private bool isFiring;
 
+    //Input Actions
+    public PlayerControls controls;
+    private InputAction fire;
+    
+    //Assigned variablews
     public LayerMask miningMask;
-
     public Transform armPosition;
     public LineRenderer line;
+    private GameObject mineParticles;
 
+    //When the game first starts
     private void Awake()
     {
         controls = new PlayerControls();
         armPosition = this.transform.Find("Arm");
         line = this.gameObject.GetComponent<LineRenderer>();
+        mineParticles = armPosition.Find("MineParticles").gameObject;
     }
 
+    //When the input actions are enabled
     private void OnEnable()
     {
         fire = controls.Player.Fire;
@@ -42,6 +47,7 @@ public class PlayerArmController: MonoBehaviour
         fire.canceled += Fire;
     }
 
+    //When the input actions are disabled
     private void OnDisable()
     {
         fire.Disable();   
@@ -72,9 +78,13 @@ public class PlayerArmController: MonoBehaviour
                 Attack();
             }
         }
-        DrawRay();
+        else
+        {
+            DrawRay(new Vector3(0, 0, 0));
+        }
     }
 
+    //activated whenever the fire key is held down
     private void Fire(InputAction.CallbackContext context)
     {
         switch(context.phase)
@@ -88,6 +98,7 @@ public class PlayerArmController: MonoBehaviour
         }
     }
 
+    //activated when the user is mining
     private void Mine()
     {
         RaycastHit hit;
@@ -98,18 +109,28 @@ public class PlayerArmController: MonoBehaviour
             {
                 obj.health -= miningDamage * Time.deltaTime;
             }
+            DrawRay(hit.point);
+            mineParticles.transform.position = hit.point;
+            mineParticles.SetActive(true);
+        }
+        else
+        {
+            DrawRay(Camera.main.transform.position + Camera.main.transform.forward * 2);
+            mineParticles.SetActive(false);
         }
     }
 
+    //activated when the user is attacking
     private void Attack()
     {
         Debug.Log("Attacking");
     }
 
-    private void DrawRay()
+    //Draws the ray from the arm to the center of the screnn
+    private void DrawRay(Vector3 endLocation)
     {
         if (isFiring)
-            line.SetPositions(new Vector3[] { armPosition.transform.position, Camera.main.transform.position + Camera.main.transform.forward * 2 });
+            line.SetPositions(new Vector3[] { armPosition.transform.position, endLocation});
         else
             line.SetPositions(new Vector3[] { Vector3.zero, Vector3.zero });
     }
