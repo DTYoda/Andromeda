@@ -191,18 +191,16 @@ public class PlayerController : MonoBehaviour
         {
             if (helmet.transform.localEulerAngles.x > 3)
             {
-                helmet.transform.localEulerAngles += Vector3.right * Time.deltaTime * 30;
+                helmet.transform.localEulerAngles += Vector3.right * Time.deltaTime * 60;
             }
         }
         else
         {
             if (helmet.transform.localEulerAngles.x < 265 || helmet.transform.localEulerAngles.x > 275)
             {
-                helmet.transform.localEulerAngles -= Vector3.right * Time.deltaTime * 30;
+                helmet.transform.localEulerAngles -= Vector3.right * Time.deltaTime * 60;
             }
         }
-
-        Debug.Log(helmet.transform.localEulerAngles.x);
     }
 
 }
