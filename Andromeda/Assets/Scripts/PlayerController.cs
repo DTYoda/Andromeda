@@ -6,10 +6,10 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     //upgrades
-    [System.NonSerialized] public float numberOfJumps = 4;
+    [System.NonSerialized] public float numberOfJumps = 0;
     [System.NonSerialized] public float speed = 5.0f;
     [System.NonSerialized] public float jumpHeight = 5.0f;
-    [System.NonSerialized] public bool canMultiJump = true;
+    [System.NonSerialized] public bool canMultiJump = false;
 
     //Settings
     public LayerMask groundMask;
@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private float currentJumps = 0;
     private Vector2 rotation = Vector2.zero;
     float maxVelocityChange = 10.0f;
+    bool helmetOn = false;
 
     //Initialzed objects
     private Animator anim;
@@ -28,13 +29,15 @@ public class PlayerController : MonoBehaviour
     private Camera playerCamera;
     private Transform groundCheck;
     private GameObject flashLight;
+    private GameObject helmet;
 
     //Input System
     public PlayerControls controls;
     private InputAction flashLightInput;
     private InputAction jumpInput;
+    private InputAction helmetInput;
 
-    
+
 
     //called as game starts, initializes needed items
     void Start()
@@ -43,6 +46,7 @@ public class PlayerController : MonoBehaviour
         groundCheck = transform.Find("GroundCheck");
         playerCamera = Camera.main;
         flashLight = playerCamera.gameObject.transform.Find("Flashlight").gameObject;
+        helmet = playerCamera.gameObject.transform.Find("Helmet").gameObject;
     }
 
     //Called right before game starts
@@ -72,6 +76,10 @@ public class PlayerController : MonoBehaviour
         jumpInput = controls.Player.Jump;
         jumpInput.Enable();
         jumpInput.performed += JumpAction;
+
+        helmetInput = controls.Player.Helmet;
+        helmetInput.Enable();
+        helmetInput.performed += HelmetChange;
     }
 
     //Disables all Input Actions
@@ -89,6 +97,8 @@ public class PlayerController : MonoBehaviour
         AnimateMovement();
 
         SetGrounded();
+
+        HelmetAnim();
     }
 
     //Called every physics frame
@@ -167,6 +177,32 @@ public class PlayerController : MonoBehaviour
     private void FlashLightControl(InputAction.CallbackContext context)
     {
         flashLight.SetActive(!flashLight.activeSelf);
+    }
+
+    private void HelmetChange(InputAction.CallbackContext context)
+    {
+        helmetOn = !helmetOn;
+    }
+
+    private void HelmetAnim()
+    {
+
+        if(helmetOn)
+        {
+            if (helmet.transform.localEulerAngles.x > 3)
+            {
+                helmet.transform.localEulerAngles += Vector3.right * Time.deltaTime * 30;
+            }
+        }
+        else
+        {
+            if (helmet.transform.localEulerAngles.x < 265 || helmet.transform.localEulerAngles.x > 275)
+            {
+                helmet.transform.localEulerAngles -= Vector3.right * Time.deltaTime * 30;
+            }
+        }
+
+        Debug.Log(helmet.transform.localEulerAngles.x);
     }
 
 }

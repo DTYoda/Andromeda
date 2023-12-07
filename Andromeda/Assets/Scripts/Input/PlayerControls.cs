@@ -89,6 +89,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Helmet"",
+                    ""type"": ""Button"",
+                    ""id"": ""5871f2fb-7481-47f2-98eb-ab742a06fde7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -353,6 +362,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6c9bdadb-3082-4943-9fc9-0f60b533490c"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Helmet"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -947,6 +967,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_ChangeModeUp = m_Player.FindAction("ChangeModeUp", throwIfNotFound: true);
         m_Player_ChangeModeDown = m_Player.FindAction("ChangeModeDown", throwIfNotFound: true);
+        m_Player_Helmet = m_Player.FindAction("Helmet", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1027,6 +1048,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_ChangeModeUp;
     private readonly InputAction m_Player_ChangeModeDown;
+    private readonly InputAction m_Player_Helmet;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1038,6 +1060,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @ChangeModeUp => m_Wrapper.m_Player_ChangeModeUp;
         public InputAction @ChangeModeDown => m_Wrapper.m_Player_ChangeModeDown;
+        public InputAction @Helmet => m_Wrapper.m_Player_Helmet;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1068,6 +1091,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ChangeModeDown.started += instance.OnChangeModeDown;
             @ChangeModeDown.performed += instance.OnChangeModeDown;
             @ChangeModeDown.canceled += instance.OnChangeModeDown;
+            @Helmet.started += instance.OnHelmet;
+            @Helmet.performed += instance.OnHelmet;
+            @Helmet.canceled += instance.OnHelmet;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1093,6 +1119,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ChangeModeDown.started -= instance.OnChangeModeDown;
             @ChangeModeDown.performed -= instance.OnChangeModeDown;
             @ChangeModeDown.canceled -= instance.OnChangeModeDown;
+            @Helmet.started -= instance.OnHelmet;
+            @Helmet.performed -= instance.OnHelmet;
+            @Helmet.canceled -= instance.OnHelmet;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1282,6 +1311,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnChangeModeUp(InputAction.CallbackContext context);
         void OnChangeModeDown(InputAction.CallbackContext context);
+        void OnHelmet(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
