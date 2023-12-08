@@ -9,6 +9,7 @@ public class PlanetGravity : MonoBehaviour
     public bool alignToPlanet = true;
     public bool useGravity = true;
     public float gravityConstant = 9.8f;
+    public GameObject hologram;
 
     //Initialized variables
     Rigidbody r;
@@ -51,5 +52,7 @@ public class PlanetGravity : MonoBehaviour
         Quaternion q = Quaternion.FromToRotation(transform.up, -toCenter);
         q = q * transform.rotation;
         transform.rotation = Quaternion.Slerp(transform.rotation, q, 1);
+        hologram.transform.localRotation = Quaternion.Slerp(hologram.transform.rotation, q, 1);
+
     }
 }

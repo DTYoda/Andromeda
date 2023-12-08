@@ -32,7 +32,7 @@ public class PlayerArmController: MonoBehaviour
     private void Awake()
     {
         controls = new PlayerControls();
-        armPosition = this.transform.Find("Arm");
+        armPosition = Camera.main.transform.Find("Arm");
         line = this.gameObject.GetComponent<LineRenderer>();
         mineParticles = armPosition.Find("MineParticles").gameObject;
     }
@@ -123,7 +123,6 @@ public class PlayerArmController: MonoBehaviour
     //activated when the user is attacking
     private void Attack()
     {
-        Debug.Log("Attacking");
     }
 
     //Draws the ray from the arm to the center of the screnn
