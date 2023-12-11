@@ -19,7 +19,7 @@ public class PlanetGravity : MonoBehaviour
     {
         //Initialzed needed variables
         r = GetComponent<Rigidbody>();
-        r.useGravity = false;
+        r.useGravity = !useGravity;
     }
 
     //called every physics frame
@@ -52,7 +52,8 @@ public class PlanetGravity : MonoBehaviour
         Quaternion q = Quaternion.FromToRotation(transform.up, -toCenter);
         q = q * transform.rotation;
         transform.rotation = Quaternion.Slerp(transform.rotation, q, 1);
-        hologram.transform.localRotation = Quaternion.Slerp(hologram.transform.rotation, q, 1);
+        hologram.transform.localEulerAngles = new Vector3(transform.up.x * -180 - 90, transform.up.y * -180, transform.up.z * -180);
+
 
     }
 }

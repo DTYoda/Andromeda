@@ -55,7 +55,6 @@ public class PlayerController : MonoBehaviour
         //set up rigidbody for proper use
         r = GetComponent<Rigidbody>();
         r.freezeRotation = true;
-        r.useGravity = false;
         r.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         rotation.y = transform.eulerAngles.y;
 

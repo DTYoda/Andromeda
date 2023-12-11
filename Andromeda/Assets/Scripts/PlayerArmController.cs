@@ -131,6 +131,10 @@ public class PlayerArmController: MonoBehaviour
         if (isFiring)
             line.SetPositions(new Vector3[] { armPosition.transform.position, endLocation});
         else
+        {
             line.SetPositions(new Vector3[] { Vector3.zero, Vector3.zero });
+            mineParticles.SetActive(false);
+        }
+            
     }
 }
