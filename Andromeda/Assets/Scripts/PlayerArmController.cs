@@ -27,6 +27,7 @@ public class PlayerArmController: MonoBehaviour
     public Transform armPosition;
     public LineRenderer line;
     private GameObject mineParticles;
+    private GameManager manager;
 
     //When the game first starts
     private void Awake()
@@ -35,6 +36,7 @@ public class PlayerArmController: MonoBehaviour
         armPosition = Camera.main.transform.Find("Arm");
         line = this.gameObject.GetComponent<LineRenderer>();
         mineParticles = armPosition.Find("MineParticles").gameObject;
+        manager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     //When the input actions are enabled
@@ -65,6 +67,16 @@ public class PlayerArmController: MonoBehaviour
         {
             currentMode += (int) Input.GetAxis("Mouse ScrollWheel");
             currentMode %= Mathf.Abs(modes.Length);
+        }
+
+        RaycastHit hit;
+        if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 2, miningMask))
+        {
+            manager.currentObject = hit.transform.gameObject;
+        }
+        else
+        {
+            manager.currentObject = null;
         }
 
         if(isFiring)
@@ -107,7 +119,7 @@ public class PlayerArmController: MonoBehaviour
             MineableObject obj = hit.transform.gameObject.GetComponent<MineableObject>();
             if(obj.hardness <= miningForce)
             {
-                obj.health -= miningDamage * Time.deltaTime;
+                obj.currentHealth -= miningDamage * Time.deltaTime;
             }
             DrawRay(hit.point);
             mineParticles.transform.position = hit.point;

@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class MineableObject : MonoBehaviour
 {
-    public float health;
+    public string objName;
+    public float totalHealth;
+    public float currentHealth;
     public int hardness;
     public string itemDrop;
 
@@ -13,12 +15,13 @@ public class MineableObject : MonoBehaviour
     void Start()
     {
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        currentHealth = totalHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (health <= 0)
+        if (currentHealth <= 0)
         {
             manager.materials[itemDrop]++;
             Destroy(this.gameObject);
