@@ -15,4 +15,13 @@ public class Button3D : MonoBehaviour
     {
         anim.SetBool(prop, !anim.GetBool(prop));
     }
+
+    private void OnMouseEnter()
+    {
+        transform.localScale *= 2;
+    }
+    private void OnMouseExit()
+    {
+        transform.localScale /= 2;
+    }
 }
