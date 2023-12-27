@@ -28,6 +28,7 @@ public class PlayerArmController: MonoBehaviour
     public LineRenderer line;
     private GameObject mineParticles;
     private GameManager manager;
+    private PlayerController controller;
 
     //When the game first starts
     private void Awake()
@@ -37,6 +38,7 @@ public class PlayerArmController: MonoBehaviour
         line = this.gameObject.GetComponent<LineRenderer>();
         mineParticles = armPosition.Find("MineParticles").gameObject;
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        controller = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     //When the input actions are enabled
@@ -72,11 +74,11 @@ public class PlayerArmController: MonoBehaviour
         RaycastHit hit;
         if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 2, miningMask))
         {
-            manager.currentObject = hit.transform.gameObject;
+            controller.currentObject = hit.transform.gameObject;
         }
         else
         {
-            manager.currentObject = null;
+            controller.currentObject = null;
         }
 
         if(isFiring)

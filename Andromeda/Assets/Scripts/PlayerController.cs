@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
     [System.NonSerialized] public float speed = 5.0f;
     [System.NonSerialized] public float jumpHeight = 5.0f;
     [System.NonSerialized] public bool canMultiJump = false;
+    [System.NonSerialized] public float health = 100;
 
     //Settings
     public LayerMask groundMask;
@@ -36,6 +38,13 @@ public class PlayerController : MonoBehaviour
     private InputAction flashLightInput;
     private InputAction jumpInput;
     private InputAction helmetInput;
+
+    //Current Object Hologram and text
+    public GameObject hologramParent;
+    public GameObject currentObject;
+    public GameObject objHologram;
+    public TMP_Text hologramText;
+    public GameObject objHealthBar;
 
 
 
@@ -98,6 +107,8 @@ public class PlayerController : MonoBehaviour
         SetGrounded();
 
         HelmetAnim();
+
+        LookingAt();
     }
 
     //Called every physics frame
@@ -199,6 +210,29 @@ public class PlayerController : MonoBehaviour
             {
                 helmet.transform.localEulerAngles -= Vector3.right * Time.deltaTime * 60;
             }
+        }
+    }
+
+    private void LookingAt()
+    {
+        if (currentObject != null)
+        {
+            MineableObject obj = currentObject.GetComponent<MineableObject>();
+            hologramText.text = "Name: " + obj.objName + "\nHardness: " + obj.hardness + "\nDrop: " + obj.itemDrop;
+            objHologram = hologramParent.transform.Find(obj.itemDrop).gameObject;
+            objHologram.SetActive(true);
+            objHealthBar.SetActive(true);
+            objHologram.transform.localEulerAngles += Vector3.up * Time.deltaTime * 10;
+            objHealthBar.transform.GetChild(0).localScale = new Vector3(obj.currentHealth / obj.totalHealth, 1, 1);
+        }
+        else
+        {
+            if (objHologram != null)
+            {
+                objHologram.SetActive(false);
+            }
+            hologramText.text = "";
+            objHealthBar.SetActive(false);
         }
     }
 

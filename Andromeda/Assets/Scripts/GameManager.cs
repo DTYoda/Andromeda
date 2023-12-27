@@ -2,19 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.IO;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public float health = 100;
+    //saving data
+    [System.NonSerialized] public float health = 100;
+    [System.NonSerialized] public string[] destroyedObjects = { };
+    [System.NonSerialized] public Vector3 playerLocation = Vector3.zero;
+    [System.NonSerialized] public GameObject player;
+    [System.NonSerialized] public int currentPlanet = 1;
+    [System.NonSerialized] public bool[] unlockedPlanets = { true, false };
+    [System.NonSerialized] public string saveFile;
+
+    public bool autoSaves;
+
 
     public Dictionary<string, int> materials = new Dictionary<string, int>();
 
-    //Current Object Hologram and text
-    public GameObject hologramParent;
-    public GameObject currentObject;
-    public GameObject objHologram;
-    public TMP_Text hologramText;
-    public GameObject objHealthBar;
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
 
     private void Start()
     {
@@ -26,33 +36,64 @@ public class GameManager : MonoBehaviour
         materials.Add("topaz", 0);
         materials.Add("saphire", 0);
         materials.Add("mushroom", 0);
+
+        if(autoSaves)
+        {
+            StartCoroutine(AutoSave());
+        }
     }
 
     private void Update()
     {
-        LookingAt();
+        
     }
 
-    private void LookingAt()
+    public void LoadData()
     {
-        if (currentObject != null)
+        PlayerData data = SaveSystem.Load(saveFile);
+
+        health = data.health;
+        destroyedObjects = data.destroyedObjets;
+        playerLocation = new Vector3(data.location[0], data.location[1], data.location[2]);
+        currentPlanet = data.currentPlanet;
+        unlockedPlanets = data.unlockedPlanets;
+    }
+
+    public void SaveData()
+    {
+        SaveSystem.Save(GetComponent<GameManager>(), saveFile);
+    }
+
+    IEnumerator AutoSave()
+    {
+        yield return new WaitForSeconds(10);
+        SaveData();
+        if(autoSaves)
+            StartCoroutine(AutoSave());
+    }
+
+    public void StartGame()
+    {
+        StartCoroutine(Begin());
+    }
+
+    public IEnumerator Begin()
+    {
+        string path = Application.persistentDataPath + "/" + saveFile + ".data";
+        if(File.Exists(path))
         {
-            MineableObject obj = currentObject.GetComponent<MineableObject>();
-            hologramText.text = "Name: " + obj.objName + "\nHardness: " + obj.hardness + "\nDrop: " + obj.itemDrop;
-            objHologram = hologramParent.transform.Find(obj.itemDrop).gameObject;
-            objHologram.SetActive(true);
-            objHealthBar.SetActive(true);
-            objHologram.transform.localEulerAngles += Vector3.up * Time.deltaTime * 10;
-            objHealthBar.transform.GetChild(0).localScale = new Vector3(obj.currentHealth / obj.totalHealth, 1, 1);
+            LoadData();
         }
         else
         {
-            if(objHologram != null)
-            {
-                objHologram.SetActive(false);
-            }
-            hologramText.text = "";
-            objHealthBar.SetActive(false);
+            SaveData();
+            Debug.Log("creatingNew");
         }
+
+        GameObject.Find("1.5").GetComponent<Animator>().SetTrigger("start");
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene(currentPlanet);
     }
+
+
 }

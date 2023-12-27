@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Spaceship : MonoBehaviour
 {
@@ -57,7 +58,10 @@ public class Spaceship : MonoBehaviour
                 currentQuest = 2;
                 if(Input.GetKeyDown(KeyCode.Space))
                 {
-                    Debug.Log("Good");
+                    GameObject.Find("GameManager").GetComponent<GameManager>().currentPlanet = 2;
+                    GameObject.Find("GameManager").GetComponent<GameManager>().unlockedPlanets[1] = true;
+                    GameObject.Find("GameManager").GetComponent<GameManager>().SaveData();
+                    SceneManager.LoadScene(2);
                 }
             }
         }

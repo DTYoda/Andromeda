@@ -7,6 +7,7 @@ public class MenuScript : MonoBehaviour
 
     private bool hasStarted;
     public Animator anim;
+    public GameObject startText;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,7 @@ public class MenuScript : MonoBehaviour
         {
             hasStarted = true;
             anim.SetTrigger("Start");
+            startText.SetActive(false);
         }
     }
 
