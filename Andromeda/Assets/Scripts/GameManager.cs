@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System.IO;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
@@ -79,7 +80,7 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator Begin()
     {
-        
+        CameraShake.Instance.shake(5, 8);
         string path = Application.persistentDataPath + "/" + saveFile + ".data";
         if(File.Exists(path))
         {
@@ -92,7 +93,7 @@ public class GameManager : MonoBehaviour
 
         GameObject.Find("1.5").GetComponent<Animator>().SetTrigger("start");
 
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(5);
         GetComponent<Animator>().SetTrigger("FadeOut");
         yield return new WaitForSeconds(3);
         SceneManager.LoadScene(currentPlanet);

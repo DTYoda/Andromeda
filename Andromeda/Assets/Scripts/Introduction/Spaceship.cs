@@ -102,6 +102,8 @@ public class Spaceship : MonoBehaviour
         if(other.CompareTag("astroid"))
         {
             explosion.Play();
+            explosion.gameObject.GetComponent<AudioSource>().Play();
+            CameraShake.Instance.shake(1, 1);
             rb.isKinematic = true;
             rb.velocity = Vector3.zero;
             this.GetComponent<MeshRenderer>().enabled = false;
@@ -135,8 +137,13 @@ public class Spaceship : MonoBehaviour
 
     IEnumerator End()
     {
-        GameObject.Find("GameManager").GetComponent<Animator>().SetTrigger("FadeOut");
+        CameraShake.Instance.shake(0.15f, 7);
+        transform.Find("thrust").gameObject.SetActive(true);
+        GetComponent<AudioSource>().Play();
         yield return new WaitForSeconds(3);
+        speed *= 10;
+        GameObject.Find("GameManager").GetComponent<Animator>().SetTrigger("FadeOut");
+        yield return new WaitForSeconds(4);
         GameObject.Find("GameManager").GetComponent<GameManager>().currentPlanet = 2;
         GameObject.Find("GameManager").GetComponent<GameManager>().unlockedPlanets[1] = true;
         GameObject.Find("GameManager").GetComponent<GameManager>().SaveData();
