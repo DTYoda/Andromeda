@@ -18,7 +18,7 @@ public class SaveFile : MonoBehaviour
         manager = GameObject.Find("GameManager").gameObject.GetComponent<GameManager>();
 
         path = Application.persistentDataPath + "/" + fileName + ".data";
-        if(File.Exists(path))
+        if(File.Exists(path) && !DeleteMode)
         {
             text.text = "Continue";
         }
@@ -33,6 +33,7 @@ public class SaveFile : MonoBehaviour
         if(DeleteMode)
         {
             File.Delete(path);
+            text.text = "New Game";
         }
         else
         {

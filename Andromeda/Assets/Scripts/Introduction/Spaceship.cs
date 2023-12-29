@@ -34,7 +34,8 @@ public class Spaceship : MonoBehaviour
         //set variables
         rb = GetComponent<Rigidbody>();
         explosion = transform.Find("Explosion").GetComponent<ParticleSystem>();
-        
+        StartCoroutine(Begin());
+
     }
 
     // Update is called once per frame
@@ -58,10 +59,7 @@ public class Spaceship : MonoBehaviour
                 currentQuest = 2;
                 if(Input.GetKeyDown(KeyCode.Space))
                 {
-                    GameObject.Find("GameManager").GetComponent<GameManager>().currentPlanet = 2;
-                    GameObject.Find("GameManager").GetComponent<GameManager>().unlockedPlanets[1] = true;
-                    GameObject.Find("GameManager").GetComponent<GameManager>().SaveData();
-                    SceneManager.LoadScene(2);
+                    StartCoroutine(End());
                 }
             }
         }
@@ -125,5 +123,23 @@ public class Spaceship : MonoBehaviour
         bool onScreen = screenPos.x > 0f && screenPos.x < Screen.width && screenPos.y > 0f && screenPos.y < Screen.height;
 
         return (onScreen && center.transform.GetChild(0).GetComponent<Renderer>().isVisible);
+    }
+
+    IEnumerator Begin()
+    {
+        Time.timeScale = 0;
+        yield return new WaitForSecondsRealtime(10);
+        Time.timeScale = 1;
+        GameObject.Find("GameManager").GetComponent<Animator>().SetTrigger("FadeIn");
+    }
+
+    IEnumerator End()
+    {
+        GameObject.Find("GameManager").GetComponent<Animator>().SetTrigger("FadeOut");
+        yield return new WaitForSeconds(3);
+        GameObject.Find("GameManager").GetComponent<GameManager>().currentPlanet = 2;
+        GameObject.Find("GameManager").GetComponent<GameManager>().unlockedPlanets[1] = true;
+        GameObject.Find("GameManager").GetComponent<GameManager>().SaveData();
+        SceneManager.LoadScene(2);
     }
 }
