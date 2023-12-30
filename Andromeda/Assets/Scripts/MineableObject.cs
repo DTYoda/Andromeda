@@ -21,7 +21,7 @@ public class MineableObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (currentHealth <= 0)
+        if (currentHealth <= 0 && manager != null)
         {
             manager.materials[itemDrop]++;
             Destroy(this.gameObject);

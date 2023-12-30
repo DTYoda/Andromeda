@@ -56,6 +56,8 @@ public class PlayerController : MonoBehaviour
         playerCamera = Camera.main;
         flashLight = playerCamera.gameObject.transform.Find("Flashlight").gameObject;
         helmet = playerCamera.gameObject.transform.Find("Helmet").gameObject;
+
+        GameObject.Find("GameManager").GetComponent<Animator>().SetTrigger("FadeIn");
     }
 
     //Called right before game starts
