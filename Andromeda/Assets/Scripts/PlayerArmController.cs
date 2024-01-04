@@ -24,6 +24,7 @@ public class PlayerArmController: MonoBehaviour
     
     //Assigned variablews
     public LayerMask miningMask;
+    public LayerMask pickupMask;
     public Transform armPosition;
     public LineRenderer line;
     private GameObject mineParticles;
@@ -97,6 +98,8 @@ public class PlayerArmController: MonoBehaviour
         {
             DrawRay(new Vector3(0, 0, 0));
         }
+
+        FindPickupObjects();
     }
 
     //activated whenever the fire key is held down
@@ -151,5 +154,25 @@ public class PlayerArmController: MonoBehaviour
             mineParticles.SetActive(false);
         }
             
+    }
+
+    //Find objects that can be picked up
+    private void FindPickupObjects()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 2, pickupMask))
+        {
+            ItemScript obj = hit.transform.gameObject.GetComponent<ItemScript>();
+            UIController.instance.setActionText("<sprite index = 0>" + obj.itemName);
+            if(Input.GetKeyDown(KeyCode.E))
+            {
+                GameManager.manager.materials[obj.itemName]++;
+                Destroy(obj.gameObject);
+            }
+        }
+        else
+        {
+            UIController.instance.setActionText("");
+        }
     }
 }

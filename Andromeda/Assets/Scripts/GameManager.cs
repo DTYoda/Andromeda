@@ -22,9 +22,12 @@ public class GameManager : MonoBehaviour
 
     public Dictionary<string, int> materials = new Dictionary<string, int>();
 
+    public static GameManager manager;
+
     private void Awake()
     {
         DontDestroyOnLoad(this);
+        manager = this;
     }
 
     private void Start()
