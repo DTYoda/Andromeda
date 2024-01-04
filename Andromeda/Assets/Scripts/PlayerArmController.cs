@@ -37,7 +37,8 @@ public class PlayerArmController: MonoBehaviour
         armPosition = Camera.main.transform.Find("Arm");
         line = this.gameObject.GetComponent<LineRenderer>();
         mineParticles = armPosition.Find("MineParticles").gameObject;
-        manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        if (GameObject.Find("GameManager") != null)
+            manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         controller = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 

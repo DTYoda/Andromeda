@@ -10,6 +10,7 @@ public class PlanetGravity : MonoBehaviour
     public bool useGravity = true;
     public float gravityConstant = 9.8f;
     public GameObject hologram;
+    public bool useHologram;
 
     //Initialized variables
     Rigidbody r;
@@ -52,7 +53,8 @@ public class PlanetGravity : MonoBehaviour
         Quaternion q = Quaternion.FromToRotation(transform.up, -toCenter);
         q = q * transform.rotation;
         transform.rotation = Quaternion.Slerp(transform.rotation, q, 1);
-        hologram.transform.localEulerAngles = new Vector3(transform.up.x * -180 - 90, transform.up.y * -180, transform.up.z * -180);
+        if(useHologram)
+            hologram.transform.localEulerAngles = new Vector3(transform.up.x * -180 - 90, transform.up.y * -180, transform.up.z * -180);
 
 
     }

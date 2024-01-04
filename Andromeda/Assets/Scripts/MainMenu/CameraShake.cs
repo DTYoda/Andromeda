@@ -12,6 +12,10 @@ public class CameraShake : MonoBehaviour
     private float shakeTimer;
     private float defaultAmp;
 
+    public bool keepPos = false;
+    public bool fade = false;
+    private Vector3 originalPosition;
+
     private void Awake()
     {
         Instance = this;
@@ -19,6 +23,10 @@ public class CameraShake : MonoBehaviour
         CinemachineBasicMultiChannelPerlin perlin = cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
         defaultAmp = perlin.m_AmplitudeGain;
+        if (keepPos)
+        {
+            originalPosition = Camera.main.gameObject.transform.localPosition;
+        }
     }
 
     public void shake(float strength, float time)
@@ -31,13 +39,21 @@ public class CameraShake : MonoBehaviour
 
     private void Update()
     {
+        CinemachineBasicMultiChannelPerlin perlin = cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        if(fade)
+            perlin.m_AmplitudeGain -= perlin.m_AmplitudeGain * Time.deltaTime;
         shakeTimer -= Time.deltaTime;
+        
 
-        if(shakeTimer <= 0f)
+        if (shakeTimer <= 0f)
         {
-            CinemachineBasicMultiChannelPerlin perlin = cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-
             perlin.m_AmplitudeGain = defaultAmp;
+            if (keepPos)
+            {
+                Camera.main.gameObject.transform.localPosition = originalPosition;
+            }
         }
+
+        
     }
 }

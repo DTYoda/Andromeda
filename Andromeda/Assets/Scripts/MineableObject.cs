@@ -10,20 +10,27 @@ public class MineableObject : MonoBehaviour
     public int hardness;
     public string itemDrop;
 
+    public GameObject explosionParticles;
+
     private GameManager manager;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        if(GameObject.Find("GameManager") != null)
+            manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         currentHealth = totalHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (currentHealth <= 0 && manager != null)
+        if (currentHealth <= 0)
         {
-            manager.materials[itemDrop]++;
+            Instantiate(explosionParticles, this.transform.position, this.transform.rotation);
+            Vector3 orginPos = GameObject.Find("Player_Camera").transform.localPosition;
+            CameraShake.Instance.shake(0.2f, 1);
+            if(GameObject.Find("GameManager") != null)
+                manager.materials[itemDrop]++;
             Destroy(this.gameObject);
         }
     }

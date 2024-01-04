@@ -23,6 +23,7 @@ public class Spaceship : MonoBehaviour
 
     //initiated variables
     private ParticleSystem explosion;
+    private ParticleSystem thrust;
     public GameObject center;
     public GameObject centerArrow;
     public TMP_Text countdownText;
@@ -34,13 +35,30 @@ public class Spaceship : MonoBehaviour
         //set variables
         rb = GetComponent<Rigidbody>();
         explosion = transform.Find("Explosion").GetComponent<ParticleSystem>();
-        StartCoroutine(Begin());
+        thrust = transform.Find("thrust").GetComponent<ParticleSystem>();
+        if(GameObject.Find("GameManager") !=null)
+            StartCoroutine(Begin());
 
     }
 
     // Update is called once per frame
+    [System.Obsolete]
     void Update()
     {
+
+        if(Input.GetKey(KeyCode.Space))
+        {
+            speed += 2f * speed * Time.deltaTime;
+            thrust.Play();
+        }
+
+        thrust.startSpeed = speed;
+
+        if(speed >= 100f)
+        {
+            speed -= 1.1f * speed * Time.deltaTime;
+        }
+
         pitch = Input.GetAxis("Vertical");
         roll = -Input.GetAxis("Horizontal");
 
@@ -57,7 +75,7 @@ public class Spaceship : MonoBehaviour
             {
                 countdownText.text = "READY";
                 currentQuest = 2;
-                if(Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
                     StartCoroutine(End());
                 }
@@ -137,9 +155,11 @@ public class Spaceship : MonoBehaviour
 
     IEnumerator End()
     {
-        CameraShake.Instance.shake(0.15f, 7);
-        transform.Find("thrust").gameObject.SetActive(true);
+        thrust.Stop();
+        thrust.loop = true;
+        CameraShake.Instance.shake(0.25f, 7);
         GetComponent<AudioSource>().Play();
+        thrust.Play();
         yield return new WaitForSeconds(3);
         speed *= 10;
         GameObject.Find("GameManager").GetComponent<Animator>().SetTrigger("FadeOut");

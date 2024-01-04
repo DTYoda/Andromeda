@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class SettingsMenuScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void Update()
     {
-        
-    }
+        if(Camera.main.gameObject.GetComponent<Animator>().GetBool("Settings"))
+        {
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        }
     }
 }
