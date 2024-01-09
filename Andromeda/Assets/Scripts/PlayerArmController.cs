@@ -163,7 +163,7 @@ public class PlayerArmController: MonoBehaviour
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 2, pickupMask))
         {
             ItemScript obj = hit.transform.gameObject.GetComponent<ItemScript>();
-            UIController.instance.setActionText("<sprite index = 0>" + obj.itemName);
+            UIController.instance.setActionText("<sprite index=0>" + obj.itemName);
             if(Input.GetKeyDown(KeyCode.E))
             {
                 GameManager.manager.materials[obj.itemName]++;

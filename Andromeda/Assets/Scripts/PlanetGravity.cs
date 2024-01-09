@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlanetGravity : MonoBehaviour
 {
     //Set these variables
-    public Transform planet;
+    private Transform planet;
     public bool alignToPlanet = true;
     public bool useGravity = true;
     public float gravityConstant = 9.8f;
@@ -19,6 +19,7 @@ public class PlanetGravity : MonoBehaviour
     void Start()
     {
         //Initialzed needed variables
+        planet = GameObject.Find("planet").transform;
         r = GetComponent<Rigidbody>();
         r.useGravity = !useGravity;
     }
