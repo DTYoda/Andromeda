@@ -20,8 +20,12 @@ public class PlanetGravity : MonoBehaviour
     {
         //Initialzed needed variables
         planet = GameObject.Find("planet").transform;
-        r = GetComponent<Rigidbody>();
-        r.useGravity = !useGravity;
+        if(useGravity)
+        {
+            r = GetComponent<Rigidbody>();
+            r.useGravity = false;
+        }
+            
     }
 
     //called every physics frame

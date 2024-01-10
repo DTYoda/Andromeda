@@ -30,6 +30,7 @@ public class PlayerArmController: MonoBehaviour
     private GameObject mineParticles;
     private GameManager manager;
     private PlayerController controller;
+    public AudioSource miningAudio;
 
     //When the game first starts
     private void Awake()
@@ -147,9 +148,13 @@ public class PlayerArmController: MonoBehaviour
     private void DrawRay(Vector3 endLocation)
     {
         if (isFiring)
-            line.SetPositions(new Vector3[] { armPosition.transform.position, endLocation});
+        {
+            line.SetPositions(new Vector3[] { armPosition.transform.position, endLocation });
+            miningAudio.Play();
+        }  
         else
         {
+            miningAudio.Stop();
             line.SetPositions(new Vector3[] { Vector3.zero, Vector3.zero });
             mineParticles.SetActive(false);
         }
@@ -157,13 +162,15 @@ public class PlayerArmController: MonoBehaviour
     }
 
     //Find objects that can be picked up
+    public RaycastHit itemHit;
+    public GameObject currentPickUp;
     private void FindPickupObjects()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 2, pickupMask))
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out itemHit, 2, pickupMask))
         {
-            ItemScript obj = hit.transform.gameObject.GetComponent<ItemScript>();
-            UIController.instance.setActionText("<sprite index=0>" + obj.itemName);
+            currentPickUp = itemHit.transform.gameObject;
+            ItemScript obj = itemHit.transform.gameObject.GetComponent<ItemScript>();
+            obj.isLooking = true;
             if(Input.GetKeyDown(KeyCode.E))
             {
                 GameManager.manager.materials[obj.itemName]++;
@@ -172,7 +179,7 @@ public class PlayerArmController: MonoBehaviour
         }
         else
         {
-            UIController.instance.setActionText("");
+            currentPickUp = null;
         }
     }
 }

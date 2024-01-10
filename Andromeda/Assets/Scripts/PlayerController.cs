@@ -115,6 +115,8 @@ public class PlayerController : MonoBehaviour
     }
 
     //Called every physics frame
+
+    public Vector3 targetVelocity = Vector3.zero;
     void FixedUpdate()
     {
         if (true)
@@ -122,7 +124,7 @@ public class PlayerController : MonoBehaviour
             // Calculate how fast we should be moving
             Vector3 forwardDir = Vector3.Cross(transform.up, -playerCamera.transform.right).normalized;
             Vector3 rightDir = Vector3.Cross(transform.up, playerCamera.transform.forward).normalized;
-            Vector3 targetVelocity = (forwardDir * Input.GetAxis("Vertical") + rightDir * Input.GetAxis("Horizontal")) * speed;
+            targetVelocity = (forwardDir * Input.GetAxis("Vertical") + rightDir * Input.GetAxis("Horizontal")) * speed;
 
             Vector3 velocity = transform.InverseTransformDirection(r.velocity);
             velocity.y = 0;

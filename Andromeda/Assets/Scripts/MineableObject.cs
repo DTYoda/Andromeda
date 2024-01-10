@@ -24,8 +24,10 @@ public class MineableObject : MonoBehaviour
     {
         if (currentHealth <= 0)
         {
-            Instantiate(explosionParticles, this.transform.position, this.transform.rotation);
-            CameraShake.Instance.shake(0.2f, 1);
+            GameObject particles = Instantiate(explosionParticles, this.transform.position, this.transform.rotation);
+            particles.GetComponent<AudioSource>().pitch = Random.Range(0.8f, 1.2f);
+            particles.GetComponent<AudioSource>().Play();
+            CameraShake.Instance.shake(0.4f, 1.5f);
 
             for(int i = 0; i < Random.Range(1, 4); i++)
             {

@@ -9,7 +9,7 @@ public class CameraShake : MonoBehaviour
     public static CameraShake Instance { get; private set; }
 
     private CinemachineVirtualCamera cam;
-    private float shakeTimer;
+    public float shakeTimer;
     private float defaultAmp;
 
     public bool keepPos = false;
