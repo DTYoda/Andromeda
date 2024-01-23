@@ -13,10 +13,28 @@ public class MineableObject : MonoBehaviour
     public GameObject explosionParticles;
 
     public GameObject drop;
+    private GameManager manager;
     // Start is called before the first frame update
     void Awake()
     {
         currentHealth = totalHealth;
+    }
+
+    private void Start()
+    {
+
+        if(GameObject.Find("GameManager") != null)
+        {
+            manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            if (manager.destroyedObjects.Contains(this.name))
+            {
+                Destroy(this.gameObject);
+            }
+        }
+        else
+        {
+            manager = null;
+        }
     }
 
     // Update is called once per frame
@@ -32,7 +50,12 @@ public class MineableObject : MonoBehaviour
             for(int i = 0; i < Random.Range(1, 4); i++)
             {
                 Instantiate(drop, transform.position + 3 * transform.up, this.transform.rotation).GetComponent<Rigidbody>().AddRelativeForce(new Vector3(Random.Range(-100, 100), Random.Range(-100, 100), Random.Range(300, 700)));
-            }    
+            }
+
+            if(manager != null)
+            {
+                manager.destroyedObjects += this.name;
+            }
 
             Destroy(this.gameObject);
         }

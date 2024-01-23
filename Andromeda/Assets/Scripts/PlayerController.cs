@@ -19,11 +19,11 @@ public class PlayerController : MonoBehaviour
     public float lookXLimit = 90.0f;
 
     //Helper Variables
-    bool grounded = false;
+    [System.NonSerialized] public bool grounded = false;
     private float currentJumps = 0;
     private Vector2 rotation = Vector2.zero;
     float maxVelocityChange = 10.0f;
-    bool helmetOn = false;
+    bool helmetOn = true;
 
     //Initialzed objects
     private Animator anim;

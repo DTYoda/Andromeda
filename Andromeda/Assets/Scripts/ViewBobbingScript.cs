@@ -20,7 +20,7 @@ public class ViewBobbingScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Mathf.Abs(controller.targetVelocity.magnitude) > 0.1f && CameraShake.Instance.shakeTimer <= 0)
+        if (Mathf.Abs(controller.targetVelocity.magnitude) > 0.1f && CameraShake.Instance.shakeTimer <= 0 && controller.grounded == true)
         {
             //Player is moving
             timer += Time.deltaTime * walkingBobbingSpeed;

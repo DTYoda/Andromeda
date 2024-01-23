@@ -19,7 +19,8 @@ public class PlanetGravity : MonoBehaviour
     void Start()
     {
         //Initialzed needed variables
-        planet = GameObject.Find("planet").transform;
+        if(GameObject.Find("planet") != null)
+            planet = GameObject.Find("planet").transform;
         if(useGravity)
         {
             r = GetComponent<Rigidbody>();
@@ -32,16 +33,17 @@ public class PlanetGravity : MonoBehaviour
     void FixedUpdate()
     {
         //get the vector from the player to the center of the planet
-        Vector3 toCenter = planet.position - transform.position;
-        toCenter.Normalize();
-
         if(useGravity)
         {
+            Vector3 toCenter = planet.position - transform.position;
+            toCenter.Normalize();
             Gravity(toCenter);
         }
 
         if (alignToPlanet)
         {
+            Vector3 toCenter = planet.position - transform.position;
+            toCenter.Normalize();
             AlignToPlanet(toCenter);
         }
     }

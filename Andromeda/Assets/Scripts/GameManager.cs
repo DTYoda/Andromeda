@@ -10,14 +10,17 @@ public class GameManager : MonoBehaviour
 {
     //saving data
     [System.NonSerialized] public float health = 100;
-    [System.NonSerialized] public string[] destroyedObjects = { };
+    [System.NonSerialized] public string destroyedObjects = "";
     [System.NonSerialized] public Vector3 playerLocation = Vector3.zero;
     [System.NonSerialized] public GameObject player;
     [System.NonSerialized] public int currentPlanet = 1;
     [System.NonSerialized] public bool[] unlockedPlanets = { true, false };
     [System.NonSerialized] public string saveFile;
+    [System.NonSerialized] public float armFuel = 20;
+    [System.NonSerialized] public float maxArmFuel = 20;
 
-    public bool autoSaves;
+    public bool autoSaves = true;
+    private float autoSaveTimer = 10;
 
 
     public Dictionary<string, int> materials = new Dictionary<string, int>();
@@ -33,7 +36,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         materials.Add("wood", 0);
-        materials.Add("hard wood", 0);
+        materials.Add("shadow wood", 0);
         materials.Add("plum wood", 0);
         materials.Add("rock", 0);
         materials.Add("amethyst", 0);
@@ -41,15 +44,17 @@ public class GameManager : MonoBehaviour
         materials.Add("saphire", 0);
         materials.Add("mushroom", 0);
 
-        if(autoSaves)
-        {
-            StartCoroutine(AutoSave());
-        }
+        
     }
 
     private void Update()
     {
-        
+        if(autoSaveTimer <= 0)
+        {
+            SaveData();
+            autoSaveTimer = 10;
+        }
+        autoSaveTimer -= Time.deltaTime;
     }
 
     public void LoadData()
@@ -61,19 +66,13 @@ public class GameManager : MonoBehaviour
         playerLocation = new Vector3(data.location[0], data.location[1], data.location[2]);
         currentPlanet = data.currentPlanet;
         unlockedPlanets = data.unlockedPlanets;
+        armFuel = data.armFuel;
+        maxArmFuel = data.maxArmFuel;
     }
 
     public void SaveData()
     {
         SaveSystem.Save(GetComponent<GameManager>(), saveFile);
-    }
-
-    IEnumerator AutoSave()
-    {
-        yield return new WaitForSeconds(10);
-        SaveData();
-        if(autoSaves)
-            StartCoroutine(AutoSave());
     }
 
     public void StartGame()

@@ -5,11 +5,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerArmController: MonoBehaviour
 {
-    //Mining States
+    //stats
+    [System.NonSerialized] public float armFuel = 20;
+    [System.NonSerialized] public float maxArmFuel = 20;
+
+    //Mining Stats
     public int miningForce;
     public int miningDamage;
 
-    //Attack States
+    //Attack Stats
     public int damage;
     public float attackSpeed;
 
@@ -28,7 +32,7 @@ public class PlayerArmController: MonoBehaviour
     public Transform armPosition;
     public LineRenderer line;
     private GameObject mineParticles;
-    private GameManager manager;
+    private GameManager manager = null;
     private PlayerController controller;
     public AudioSource miningAudio;
 
@@ -40,8 +44,27 @@ public class PlayerArmController: MonoBehaviour
         line = this.gameObject.GetComponent<LineRenderer>();
         mineParticles = armPosition.Find("MineParticles").gameObject;
         if (GameObject.Find("GameManager") != null)
+        {
             manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            GetManagerData();
+        }
+            
         controller = GameObject.Find("Player").GetComponent<PlayerController>();
+    }
+
+    private void GetManagerData()
+    {
+        if(manager.playerLocation != Vector3.zero)
+            transform.position = manager.playerLocation;
+        armFuel = manager.armFuel;
+        maxArmFuel = manager.maxArmFuel;
+    }
+
+    private void SendManagerData()
+    {
+        manager.playerLocation = this.transform.position;
+        manager.armFuel = armFuel;
+        manager.maxArmFuel = maxArmFuel;
     }
 
     //When the input actions are enabled
@@ -84,7 +107,7 @@ public class PlayerArmController: MonoBehaviour
             controller.currentObject = null;
         }
 
-        if(isFiring)
+        if(isFiring && armFuel > 0)
         {
             if (currentMode == 0)
             {
@@ -97,10 +120,16 @@ public class PlayerArmController: MonoBehaviour
         }
         else
         {
+            if(armFuel < 0)
+            {
+                armFuel = 0;
+            }
             DrawRay(new Vector3(0, 0, 0));
         }
 
         FindPickupObjects();
+        if(manager != null)
+            SendManagerData();
     }
 
     //activated whenever the fire key is held down
@@ -151,6 +180,7 @@ public class PlayerArmController: MonoBehaviour
         {
             line.SetPositions(new Vector3[] { armPosition.transform.position, endLocation });
             miningAudio.Play();
+            armFuel -= Time.deltaTime;
         }  
         else
         {
