@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
 
     //Settings
     public LayerMask groundMask;
+    public LayerMask hologramMask;
     public float lookSpeed = 2.0f;
     public float lookXLimit = 90.0f;
 
@@ -45,8 +46,6 @@ public class PlayerController : MonoBehaviour
     public GameObject objHologram;
     public TMP_Text hologramText;
     public GameObject objHealthBar;
-
-
 
     //called as game starts, initializes needed items
     void Start()
@@ -112,6 +111,9 @@ public class PlayerController : MonoBehaviour
         HelmetAnim();
 
         LookingAt();
+
+        FindHologramObject();
+
     }
 
     //Called every physics frame
@@ -222,13 +224,26 @@ public class PlayerController : MonoBehaviour
     {
         if (currentObject != null)
         {
-            MineableObject obj = currentObject.GetComponent<MineableObject>();
-            hologramText.text = "Name: " + obj.objName + "\nHardness: " + obj.hardness + "\nDrop: " + obj.itemDrop;
-            objHologram = hologramParent.transform.Find(obj.itemDrop).gameObject;
-            objHologram.SetActive(true);
-            objHealthBar.SetActive(true);
-            objHologram.transform.localEulerAngles += Vector3.up * Time.deltaTime * 10;
-            objHealthBar.transform.GetChild(0).localScale = new Vector3(obj.currentHealth / obj.totalHealth, 1, 1);
+            if(currentObject.GetComponent<MineableObject>() != null)
+            {
+                MineableObject obj = currentObject.GetComponent<MineableObject>();
+                hologramText.text = "Name: " + obj.objName + "\nHardness: " + obj.hardness + "\nDrop: " + obj.itemDrop;
+                objHologram = hologramParent.transform.Find(obj.itemDrop).gameObject;
+                objHologram.SetActive(true);
+                objHealthBar.SetActive(true);
+                objHologram.transform.localEulerAngles += Vector3.up * Time.deltaTime * 10;
+                objHealthBar.transform.GetChild(0).localScale = new Vector3(obj.currentHealth / obj.totalHealth, 1, 1);
+            }
+            else if(currentObject.GetComponent<AnimalInfoScript>() != null)
+            {
+                AnimalInfoScript obj = currentObject.GetComponent<AnimalInfoScript>();
+                hologramText.text = "Name: " + obj.animalName + "\nType: " + obj.animalType + "\nDrop: " + obj.animalDrop;
+                objHologram = hologramParent.transform.Find(obj.animalName).gameObject;
+                objHologram.SetActive(true);
+                objHealthBar.SetActive(true);
+                objHologram.transform.localEulerAngles += Vector3.up * Time.deltaTime * 10;
+                objHealthBar.transform.GetChild(0).localScale = new Vector3(obj.currentHealth / obj.totalHealth, 1, 1);
+            }
         }
         else
         {
@@ -238,6 +253,19 @@ public class PlayerController : MonoBehaviour
             }
             hologramText.text = "";
             objHealthBar.SetActive(false);
+        }
+    }
+
+    private void FindHologramObject()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 10, hologramMask))
+        {
+            currentObject = hit.transform.gameObject;
+        }
+        else
+        {
+            currentObject = null;
         }
     }
 

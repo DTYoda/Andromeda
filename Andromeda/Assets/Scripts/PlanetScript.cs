@@ -15,11 +15,11 @@ public class PlanetScript : MonoBehaviour
     {
         if(player.transform.position.x >= -10 && player.transform.position.x <= 10)
         {
-            GetComponent<AudioSource>().pitch = player.transform.position.x / 10.0f;
+            GetComponent<AudioSource>().pitch = (player.transform.position.x + 30) * 0.5f / 20f;
         }
         else
         {
-            GetComponent<AudioSource>().pitch = Mathf.Sign(player.transform.position.x) * 1;
+            GetComponent<AudioSource>().pitch = Mathf.Sign(player.transform.position.x) == -1 ? 0.5f: 1;
         }
     }
 }

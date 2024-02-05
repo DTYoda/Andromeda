@@ -12,6 +12,9 @@ public class PlayerData
     public float armFuel;
     public float maxArmFuel;
 
+    public float oxygen;
+    public float totalOxygen;
+
     public string destroyedObjets;
 
     public PlayerData(GameManager manager)
@@ -22,6 +25,8 @@ public class PlayerData
         destroyedObjets = manager.destroyedObjects;
         armFuel = manager.armFuel;
         maxArmFuel = manager.maxArmFuel;
+        oxygen = manager.oxygen;
+        totalOxygen = manager.totalOxygen;
 
         location[0] = manager.playerLocation.x;
         location[1] = manager.playerLocation.y;

@@ -16,8 +16,14 @@ public class GameManager : MonoBehaviour
     [System.NonSerialized] public int currentPlanet = 1;
     [System.NonSerialized] public bool[] unlockedPlanets = { true, false };
     [System.NonSerialized] public string saveFile;
+
+    //ArmUpgrades
     [System.NonSerialized] public float armFuel = 20;
     [System.NonSerialized] public float maxArmFuel = 20;
+
+    //HelmetUpgrades
+    [System.NonSerialized] public float oxygen = 300;
+    [System.NonSerialized] public float totalOxygen = 300;
 
     public bool autoSaves = true;
     private float autoSaveTimer = 10;
@@ -68,6 +74,9 @@ public class GameManager : MonoBehaviour
         unlockedPlanets = data.unlockedPlanets;
         armFuel = data.armFuel;
         maxArmFuel = data.maxArmFuel;
+
+        oxygen = data.oxygen;
+        totalOxygen = data.totalOxygen;
     }
 
     public void SaveData()

@@ -38,7 +38,8 @@ AnimatorState:
   m_Transitions:
   - {fileID: -4332505956096288739}
   - {fileID: 7428240192681196869}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: -1470901391103126692}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -127,13 +128,45 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &-1732816334921645537
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec55fdf6593ab4e9dae4d409ea7f6cb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 0}
+  runClip: {fileID: 8300000, guid: 96bd08ba59d8c4e08914f1b5ccc0d052, type: 3}
+  jumpClip: {fileID: 8300000, guid: 96bd08ba59d8c4e08914f1b5ccc0d052, type: 3}
+  landClip: {fileID: 8300000, guid: 96bd08ba59d8c4e08914f1b5ccc0d052, type: 3}
+--- !u!114 &-1470901391103126692
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec55fdf6593ab4e9dae4d409ea7f6cb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 0}
+  runClip: {fileID: 8300000, guid: 96bd08ba59d8c4e08914f1b5ccc0d052, type: 3}
+  jumpClip: {fileID: 8300000, guid: 96bd08ba59d8c4e08914f1b5ccc0d052, type: 3}
+  landClip: {fileID: 8300000, guid: 642f7108d0fd3481bbd4dd43ef1bae91, type: 3}
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CharacterController
+  m_Name: AstronautCharacterController
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: AnimationPar
@@ -231,7 +264,8 @@ AnimatorState:
   - {fileID: 1101022329509324888}
   - {fileID: 3348952326604566766}
   - {fileID: -5036577126736898412}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: -1732816334921645537}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1

@@ -9,17 +9,19 @@ public class PlayerArmController: MonoBehaviour
     [System.NonSerialized] public float armFuel = 20;
     [System.NonSerialized] public float maxArmFuel = 20;
 
-    //Mining Stats
+    //Melee Stats
     public int miningForce;
     public int miningDamage;
 
-    //Attack Stats
+    //Ranged Stats
     public int damage;
-    public float attackSpeed;
+    public float attackSpeed = 1;
+    private bool canShoot = true;
+    public GameObject attackProjectile;
 
     //helping variables
     private int currentMode = 0;
-    private string[] modes = { "mining", "attack" };
+    private string[] modes = { "melee", "ranged" };
     private bool isFiring;
 
     //Input Actions
@@ -29,6 +31,7 @@ public class PlayerArmController: MonoBehaviour
     //Assigned variablews
     public LayerMask miningMask;
     public LayerMask pickupMask;
+    public LayerMask attackMask;
     public Transform armPosition;
     public LineRenderer line;
     private GameObject mineParticles;
@@ -93,29 +96,28 @@ public class PlayerArmController: MonoBehaviour
     {
         if (Input.GetAxis("Mouse ScrollWheel") != 0f) // forward
         {
-            currentMode += (int) Input.GetAxis("Mouse ScrollWheel");
+            currentMode += (int)Input.GetAxis("Mouse ScrollWheel");
             currentMode %= Mathf.Abs(modes.Length);
         }
 
-        RaycastHit hit;
-        if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 2, miningMask))
+        if(Input.GetKeyDown(KeyCode.Alpha1))
         {
-            controller.currentObject = hit.transform.gameObject;
+            currentMode = 0;
         }
-        else
+        if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            controller.currentObject = null;
+            currentMode = 1;
         }
 
-        if(isFiring && armFuel > 0)
+        if (isFiring && armFuel > 0)
         {
             if (currentMode == 0)
             {
-                Mine();
+                Melee();
             }
-            else
+            else if(canShoot)
             {
-                Attack();
+                StartCoroutine(Shoot());
             }
         }
         else
@@ -147,7 +149,7 @@ public class PlayerArmController: MonoBehaviour
     }
 
     //activated when the user is mining
-    private void Mine()
+    private void Melee()
     {
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 2, miningMask))
@@ -161,6 +163,14 @@ public class PlayerArmController: MonoBehaviour
             mineParticles.transform.position = hit.point;
             mineParticles.SetActive(true);
         }
+        else if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 2, attackMask))
+        {
+            AnimalInfoScript obj = hit.transform.gameObject.GetComponent<AnimalInfoScript>();
+            obj.currentHealth -= damage * Time.deltaTime;
+            DrawRay(hit.point);
+            mineParticles.transform.position = hit.point;
+            mineParticles.SetActive(true);
+        }
         else
         {
             DrawRay(Camera.main.transform.position + Camera.main.transform.forward * 2);
@@ -169,8 +179,14 @@ public class PlayerArmController: MonoBehaviour
     }
 
     //activated when the user is attacking
-    private void Attack()
+    IEnumerator Shoot()
     {
+        canShoot = false;
+        BulletScript bullet = Instantiate(attackProjectile, Camera.main.transform.position, Camera.main.transform.rotation).GetComponent<BulletScript>();
+        bullet.damage = miningDamage / 2.0f;
+        armFuel -= 1;
+        yield return new WaitForSeconds(attackSpeed);
+        canShoot = true;
     }
 
     //Draws the ray from the arm to the center of the screnn
