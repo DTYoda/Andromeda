@@ -16,6 +16,7 @@ public class PlayerData
     public float totalOxygen;
 
     public string destroyedObjets;
+    public bool isInSpaceShip;
 
     public PlayerData(GameManager manager)
     {
@@ -27,6 +28,7 @@ public class PlayerData
         maxArmFuel = manager.maxArmFuel;
         oxygen = manager.oxygen;
         totalOxygen = manager.totalOxygen;
+        isInSpaceShip = manager.isInSpaceShip;
 
         location[0] = manager.playerLocation.x;
         location[1] = manager.playerLocation.y;

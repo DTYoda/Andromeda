@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [System.NonSerialized] public Vector3 playerLocation = Vector3.zero;
     [System.NonSerialized] public GameObject player;
     [System.NonSerialized] public int currentPlanet = 1;
+    [System.NonSerialized] public bool isInSpaceShip = false;
     [System.NonSerialized] public bool[] unlockedPlanets = { true, false };
     [System.NonSerialized] public string saveFile;
 
@@ -77,6 +78,8 @@ public class GameManager : MonoBehaviour
 
         oxygen = data.oxygen;
         totalOxygen = data.totalOxygen;
+
+        isInSpaceShip = data.isInSpaceShip;
     }
 
     public void SaveData()
@@ -107,7 +110,12 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(5);
         GetComponent<Animator>().SetTrigger("FadeOut");
         yield return new WaitForSeconds(3);
-        SceneManager.LoadScene(currentPlanet);
+        if(isInSpaceShip)
+            SceneManager.LoadScene("SpaceShip");
+        else
+        {
+            SceneManager.LoadScene(currentPlanet);
+        }
     }
 
     

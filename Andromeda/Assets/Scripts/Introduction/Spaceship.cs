@@ -166,7 +166,8 @@ public class Spaceship : MonoBehaviour
         yield return new WaitForSeconds(4);
         GameObject.Find("GameManager").GetComponent<GameManager>().currentPlanet = 2;
         GameObject.Find("GameManager").GetComponent<GameManager>().unlockedPlanets[1] = true;
+        GameObject.Find("GameManager").GetComponent<GameManager>().isInSpaceShip = true;
         GameObject.Find("GameManager").GetComponent<GameManager>().SaveData();
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene("SpaceShip");
     }
 }

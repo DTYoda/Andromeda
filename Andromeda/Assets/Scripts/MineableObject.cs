@@ -9,6 +9,8 @@ public class MineableObject : MonoBehaviour
     public float currentHealth;
     public int hardness;
     public string itemDrop;
+    public bool reverseSpread = false;
+    public float spreadStrength = 1;
 
     public GameObject explosionParticles;
 
@@ -49,7 +51,7 @@ public class MineableObject : MonoBehaviour
 
             for(int i = 0; i < Random.Range(1, 4); i++)
             {
-                Instantiate(drop, transform.position + 3 * transform.up, this.transform.rotation).GetComponent<Rigidbody>().AddRelativeForce(new Vector3(Random.Range(-100, 100), Random.Range(-100, 100), Random.Range(300, 700)));
+                Instantiate(drop, transform.position + 3 * (reverseSpread == false ? transform.up: -transform.up), this.transform.rotation).GetComponent<Rigidbody>().AddRelativeForce(new Vector3(Random.Range(-100 * spreadStrength, 100 * spreadStrength), Random.Range(-100 * spreadStrength, 100 * spreadStrength), Random.Range(300 * spreadStrength, 700 * spreadStrength)));
             }
 
             if(manager != null)
