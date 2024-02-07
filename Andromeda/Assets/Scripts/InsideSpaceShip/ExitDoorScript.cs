@@ -7,13 +7,12 @@ public class ExitDoorScript : MonoBehaviour
 {
 
     public GameObject textObject;
+    private bool isInside;
 
-    private void OnTriggerStay(Collider other)
+    private void Update()
     {
-        if(other.name == "Player")
+        if(isInside)
         {
-            textObject.SetActive(true);
-
             if (Input.GetKeyDown(KeyCode.E) && GameObject.Find("GameManager") != null)
             {
                 GameManager manager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -23,8 +22,18 @@ public class ExitDoorScript : MonoBehaviour
             textObject.transform.eulerAngles = Camera.main.transform.eulerAngles;
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.name == "Player")
+        {
+            textObject.SetActive(true);
+            isInside = true;
+        }
+    }
     private void OnTriggerExit(Collider other)
     {
         textObject.SetActive(false);
+        isInside = false;
     }
 }

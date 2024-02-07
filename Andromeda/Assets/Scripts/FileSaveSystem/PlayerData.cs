@@ -18,6 +18,8 @@ public class PlayerData
     public string destroyedObjets;
     public bool isInSpaceShip;
 
+    public int[] materialAmounts;
+
     public PlayerData(GameManager manager)
     {
         health = manager.health;
@@ -33,5 +35,7 @@ public class PlayerData
         location[0] = manager.playerLocation.x;
         location[1] = manager.playerLocation.y;
         location[2] = manager.playerLocation.z;
+
+        materialAmounts = manager.materialAmounts;
     }
 }

@@ -30,7 +30,8 @@ public class GameManager : MonoBehaviour
     private float autoSaveTimer = 10;
 
 
-    public Dictionary<string, int> materials = new Dictionary<string, int>();
+    public List<string> materialNames =  new List<string>() { "mushroom", "shadow mushroom", "wood", "shadow wood", "plum wood", "rock", "amethyst", "topaz", "saphire" };
+    public int[] materialAmounts = {                               0,             0,           0,          0,            0,         0,        0,        0,        0 };
 
     public static GameManager manager;
 
@@ -42,14 +43,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        materials.Add("wood", 0);
-        materials.Add("shadow wood", 0);
-        materials.Add("plum wood", 0);
-        materials.Add("rock", 0);
-        materials.Add("amethyst", 0);
-        materials.Add("topaz", 0);
-        materials.Add("saphire", 0);
-        materials.Add("mushroom", 0);
 
         
     }
@@ -80,6 +73,8 @@ public class GameManager : MonoBehaviour
         totalOxygen = data.totalOxygen;
 
         isInSpaceShip = data.isInSpaceShip;
+
+        materialAmounts = data.materialAmounts;
     }
 
     public void SaveData()
@@ -116,6 +111,16 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(currentPlanet);
         }
+    }
+
+    public void addItem(string item, int amount)
+    {
+        materialAmounts[materialNames.IndexOf(item)] += amount;
+    }
+
+    public int getItemAmount(string item)
+    {
+        return materialAmounts[materialNames.IndexOf(item)];
     }
 
     

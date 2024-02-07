@@ -219,7 +219,7 @@ public class PlayerArmController: MonoBehaviour
             obj.isLooking = true;
             if(Input.GetKeyDown(KeyCode.E))
             {
-                GameManager.manager.materials[obj.itemName]++;
+                GameManager.manager.addItem(obj.itemName, 1);
                 Destroy(obj.gameObject);
             }
         }
