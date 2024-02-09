@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [System.NonSerialized] public float jumpHeight = 5.0f;
     [System.NonSerialized] public bool canMultiJump = false;
     [System.NonSerialized] public float health = 100;
+    [System.NonSerialized] public float maxHealth = 100;
 
     //Settings
     public LayerMask groundMask;
@@ -33,6 +34,7 @@ public class PlayerController : MonoBehaviour
     private Transform groundCheck;
     private GameObject flashLight;
     private GameObject helmet;
+    private GameManager manager;
 
     //Input System
     public PlayerControls controls;
@@ -57,7 +59,27 @@ public class PlayerController : MonoBehaviour
         helmet = playerCamera.gameObject.transform.Find("Helmet").gameObject;
 
         if(GameObject.Find("GameManager") != null)
-            GameObject.Find("GameManager").GetComponent<Animator>().SetTrigger("FadeIn");
+        {
+            manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            manager.gameObject.GetComponent<Animator>().SetTrigger("FadeIn");
+            GetManagerData();
+        }
+    }
+
+    //Recieves initial data from the game manager
+    private void GetManagerData()
+    {
+        numberOfJumps = manager.multiJumpAmount;
+        canMultiJump = manager.canMultiJump;
+        jumpHeight = manager.jumpHeight;
+        health = manager.health;
+        maxHealth = manager.maxHealth;
+        speed = manager.walkSpeed;
+    }
+
+    private void SendManagerData()
+    {
+        manager.health = health;
     }
 
     //Called right before game starts
@@ -102,6 +124,12 @@ public class PlayerController : MonoBehaviour
     //Called once every frame
     void Update()
     {
+
+        if(Time.timeScale == 0)
+        {
+            GetComponent<AudioSource>().Stop();
+        }
+
         PlayerRotation();
 
         AnimateMovement();
@@ -113,6 +141,9 @@ public class PlayerController : MonoBehaviour
         LookingAt();
 
         FindHologramObject();
+
+        if(GameObject.Find("GameManager") != null)
+            SendManagerData();
 
     }
 

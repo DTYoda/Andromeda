@@ -10,11 +10,10 @@ public class PlayerArmController: MonoBehaviour
     [System.NonSerialized] public float maxArmFuel = 20;
 
     //Melee Stats
-    public int miningForce;
-    public int miningDamage;
+    public float miningForce;
+    public float miningDamage;
 
     //Ranged Stats
-    public int damage;
     public float attackSpeed = 1;
     private bool canShoot = true;
     public GameObject attackProjectile;
@@ -61,13 +60,14 @@ public class PlayerArmController: MonoBehaviour
             transform.position = manager.playerLocation;
         armFuel = manager.armFuel;
         maxArmFuel = manager.maxArmFuel;
+        miningDamage = manager.armDamage;
+        miningForce = manager.armStrength;
     }
 
     private void SendManagerData()
     {
         manager.playerLocation = this.transform.position;
         manager.armFuel = armFuel;
-        manager.maxArmFuel = maxArmFuel;
     }
 
     //When the input actions are enabled
@@ -166,7 +166,7 @@ public class PlayerArmController: MonoBehaviour
         else if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 2, attackMask))
         {
             AnimalInfoScript obj = hit.transform.gameObject.GetComponent<AnimalInfoScript>();
-            obj.currentHealth -= damage * Time.deltaTime;
+            obj.currentHealth -= miningDamage * Time.deltaTime;
             DrawRay(hit.point);
             mineParticles.transform.position = hit.point;
             mineParticles.SetActive(true);

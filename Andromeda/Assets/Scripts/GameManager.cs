@@ -21,10 +21,24 @@ public class GameManager : MonoBehaviour
     //ArmUpgrades
     [System.NonSerialized] public float armFuel = 20;
     [System.NonSerialized] public float maxArmFuel = 20;
+    [System.NonSerialized] public float armDamage = 20;
+    [System.NonSerialized] public float armStrength = 20;
 
     //HelmetUpgrades
     [System.NonSerialized] public float oxygen = 300;
     [System.NonSerialized] public float totalOxygen = 300;
+
+    //Boot Upgrades
+    [System.NonSerialized] public float jumpHeight = 5;
+    [System.NonSerialized] public float walkSpeed = 5;
+    [System.NonSerialized] public float multiJumpAmount = 0;
+    [System.NonSerialized] public bool canMultiJump = false;
+
+    //Armor Upgrades
+    [System.NonSerialized] public float maxHealth = 100;
+    [System.NonSerialized] public float healthRegen = 1;
+    [System.NonSerialized] public float defense = 0;
+
 
     public bool autoSaves = true;
     private float autoSaveTimer = 10;
@@ -113,9 +127,34 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void addItem(string item, int amount)
+    public bool addItem(string item, int amount)
     {
-        materialAmounts[materialNames.IndexOf(item)] += amount;
+        if (materialAmounts[materialNames.IndexOf(item)] + amount >= 0)
+        {
+            materialAmounts[materialNames.IndexOf(item)] += amount;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool addItems(string[] items, int[] amounts)
+    {
+        for(int i = 0; i < items.Length; i++)
+        {
+            if (materialAmounts[materialNames.IndexOf(items[i])] + amounts[i] < 0)
+            {
+                return false;
+            }
+        }
+
+        for (int i = 0; i < items.Length; i++)
+        {
+            materialAmounts[materialNames.IndexOf(items[i])] += amounts[i];
+        }
+        return true;
     }
 
     public int getItemAmount(string item)

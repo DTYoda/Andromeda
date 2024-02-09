@@ -9,6 +9,16 @@ public class UpgradeScript : MonoBehaviour
     public GameObject upgradeUI;
     public LayerMask mask;
 
+    private GameManager manager;
+
+    private void Start()
+    {
+        if(GameObject.Find("GameManager") != null)
+        {
+            manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        }
+    }
+
     private void Update()
     {
         textObject.transform.eulerAngles = Camera.main.transform.eulerAngles;
@@ -38,5 +48,56 @@ public class UpgradeScript : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         upgradeUI.SetActive(false);
+    }
+
+    public bool Upgrade(string[] materials, string[] amounts, string upgrade, float upgradeAmount)
+    {
+        int[] newAmounts = new int[amounts.Length];
+        for(int j = 0; j < amounts.Length; j++)
+        {
+            newAmounts[j] = int.Parse(amounts[j]);
+        }
+
+        if(GameObject.Find("GameManager") != null)
+        {
+            if(manager.addItems(materials, newAmounts))
+            {
+                switch(upgrade)
+                {
+                    case ("Jump Height"):
+                        manager.jumpHeight += upgradeAmount;
+                        break;
+                    case ("Walking Speed"):
+                        manager.walkSpeed += upgradeAmount;
+                        break;
+                    case ("MultiJump"):
+                        manager.multiJumpAmount += upgradeAmount;
+                        manager.canMultiJump = true;
+                        break;
+                    case ("Max Fuel"):
+                        manager.maxArmFuel += upgradeAmount;
+                        break;
+                    case ("Mining Strength"):
+                        manager.armStrength += upgradeAmount;
+                        break;
+                    case ("Damage"):
+                        manager.armDamage += upgradeAmount;
+                        break;
+                    case ("Max Health"):
+                        manager.maxHealth += upgradeAmount;
+                        break;
+                    case ("Health Regen"):
+                        manager.healthRegen += upgradeAmount;
+                        break;
+                    case ("Defense"):
+                        manager.defense += upgradeAmount;
+                        break;
+
+                }
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
 }
