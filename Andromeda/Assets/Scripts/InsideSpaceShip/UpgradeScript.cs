@@ -70,7 +70,7 @@ public class UpgradeScript : MonoBehaviour
                     case ("Walking Speed"):
                         manager.walkSpeed += upgradeAmount;
                         break;
-                    case ("MultiJump"):
+                    case ("Multi-Jump"):
                         manager.multiJumpAmount += upgradeAmount;
                         manager.canMultiJump = true;
                         break;
