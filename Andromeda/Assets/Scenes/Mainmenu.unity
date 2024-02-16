@@ -2959,6 +2959,17 @@ MonoBehaviour:
   - topaz
   - saphire
   materialAmounts: 000000000000000000000000000000000000000000000000000000000000000000000000
+  upgradeNames:
+  - Max Fuel
+  - Mining Strength
+  - Damage
+  - Jump Height
+  - Walking Speed
+  - Multi-Jump
+  - Max Health
+  - Health Regen
+  - Defense
+  upgradeLevels: 000000000000000000000000000000000000000000000000000000000000000000000000
 --- !u!95 &556388094
 Animator:
   serializedVersion: 5

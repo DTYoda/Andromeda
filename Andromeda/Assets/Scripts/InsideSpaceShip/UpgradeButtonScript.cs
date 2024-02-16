@@ -15,10 +15,19 @@ public class UpgradeButtonScript : MonoBehaviour
     //instantiated variables
     public UpgradeScript upgrader;
     private TMP_Text text = null;
+    private GameManager manager;
 
     private void Start()
     {
+        upgradeName = this.name;
+
         text = transform.GetChild(0).gameObject.GetComponent<TMP_Text>();
+
+        if(GameObject.Find("GameManager") != null)
+        {
+            manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            upgradeLevel = manager.getUpgradeLevel(upgradeName);
+        }
     }
 
     private void Update()
@@ -38,10 +47,18 @@ public class UpgradeButtonScript : MonoBehaviour
                 }
             }
 
-            for (int j = 0; j < upgradeItems[upgradeLevel].Split(" ").Length; j++)
+            if(upgradeLevel < upgradeItems.Length)
             {
-                text.text += "\n\t" + upgradeItemsAmounts[upgradeLevel].Split(" ")[j] + " " + upgradeItems[upgradeLevel].Split(" ")[j];
+                for (int j = 0; j < upgradeItems[upgradeLevel].Split(",").Length; j++)
+                {
+                    text.text += "\n\t" + upgradeItemsAmounts[upgradeLevel].Split(",")[j] + " " + upgradeItems[upgradeLevel].Split(",")[j];
+                }
             }
+            else
+            {
+                text.text += "\n\tMax Level";
+            }
+            
         }
         
     }
@@ -51,9 +68,13 @@ public class UpgradeButtonScript : MonoBehaviour
     {
         if(upgradeLevel < upgradeItems.Length)
         {
-            if (upgrader.Upgrade(upgradeItems[upgradeLevel].Split(" "), upgradeItemsAmounts[upgradeLevel].Split(), upgradeName, upgradeLevelAmounts[upgradeLevel]))
+            if (upgrader.Upgrade(upgradeItems[upgradeLevel].Split(","), upgradeItemsAmounts[upgradeLevel].Split(","), upgradeName, upgradeLevelAmounts[upgradeLevel]))
             {
                 upgradeLevel++;
+                if (GameObject.Find("GameManager") != null)
+                {
+                    manager.addUpgrade(upgradeName);
+                }
             }
         }
         

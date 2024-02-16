@@ -7117,10 +7117,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upgradeName: Jump Height
   upgradeItems:
-  - mushroom wood
+  - mushroom,wood
+  - shadow mushroom,shadow wood, amethyst
+  - mushroom,shadow mushroom,shadow wood,saphire
+  - plum wood
+  - plum wood,topaz,shadow wood
   upgradeItemsAmounts:
-  - -5 -2
+  - -5,-2
+  - -5,-2,-3
+  - -10,-5,-5,-5
+  - -10,
+  - -10,-10,-10
   upgradeLevelAmounts:
+  - 2
+  - 2
+  - 2
+  - 2
   - 2
   upgrader: {fileID: 1929588299}
 --- !u!1 &827416056

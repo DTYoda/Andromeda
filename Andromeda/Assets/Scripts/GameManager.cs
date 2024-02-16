@@ -1,22 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using System.IO;
 using UnityEngine.SceneManagement;
-using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
+    //non saved data
+    [System.NonSerialized] public string saveFile = "";
+    [System.NonSerialized] public GameObject player;
+    public bool autoSaves = true;
+    private float autoSaveTimer = 10;
+
     //saving data
     [System.NonSerialized] public float health = 100;
     [System.NonSerialized] public string destroyedObjects = "";
     [System.NonSerialized] public Vector3 playerLocation = Vector3.zero;
-    [System.NonSerialized] public GameObject player;
     [System.NonSerialized] public int currentPlanet = 1;
     [System.NonSerialized] public bool isInSpaceShip = false;
     [System.NonSerialized] public bool[] unlockedPlanets = { true, false };
-    [System.NonSerialized] public string saveFile;
 
     //ArmUpgrades
     [System.NonSerialized] public float armFuel = 20;
@@ -40,12 +42,13 @@ public class GameManager : MonoBehaviour
     [System.NonSerialized] public float defense = 0;
 
 
-    public bool autoSaves = true;
-    private float autoSaveTimer = 10;
-
-
+    //material and upgrade data
     public List<string> materialNames =  new List<string>() { "mushroom", "shadow mushroom", "wood", "shadow wood", "plum wood", "rock", "amethyst", "topaz", "saphire" };
     public int[] materialAmounts = {                               0,             0,           0,          0,            0,         0,        0,        0,        0 };
+
+    public List<string> upgradeNames = new List<string>() { "Max Fuel", "Mining Strength", "Damage", "Jump Height", "Walking Speed",   "Multi-Jump", "Max Health", "Health Regen", "Defense"};
+    public int[] upgradeLevels = {                               0,                 0,          0,           0,             0,              0,              0,          0,              0 };
+
 
     public static GameManager manager;
 
@@ -75,25 +78,45 @@ public class GameManager : MonoBehaviour
     {
         PlayerData data = SaveSystem.Load(saveFile);
 
+        //saving data
         health = data.health;
-        destroyedObjects = data.destroyedObjets;
-        playerLocation = new Vector3(data.location[0], data.location[1], data.location[2]);
         currentPlanet = data.currentPlanet;
         unlockedPlanets = data.unlockedPlanets;
+        destroyedObjects = data.destroyedObjects;
+        isInSpaceShip = data.isInSpaceShip;
+
+        playerLocation = new Vector3(data.playerLocation[0], data.playerLocation[1], data.playerLocation[2]);
+
+        //armupgrades
         armFuel = data.armFuel;
         maxArmFuel = data.maxArmFuel;
+        armDamage = data.armDamage;
+        armStrength = data.armStrength;
 
+        //helmet upgrades
         oxygen = data.oxygen;
         totalOxygen = data.totalOxygen;
 
-        isInSpaceShip = data.isInSpaceShip;
+        //boot upgrades
+        jumpHeight = data.jumpHeight;
+        walkSpeed = data.walkSpeed;
+        multiJumpAmount = data.multiJumpAmount;
+        canMultiJump = data.canMultiJump;
 
+        //armor upgrades
+        maxHealth = data.maxHealth;
+        healthRegen = data.healthRegen;
+        defense = data.defense;
+
+        //material and upgrade data
         materialAmounts = data.materialAmounts;
+        upgradeLevels = data.upgradeLevels;
     }
 
     public void SaveData()
     {
-        SaveSystem.Save(GetComponent<GameManager>(), saveFile);
+        if(saveFile != "")
+            SaveSystem.Save(this.gameObject.GetComponent<GameManager>(), saveFile);
     }
 
     public void StartGame()
@@ -162,6 +185,27 @@ public class GameManager : MonoBehaviour
         return materialAmounts[materialNames.IndexOf(item)];
     }
 
-    
+
+    public void addUpgrade(string upgrade)
+    {
+        if(upgradeNames.IndexOf(upgrade) != -1)
+        {
+            upgradeLevels[upgradeNames.IndexOf(upgrade)]++;
+        }
+    }
+
+    public int getUpgradeLevel(string upgrade)
+    {
+        if (upgradeNames.IndexOf(upgrade) != -1)
+        {
+            return upgradeLevels[upgradeNames.IndexOf(upgrade)];
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+
 
 }

@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public static class SaveSystem
 {
+    //Given a manager script and a file name, save the manager data to the file
     public static void Save(GameManager manager, string fileName)
     {
         BinaryFormatter formatter = new BinaryFormatter();
@@ -19,6 +20,8 @@ public static class SaveSystem
         stream.Close();
     }
 
+
+    //given a file name, take the data from the file location
     public static PlayerData Load(string fileName)
     {
         string path = Application.persistentDataPath + "/" + fileName + ".data";
