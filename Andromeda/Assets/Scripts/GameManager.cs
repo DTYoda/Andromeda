@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     [System.NonSerialized] public float armFuel = 20;
     [System.NonSerialized] public float maxArmFuel = 20;
     [System.NonSerialized] public float armDamage = 20;
-    [System.NonSerialized] public float armStrength = 20;
+    [System.NonSerialized] public float armStrength = 1;
 
     //HelmetUpgrades
     [System.NonSerialized] public float oxygen = 300;

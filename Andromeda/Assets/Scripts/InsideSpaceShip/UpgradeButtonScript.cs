@@ -10,12 +10,13 @@ public class UpgradeButtonScript : MonoBehaviour
     public string[] upgradeItems;
     public string[] upgradeItemsAmounts;
     public float[] upgradeLevelAmounts;
-    private int upgradeLevel = 0;
+    public int maxLevel = 5;
 
     //instantiated variables
     public UpgradeScript upgrader;
     private TMP_Text text = null;
     private GameManager manager;
+    private int upgradeLevel = 0;
 
     private void Start()
     {
@@ -35,7 +36,7 @@ public class UpgradeButtonScript : MonoBehaviour
         if(text  != null)
         {
             text.text = upgradeName;
-            for (int i = 1; i <= 5; i++)
+            for (int i = 1; i <= maxLevel; i++)
             {
                 if (i <= upgradeLevel)
                 {
