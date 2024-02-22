@@ -80,6 +80,17 @@ public class CraftingItemScript : MonoBehaviour
                             manager.addItem(item2, -1 * item2Amount);
                         }
                         break;
+                    case ("oxygen"):
+                        if(manager.oxygen + craftAmount <= manager.totalOxygen)
+                        {
+                            manager.oxygen += craftAmount;
+                        }
+                        else
+                        {
+                            manager.addItem(item1, -1 * item1Amount);
+                            manager.addItem(item2, -1 * item2Amount);
+                        }
+                        break;
                 }
             }
         }

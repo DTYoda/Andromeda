@@ -14,21 +14,23 @@ public class GameManager : MonoBehaviour
 
     //saving data
     [System.NonSerialized] public float health = 100;
-    [System.NonSerialized] public string destroyedObjects = "";
     [System.NonSerialized] public Vector3 playerLocation = Vector3.zero;
     [System.NonSerialized] public int currentPlanet = 1;
     [System.NonSerialized] public bool isInSpaceShip = false;
     [System.NonSerialized] public bool[] unlockedPlanets = { true, false };
 
+    //currently destroyed objects
+    public List<string> destroyed = new List<string>();
+
     //ArmUpgrades
-    [System.NonSerialized] public float armFuel = 20;
-    [System.NonSerialized] public float maxArmFuel = 20;
+    [System.NonSerialized] public float armFuel = 60;
+    [System.NonSerialized] public float maxArmFuel = 60;
     [System.NonSerialized] public float armDamage = 20;
-    [System.NonSerialized] public float armStrength = 1;
+    [System.NonSerialized] public float armStrength = 0;
 
     //HelmetUpgrades
-    [System.NonSerialized] public float oxygen = 300;
-    [System.NonSerialized] public float totalOxygen = 300;
+    [System.NonSerialized] public float oxygen = 600;
+    [System.NonSerialized] public float totalOxygen = 600;
 
     //Boot Upgrades
     [System.NonSerialized] public float jumpHeight = 5;
@@ -48,6 +50,13 @@ public class GameManager : MonoBehaviour
 
     public List<string> upgradeNames = new List<string>() { "Max Fuel", "Mining Strength", "Damage", "Jump Height", "Walking Speed",   "Multi-Jump", "Max Health", "Health Regen", "Defense"};
     public int[] upgradeLevels = {                               0,                 0,          0,           0,             0,              0,              0,          0,              0 };
+
+    //quest data
+    public List<string> completedQuests = new List<string>();
+    public string activeQuest = "Repair Quantum Receptor";
+    public float astroXP = 0;
+    public string[] atroLevelNames = { "civilian", "engineer", "pilot", "commandar", "specialist", "cosmonaut" };
+    public int atroLevel = 0;
 
 
     public static GameManager manager;
@@ -72,6 +81,10 @@ public class GameManager : MonoBehaviour
             autoSaveTimer = 10;
         }
         autoSaveTimer -= Time.deltaTime;
+        if(health < maxHealth)
+        {
+            health += healthRegen * Time.deltaTime;
+        }
     }
 
     public void LoadData()
@@ -82,10 +95,11 @@ public class GameManager : MonoBehaviour
         health = data.health;
         currentPlanet = data.currentPlanet;
         unlockedPlanets = data.unlockedPlanets;
-        destroyedObjects = data.destroyedObjects;
         isInSpaceShip = data.isInSpaceShip;
 
         playerLocation = new Vector3(data.playerLocation[0], data.playerLocation[1], data.playerLocation[2]);
+
+        destroyed = data.destroyed;
 
         //armupgrades
         armFuel = data.armFuel;
@@ -185,6 +199,17 @@ public class GameManager : MonoBehaviour
         return materialAmounts[materialNames.IndexOf(item)];
     }
 
+    public int[] getItemAmounts(string[] items)
+    {
+        int[] amounts = new int[items.Length];
+
+        for(int i = 0; i < amounts.Length; i++)
+        {
+            amounts[i] = materialAmounts[materialNames.IndexOf(items[i])];
+        }
+        return amounts;
+    }
+
 
     public void addUpgrade(string upgrade)
     {
@@ -205,7 +230,6 @@ public class GameManager : MonoBehaviour
             return 0;
         }
     }
-
 
 
 }

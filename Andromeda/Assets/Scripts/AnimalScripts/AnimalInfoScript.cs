@@ -20,6 +20,7 @@ public class AnimalInfoScript : MonoBehaviour
     {
         if(currentHealth <= 0)
         {
+            AnimalSpawner.Instance.spawnedAnimals.Remove(this.transform);
             Destroy(this.gameObject);
         }
     }

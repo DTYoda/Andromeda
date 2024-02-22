@@ -24,7 +24,6 @@ public class PlayerController : MonoBehaviour
     [System.NonSerialized] public bool grounded = false;
     private float currentJumps = 0;
     private Vector2 rotation = Vector2.zero;
-    float maxVelocityChange = 10.0f;
     bool helmetOn = true;
 
     //Initialzed objects
@@ -75,11 +74,6 @@ public class PlayerController : MonoBehaviour
         health = manager.health;
         maxHealth = manager.maxHealth;
         speed = manager.walkSpeed;
-    }
-
-    private void SendManagerData()
-    {
-        manager.health = health;
     }
 
     //Called right before game starts
@@ -143,7 +137,7 @@ public class PlayerController : MonoBehaviour
         FindHologramObject();
 
         if(GameObject.Find("GameManager") != null)
-            SendManagerData();
+            GetManagerData();
 
     }
 
@@ -152,24 +146,21 @@ public class PlayerController : MonoBehaviour
     public Vector3 targetVelocity = Vector3.zero;
     void FixedUpdate()
     {
-        if (true)
+        Vector3 forwardDir = Vector3.Cross(transform.up, -playerCamera.transform.right).normalized;
+        Vector3 rightDir = Vector3.Cross(transform.up, playerCamera.transform.forward).normalized;
+        if (grounded)
         {
-            // Calculate how fast we should be moving
-            Vector3 forwardDir = Vector3.Cross(transform.up, -playerCamera.transform.right).normalized;
-            Vector3 rightDir = Vector3.Cross(transform.up, playerCamera.transform.forward).normalized;
             targetVelocity = (forwardDir * Input.GetAxis("Vertical") + rightDir * Input.GetAxis("Horizontal")) * speed;
-
-            Vector3 velocity = transform.InverseTransformDirection(r.velocity);
-            velocity.y = 0;
-            velocity = transform.TransformDirection(velocity);
-            Vector3 velocityChange = transform.InverseTransformDirection(targetVelocity - velocity);
-            velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
-            velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
-            velocityChange.y = 0;
-            velocityChange = transform.TransformDirection(velocityChange);
-
-            r.AddForce(velocityChange, ForceMode.VelocityChange);
         }
+        else
+        {
+            targetVelocity += (forwardDir * Input.GetAxis("Vertical") + rightDir * Input.GetAxis("Horizontal")) * Time.deltaTime * 20;
+        }
+        if(targetVelocity.magnitude > speed)
+        {
+            targetVelocity = targetVelocity.normalized * speed;
+        }
+        r.MovePosition(transform.position + targetVelocity * Time.deltaTime);
 
 
     }

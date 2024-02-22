@@ -2932,6 +2932,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 676125801}
+  - {fileID: 1826111844}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2948,6 +2949,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoSaves: 0
+  destroyed: []
   materialNames:
   - mushroom
   - shadow mushroom
@@ -2970,6 +2972,17 @@ MonoBehaviour:
   - Health Regen
   - Defense
   upgradeLevels: 000000000000000000000000000000000000000000000000000000000000000000000000
+  completedQuests: []
+  activeQuest: Repair Quantum Receptor
+  astroXP: 0
+  atroLevelNames:
+  - participant
+  - engineer
+  - pilot
+  - commandar
+  - specialist
+  - cosmonaut
+  atroLevel: 0
 --- !u!95 &556388094
 Animator:
   serializedVersion: 5
@@ -9385,6 +9398,18 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8005314728888808689, guid: 67701b8458f8c40e59068e9131b9f0dd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 172.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 8005314728888808689, guid: 67701b8458f8c40e59068e9131b9f0dd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 63.46
+      objectReference: {fileID: 0}
+    - target: {fileID: 8005314728888808689, guid: 67701b8458f8c40e59068e9131b9f0dd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 214.56
+      objectReference: {fileID: 0}
     - target: {fileID: 8700725330082129686, guid: 67701b8458f8c40e59068e9131b9f0dd, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -12501,6 +12526,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1826111844 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1932492097429043087, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+  m_PrefabInstance: {fileID: 1948834001}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1855372254
 GameObject:
   m_ObjectHideFlags: 0
@@ -12973,6 +13003,139 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1948760572}
   m_CullTransparentMesh: 1
+--- !u!1001 &1948834001
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 556388092}
+    m_Modifications:
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: questName
+      value: Repair Quantum Receptor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: hasRewards
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: rewards.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: questSteps.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: stepAmounts.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: upgradeStep.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: questSteps.Array.data[0]
+      value: Gather 10 Mushroms
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: questSteps.Array.data[1]
+      value: Upgrade Gauntlet
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: questSteps.Array.data[2]
+      value: Mine 10 Wood & 10 Rock
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: questSteps.Array.data[3]
+      value: Repair Quantum Receptor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: stepAmounts.Array.data[0]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: stepAmounts.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: stepAmounts.Array.data[2]
+      value: 10,10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: upgradeStep.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: upgradeStep.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: stepRequirements.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: stepRequirements.Array.data[0]
+      value: mushroom
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: stepRequirements.Array.data[1]
+      value: Mining Strength
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492096728700298, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: stepRequirements.Array.data[2]
+      value: rock,wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492097429043086, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: m_Name
+      value: QuestManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492097429043087, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492097429043087, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492097429043087, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492097429043087, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492097429043087, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492097429043087, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492097429043087, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492097429043087, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492097429043087, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492097429043087, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932492097429043087, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b6c5a41ddd0f649bba2af3958733fa6e, type: 3}
 --- !u!1 &1949457666
 GameObject:
   m_ObjectHideFlags: 0

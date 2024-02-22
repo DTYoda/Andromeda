@@ -9,25 +9,26 @@ public class PlayerHelmetScript : MonoBehaviour
     [System.NonSerialized] public float oxygen = 300f;
 
     public GameObject healthBar;
-    public float totalHealth;
-    public float health;
+    [System.NonSerialized] public float totalHealth = 100f;
+    [System.NonSerialized] public float health = 100f;
 
     public GameObject fuelBar;
-    [System.NonSerialized] public float totalFuel;
-    [System.NonSerialized] public float fuel;
+    [System.NonSerialized] public float totalFuel = 40f;
+    [System.NonSerialized] public float fuel = 40f;
 
     private GameManager manager;
-    private PlayerArmController controller;
 
     private void Start()
     {
-        controller = GetComponentInParent<PlayerArmController>();
         
         if(GameObject.Find("GameManager") != null)
         {
             manager = GameObject.Find("GameManager").GetComponent<GameManager>();
-            totalOxygen = manager.totalOxygen;
-            oxygen = manager.oxygen;
+            
+            health = manager.health;
+            totalHealth = manager.maxHealth;
+            totalFuel = manager.maxArmFuel;
+            fuel = manager.armFuel;
         }
     }
 
@@ -36,17 +37,31 @@ public class PlayerHelmetScript : MonoBehaviour
 
         if (GameObject.Find("GameManager") != null)
         {
-            manager.totalOxygen = totalOxygen;
-            manager.oxygen = oxygen;
+            totalOxygen = manager.totalOxygen;
+            oxygen = manager.oxygen;
+            health = manager.health;
+            totalHealth = manager.maxHealth;
+            totalFuel = manager.maxArmFuel;
+            fuel =  manager.armFuel;
         }
+        if(GameObject.Find("GameManager") != null)
+        {
+            if (oxygen > 0)
+            {
+                manager.oxygen -= Time.deltaTime;
+            }
+            else
+            {
+                manager.health -= 5 * Time.deltaTime;
+            }
+        }
+        
+        
 
-        oxygen -= Time.deltaTime;
-
-        totalFuel = controller.maxArmFuel;
-        fuel = controller.armFuel;
+        
 
         oxygenBar.transform.localScale = new Vector3(oxygen / totalOxygen, 1f, 1f);
-        //healthBar.transform.localScale = new Vector3(health / totalHealth, 1f, 1f);
+        healthBar.transform.localScale = new Vector3(health / totalHealth, 1f, 1f);
         fuelBar.transform.localScale = new Vector3(fuel / totalFuel, 1f, 1f);
     }
 }

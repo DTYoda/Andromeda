@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8307108524936067520}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leg.B.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7092562787655250624}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8164757737895689311}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: tail.01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 128823237723926813}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: tail.02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9099773627905459297}
   - component: {fileID: 8559419522789089425}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mesh_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,7 +228,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3181546861847413592}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Rig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8457996737732378179}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leg.F.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -291,7 +291,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7454710193794926252}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -327,7 +327,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4503845524225728961}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leg.B.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -358,7 +358,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8675470960423771847}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leg.F.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -395,7 +395,8 @@ GameObject:
   - component: {fileID: 1051885246}
   - component: {fileID: 1051885243}
   - component: {fileID: 1051885245}
-  m_Layer: 0
+  - component: {fileID: 1879965898}
+  m_Layer: 9
   m_Name: Gecko
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -532,6 +533,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cac5548a23734334a5e8cc6d59736f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1879965898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6842458599697738422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3dea3230a2984faa93c11b515f5e728, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalHealth: 10
+  currentHealth: 10
+  animalName: gecko
+  animalDrop: skin
+  animalType: passive
 --- !u!1 &7657876676996022963
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,7 +560,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1252695205835448727}
   - component: {fileID: 5208326688331984742}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mesh_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -635,7 +653,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1575592959952839}
   - component: {fileID: 5606088340822068240}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mesh_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -728,7 +746,7 @@ GameObject:
   m_Component:
   - component: {fileID: 617223785673894842}
   - component: {fileID: 5871057117646395622}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mesh_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

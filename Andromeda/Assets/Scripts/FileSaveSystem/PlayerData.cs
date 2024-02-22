@@ -7,11 +7,11 @@ public class PlayerData
 {
     //saving data
     public float health;
-    public string destroyedObjects;
     public float[] playerLocation = new float[3];
     public int currentPlanet;
     public bool isInSpaceShip;
     public bool[] unlockedPlanets;
+    public List<string> destroyed;
 
     //ArmUpgrades
     public float armFuel;
@@ -44,12 +44,13 @@ public class PlayerData
         health = manager.health;
         currentPlanet = manager.currentPlanet;
         unlockedPlanets = manager.unlockedPlanets;
-        destroyedObjects = manager.destroyedObjects;
         isInSpaceShip = manager.isInSpaceShip;
 
         playerLocation[0] = manager.playerLocation.x;
         playerLocation[1] = manager.playerLocation.y;
         playerLocation[2] = manager.playerLocation.z;
+
+        destroyed = manager.destroyed;
 
         //armupgrades
         armFuel = manager.armFuel;
