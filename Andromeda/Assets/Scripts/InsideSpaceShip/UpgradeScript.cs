@@ -92,6 +92,8 @@ public class UpgradeScript : MonoBehaviour
                     case ("Defense"):
                         manager.defense += upgradeAmount;
                         break;
+                    default:
+                        break;
 
                 }
                 return true;

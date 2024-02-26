@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     [System.NonSerialized] public int currentPlanet = 1;
     [System.NonSerialized] public bool isInSpaceShip = false;
     [System.NonSerialized] public bool[] unlockedPlanets = { true, false };
+    [System.NonSerialized] public bool completedTutorial = false;
+
 
     //currently destroyed objects
     public List<string> destroyed = new List<string>();
@@ -48,8 +50,8 @@ public class GameManager : MonoBehaviour
     public List<string> materialNames =  new List<string>() { "mushroom", "shadow mushroom", "wood", "shadow wood", "plum wood", "rock", "amethyst", "topaz", "saphire" };
     public int[] materialAmounts = {                               0,             0,           0,          0,            0,         0,        0,        0,        0 };
 
-    public List<string> upgradeNames = new List<string>() { "Max Fuel", "Mining Strength", "Damage", "Jump Height", "Walking Speed",   "Multi-Jump", "Max Health", "Health Regen", "Defense"};
-    public int[] upgradeLevels = {                               0,                 0,          0,           0,             0,              0,              0,          0,              0 };
+    public List<string> upgradeNames = new List<string>() { "Max Fuel", "Mining Strength", "Damage", "Jump Height", "Walking Speed",   "Multi-Jump", "Max Health", "Health Regen", "Defense", "Jet Force", "Jet Fuel", "Upgrade Room", "Crafting Bench", "Journal", "Quantum Receptor"};
+    public int[] upgradeLevels = {                               0,                 0,          0,           0,             0,              0,              0,          0,              0,         0,           0,            0,                0,          0,              0 };
 
     //quest data
     public List<string> completedQuests = new List<string>();

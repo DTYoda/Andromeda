@@ -11,6 +11,7 @@ public class UpgradeButtonScript : MonoBehaviour
     public string[] upgradeItemsAmounts;
     public float[] upgradeLevelAmounts;
     public int maxLevel = 5;
+    public string[] rewards;
 
     //instantiated variables
     public UpgradeScript upgrader;
@@ -47,9 +48,10 @@ public class UpgradeButtonScript : MonoBehaviour
                     text.text += " □";
                 }
             }
-
+            
             if(upgradeLevel < upgradeItems.Length)
             {
+                text.text += "\n\t" + rewards[upgradeLevel];
                 for (int j = 0; j < upgradeItems[upgradeLevel].Split(",").Length; j++)
                 {
                     text.text += "\n\t" + upgradeItemsAmounts[upgradeLevel].Split(",")[j] + " " + upgradeItems[upgradeLevel].Split(",")[j];

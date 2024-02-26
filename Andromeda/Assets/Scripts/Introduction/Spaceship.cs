@@ -119,20 +119,18 @@ public class Spaceship : MonoBehaviour
     {
         if(other.CompareTag("astroid"))
         {
-            explosion.Play();
-            explosion.gameObject.GetComponent<AudioSource>().Play();
-            CameraShake.Instance.shake(1, 1);
-            rb.isKinematic = true;
-            rb.velocity = Vector3.zero;
-            this.GetComponent<MeshRenderer>().enabled = false;
+            StartCoroutine(Die());
         } 
     }
 
     private void OnTriggerExit(Collider other)
     {
-        escaped = true;
-        center.SetActive(true);
-        currentQuest = 1;
+        if (!other.CompareTag("astroid"))
+        {
+            escaped = true;
+            center.SetActive(true);
+            currentQuest = 1;
+        }
     }
 
     public bool CheckVisibility()
@@ -166,8 +164,20 @@ public class Spaceship : MonoBehaviour
         yield return new WaitForSeconds(4);
         GameObject.Find("GameManager").GetComponent<GameManager>().currentPlanet = 2;
         GameObject.Find("GameManager").GetComponent<GameManager>().unlockedPlanets[1] = true;
-        GameObject.Find("GameManager").GetComponent<GameManager>().isInSpaceShip = true;
+        GameObject.Find("GameManager").GetComponent<GameManager>().isInSpaceShip = false;
         GameObject.Find("GameManager").GetComponent<GameManager>().SaveData();
-        SceneManager.LoadScene("SpaceShip");
+        SceneManager.LoadScene("Planet1");
+    }
+
+    IEnumerator Die()
+    {
+        explosion.Play();
+        explosion.gameObject.GetComponent<AudioSource>().Play();
+        CameraShake.Instance.shake(1, 1);
+        rb.isKinematic = true;
+        rb.velocity = Vector3.zero;
+        this.GetComponent<MeshRenderer>().enabled = false;
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
