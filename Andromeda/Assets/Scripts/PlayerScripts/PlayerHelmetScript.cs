@@ -16,6 +16,10 @@ public class PlayerHelmetScript : MonoBehaviour
     [System.NonSerialized] public float totalFuel = 40f;
     [System.NonSerialized] public float fuel = 40f;
 
+    //Inventory variables
+    public GameObject inventory;
+    private bool inventoryOpen = false;
+
     private GameManager manager;
 
     private void Start()
@@ -44,16 +48,12 @@ public class PlayerHelmetScript : MonoBehaviour
             totalFuel = manager.maxArmFuel;
             fuel =  manager.armFuel;
         }
-        if(GameObject.Find("GameManager") != null)
+
+        if(Input.GetKeyDown(KeyCode.I))
         {
-            if (oxygen > 0)
-            {
-                manager.oxygen -= Time.deltaTime;
-            }
-            else
-            {
-                manager.health -= 5 * Time.deltaTime;
-            }
+            inventoryOpen = !inventoryOpen;
+            inventory.GetComponent<Animator>().SetBool("isOpen", inventoryOpen);
+            healthBar.transform.parent.gameObject.GetComponent<Animator>().SetBool("isOpen", inventoryOpen); 
         }
         
         

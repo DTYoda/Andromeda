@@ -5,12 +5,18 @@ using TMPro;
 
 public class questScript : MonoBehaviour
 {
-    //input these values
+    //Description Variables
     public string questName;
+    public string questDescription;
+    public string questSender;
+    public string questPlanet;
+
+    //Quest Information
     public string[] questSteps;
     public string[] stepRequirements;
     public string[] stepAmounts;
     public bool[] upgradeStep;
+    public bool[] craftingStep;
     public string[] rewards;
     public bool hasRewards;
     public int[] rewardAmounts;
@@ -18,9 +24,8 @@ public class questScript : MonoBehaviour
     public bool completedQuest;
 
 
-    //used values
+    //helper variables
     private bool isActive;
-    private int currentStep = 0;
     private bool startedStep;
     private int[] currentValues;
     private string[] newStepMaterials;
@@ -40,14 +45,14 @@ public class questScript : MonoBehaviour
     private void Update()
     {
         isActive = manager.activeQuest == questName;
-        if (GameObject.Find("QuestBox") != null && isActive)
+        if (GameObject.Find("QuestBox") != null && isActive && !completedQuest)
         {
 
             GameObject.Find("QuestTitle").GetComponent<TMP_Text>().text = questName;
             string questInfo = "";
             for (int i = 0; i < questSteps.Length; i++)
             {
-                if (currentStep > i)
+                if (manager.activeQuestStep > i)
                 {
                     questInfo += "■" + questSteps[i] + "\n";
                 }
@@ -57,58 +62,65 @@ public class questScript : MonoBehaviour
                 }
             }
             GameObject.Find("QuestInfo").GetComponent<TMP_Text>().text = questInfo;
-
-            string rewardsInfo = "";
-
-            rewardsInfo += "+" + xpAmount + " XP\n";
-            for(int i = 0; i < rewards.Length; i++)
-            {
-                rewardsInfo += "+" + rewardAmounts[i] + " " + rewards[i] + "\n";
-            }
-            GameObject.Find("RewardsInfo").GetComponent<TMP_Text>().text = rewardsInfo;
         }
-        if (isActive && currentStep < stepRequirements.Length && !completedQuest && manager.saveFile != "")
+        if (isActive && manager.activeQuestStep < stepRequirements.Length && !completedQuest && manager.saveFile != "")
         {
-            if(upgradeStep[currentStep])
+            if(upgradeStep[manager.activeQuestStep])
             {
                 if (!startedStep)
                 {
                     startedStep = true;
                 }
-                else if (manager.getUpgradeLevel(stepRequirements[currentStep]) >= int.Parse(stepAmounts[currentStep]))
+                else if (manager.getUpgradeLevel(stepRequirements[manager.activeQuestStep]) >= int.Parse(stepAmounts[manager.activeQuestStep]))
                 {
                     startedStep = false;
-                    currentStep++;
+                    manager.activeQuestStep++;
+                }
+            }
+
+            else if(craftingStep[manager.activeQuestStep])
+            {
+                if(!startedStep)
+                {
+                    currentValues = new int[] { manager.getCraftAmount(stepRequirements[manager.activeQuestStep]) };
+                    startedStep = true;
+                }
+                else
+                {
+                    if(manager.getCraftAmount(stepRequirements[manager.activeQuestStep]) == currentValues[0] + 1)
+                    {
+                        manager.activeQuestStep++;
+                        startedStep = false;
+                    }
                 }
             }
             else
             {
                 if(!startedStep)
                 {
-                    newStepMaterials = stepRequirements[currentStep].Split(",");
+                    newStepMaterials = stepRequirements[manager.activeQuestStep].Split(",");
                     newStepAmounts = new int[newStepMaterials.Length];
-                    string[] i = stepAmounts[currentStep].Split(",");
+                    string[] i = stepAmounts[manager.activeQuestStep].Split(",");
                     for (int j = 0; j < newStepMaterials.Length; j++)
                     {
                         newStepAmounts[j] = int.Parse(i[j]);
                     }
 
-                    currentValues = manager.getItemAmounts(newStepMaterials);
                     startedStep = true;
                 }
                 else
                 {
-                    for(int j = 0; j < currentValues.Length; j++)
+                    for(int j = 0; j < newStepAmounts.Length; j++)
                     {
-                        if(currentValues[j] + newStepAmounts[j] > manager.getItemAmount(newStepMaterials[j]))
+                        if(newStepAmounts[j] > manager.getItemAmount(newStepMaterials[j]))
                         {
                             break;
                         }
                         else
                         {
-                            if(j == currentValues.Length - 1)
+                            if(j == newStepAmounts.Length - 1)
                             {
-                                currentStep++;
+                                manager.activeQuestStep++;
                                 startedStep = false;
                             }
                         }
@@ -116,10 +128,11 @@ public class questScript : MonoBehaviour
                 }
             }
         }
-        else if(isActive && GameObject.Find("GameManager") != null && currentStep == stepAmounts.Length && !completedQuest)
+        else if(isActive && GameObject.Find("GameManager") != null && manager.activeQuestStep == stepAmounts.Length && !completedQuest)
         {
             completedQuest = true;
-            if(hasRewards)
+            manager.activeQuestStep = 0;
+            if (hasRewards)
                 manager.addItems(rewards, rewardAmounts);
             manager.astroXP += xpAmount;
             manager.completedQuests.Add(questName);
@@ -129,8 +142,21 @@ public class questScript : MonoBehaviour
 
     IEnumerator CompleteQuestAnimation()
     {
-        GameObject.Find("QuestBox").GetComponent<Animator>().SetTrigger("QuestComplete");
-        yield return new WaitForSecondsRealtime(5);
+        if(GameObject.Find("QuestBox") != null)
+            GameObject.Find("QuestBox").GetComponent<Animator>().SetTrigger("QuestComplete");
+        yield return new WaitForSecondsRealtime(2f);
+        
+        //set rewards
+        string rewardsInfo = "";
+        rewardsInfo += "+" + xpAmount + " XP\n";
+        for (int i = 0; i < rewards.Length; i++)
+        {
+            rewardsInfo += "+" + rewardAmounts[i] + " " + rewards[i] + "\n";
+        }
+        GameObject.Find("RewardsInfo").GetComponent<TMP_Text>().text = rewardsInfo;
+
+        yield return new WaitForSecondsRealtime(3f);
+        manager.completedQuests.Add(questName);
         manager.activeQuest = "";
     }
 

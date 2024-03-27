@@ -28,11 +28,11 @@ public class AnimalSpawner : MonoBehaviour
 
     private void Update()
     {
-        if(!isSpawningPassive)
+        if(!isSpawningPassive && !(PlayerPrefs.GetInt("performanceMode") == 1 && player.transform.position.x < 0))
         {
             StartCoroutine(SpawnPassive());
         }
-        if(!isSpawningAggressive)
+        if(!isSpawningAggressive && !(PlayerPrefs.GetInt("performanceMode") == 1 && player.transform.position.x > 0))
         {
             StartCoroutine(SpawnHostile());
         }
@@ -48,7 +48,7 @@ public class AnimalSpawner : MonoBehaviour
             if (spawnLocation.x >= 0)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(spawnLocation, Vector3.zero - spawnLocation, out hit, 80, spawnmask) && maxAnimalCount > spawnedAnimals.Count)
+                if (Physics.Raycast(spawnLocation, Vector3.zero - spawnLocation, out hit, 80, spawnmask) && (maxAnimalCount / (PlayerPrefs.GetInt("performaceMode") == 1 ? 2 : 1)) > spawnedAnimals.Count)
                 {
                     spawnedAnimals.Add(Instantiate(passiveAnimals[Random.Range(0, passiveAnimals.Length)], hit.point, this.transform.rotation, this.transform).transform);
                 }
@@ -75,6 +75,7 @@ public class AnimalSpawner : MonoBehaviour
 
         }
         yield return new WaitForSeconds(aggressiveSpawnDelay / (player.transform.position.x < 0 ? 4 : 1) );
+
         isSpawningAggressive = false;
     }
 }

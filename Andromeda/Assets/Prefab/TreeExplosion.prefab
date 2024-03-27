@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1310534515207199361}
   - component: {fileID: 1310534515207199362}
   - component: {fileID: 1310534515207199363}
+  - component: {fileID: 3261723629574813646}
   m_Layer: 0
   m_Name: TreeExplosion
   m_TagString: Untagged
@@ -4881,7 +4882,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: f5f63d4e45016468c9c693090b55adf3, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 433e15bfdefdd46d1bf2034e0f3bdf18, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.6
   m_Pitch: 0.8
@@ -4967,3 +4968,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3261723629574813646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310534515207199485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4c51d521e86444939f35a510672f611, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSoundEffect: 1
+  isMusic: 0

@@ -70,26 +70,12 @@ public class CraftingItemScript : MonoBehaviour
                 switch (craftItem)
                 {
                     case ("Gauntlet Fuel"):
-                        if(manager.armFuel + craftAmount <= manager.maxArmFuel)
-                        {
-                            manager.armFuel += craftAmount;
-                        }
-                        else
-                        {
-                            manager.addItem(item1, -1 * item1Amount);
-                            manager.addItem(item2, -1 * item2Amount);
-                        }
+                        manager.armFuel += craftAmount;
+                        manager.addCraft(craftItem);
                         break;
                     case ("oxygen"):
-                        if(manager.oxygen + craftAmount <= manager.totalOxygen)
-                        {
-                            manager.oxygen += craftAmount;
-                        }
-                        else
-                        {
-                            manager.addItem(item1, -1 * item1Amount);
-                            manager.addItem(item2, -1 * item2Amount);
-                        }
+                        manager.oxygen += craftAmount;
+                        manager.addCraft(craftItem);
                         break;
                 }
             }

@@ -45,10 +45,16 @@ public class SaveFile : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        transform.parent.localScale *= 1.2f;
+        if(!DeleteMode)
+            transform.parent.localScale *= 1.2f;
+        else
+            transform.localScale *= 1.2f;
     }
     private void OnMouseExit()
     {
-        transform.parent.localScale /= 1.2f;
+        if (!DeleteMode)
+            transform.parent.localScale /= 1.2f;
+        else
+            transform.localScale /= 1.2f;
     }
 }

@@ -39,7 +39,7 @@ public class CameraShake : MonoBehaviour
     private void Update()
     {
         CinemachineBasicMultiChannelPerlin perlin = cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-        if(fade)
+        if (fade)
             perlin.m_AmplitudeGain -= perlin.m_AmplitudeGain * Time.deltaTime;
         
         if (shakeTimer <= 0f)
@@ -50,12 +50,14 @@ public class CameraShake : MonoBehaviour
             {
                 Camera.main.gameObject.transform.localPosition = originalPosition;
             }
+            GetComponent<CinemachineBrain>().enabled = false;
+            
         }
         else
         {
             shakeTimer -= Time.deltaTime;
+            GetComponent<CinemachineBrain>().enabled = true;
         }
-
-        
+        cam.m_Lens.FieldOfView = Camera.main.fieldOfView;
     }
 }

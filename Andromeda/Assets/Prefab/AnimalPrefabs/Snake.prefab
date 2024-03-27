@@ -604,7 +604,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRange: 10
-  speed: 2
+  speed: 1.5
   damage: 10
   knockBack: 5
 --- !u!114 &883225912
@@ -619,11 +619,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3dea3230a2984faa93c11b515f5e728, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalHealth: 40
-  currentHealth: 40
+  totalHealth: 10
+  currentHealth: 10
   animalName: snake
   animalDrop: scales
   animalType: aggressive
+  explosionParticles: {fileID: 1310534515207199485, guid: 17df1b8144adb436f81a54c8f2fcd18c, type: 3}
 --- !u!114 &883225915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -639,8 +640,6 @@ MonoBehaviour:
   alignToPlanet: 1
   useGravity: 1
   gravityConstant: 9.8
-  hologram: {fileID: 0}
-  useHologram: 0
 --- !u!1 &5062559287153234616
 GameObject:
   m_ObjectHideFlags: 0

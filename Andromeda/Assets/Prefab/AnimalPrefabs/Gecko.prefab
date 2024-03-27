@@ -519,8 +519,6 @@ MonoBehaviour:
   alignToPlanet: 1
   useGravity: 1
   gravityConstant: 9.8
-  hologram: {fileID: 0}
-  useHologram: 0
 --- !u!114 &1051885245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -533,6 +531,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cac5548a23734334a5e8cc6d59736f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  getsScared: 1
+  speed: 2
 --- !u!114 &1879965898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -550,6 +550,7 @@ MonoBehaviour:
   animalName: gecko
   animalDrop: skin
   animalType: passive
+  explosionParticles: {fileID: 1310534515207199485, guid: 17df1b8144adb436f81a54c8f2fcd18c, type: 3}
 --- !u!1 &7657876676996022963
 GameObject:
   m_ObjectHideFlags: 0

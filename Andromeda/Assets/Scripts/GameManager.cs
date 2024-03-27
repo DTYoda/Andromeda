@@ -9,8 +9,8 @@ public class GameManager : MonoBehaviour
     //non saved data
     [System.NonSerialized] public string saveFile = "";
     [System.NonSerialized] public GameObject player;
-    public bool autoSaves = true;
-    private float autoSaveTimer = 10;
+    [System.NonSerialized] public bool autoSaves = true;
+    [System.NonSerialized] private float autoSaveTimer = 10;
 
     //saving data
     [System.NonSerialized] public float health = 100;
@@ -22,17 +22,17 @@ public class GameManager : MonoBehaviour
 
 
     //currently destroyed objects
-    public List<string> destroyed = new List<string>();
+    [System.NonSerialized] public List<string> destroyed = new List<string>();
 
     //ArmUpgrades
     [System.NonSerialized] public float armFuel = 60;
     [System.NonSerialized] public float maxArmFuel = 60;
-    [System.NonSerialized] public float armDamage = 20;
+    [System.NonSerialized] public float armDamage = 10;
     [System.NonSerialized] public float armStrength = 0;
 
     //HelmetUpgrades
-    [System.NonSerialized] public float oxygen = 600;
-    [System.NonSerialized] public float totalOxygen = 600;
+    [System.NonSerialized] public float oxygen = 400;
+    [System.NonSerialized] public float totalOxygen = 400;
 
     //Boot Upgrades
     [System.NonSerialized] public float jumpHeight = 5;
@@ -47,18 +47,23 @@ public class GameManager : MonoBehaviour
 
 
     //material and upgrade data
-    public List<string> materialNames =  new List<string>() { "mushroom", "shadow mushroom", "wood", "shadow wood", "plum wood", "rock", "amethyst", "topaz", "saphire" };
-    public int[] materialAmounts = {                               0,             0,           0,          0,            0,         0,        0,        0,        0 };
+    [System.NonSerialized] public List<string> materialNames =  new List<string>() { "mushroom", "shadow mushroom", "wood", "shadow wood", "plum wood", "rock", "amethyst", "topaz", "saphire" };
+    [System.NonSerialized] public int[] materialAmounts = {                               0,             0,           0,          0,            0,         0,        0,        0,        0 };
 
-    public List<string> upgradeNames = new List<string>() { "Max Fuel", "Mining Strength", "Damage", "Jump Height", "Walking Speed",   "Multi-Jump", "Max Health", "Health Regen", "Defense", "Jet Force", "Jet Fuel", "Upgrade Room", "Crafting Bench", "Journal", "Quantum Receptor"};
-    public int[] upgradeLevels = {                               0,                 0,          0,           0,             0,              0,              0,          0,              0,         0,           0,            0,                0,          0,              0 };
+    [System.NonSerialized] public List<string> upgradeNames = new List<string>() { "Max Fuel", "Mining Strength", "Damage", "Jump Height", "Walking Speed",   "Multi-Jump", "Max Health", "Health Regen", "Defense", "Jet Force", "Jet Fuel", "Upgrade Room", "Crafting Bench", "Journal", "Quantum Receptor" };
+    [System.NonSerialized] public int[] upgradeLevels = {                               0,                 0,          0,           0,             0,              0,              0,          0,              0,         0,           0,            0,                0,          0,              0 };
+
+    [System.NonSerialized] public List<string> craftNames = new List<string>() { "oxygen", "Gauntlet Fuel" };
+    [System.NonSerialized] public int[] timesCrafted = { 0, 0 };
 
     //quest data
-    public List<string> completedQuests = new List<string>();
-    public string activeQuest = "Repair Quantum Receptor";
-    public float astroXP = 0;
-    public string[] atroLevelNames = { "civilian", "engineer", "pilot", "commandar", "specialist", "cosmonaut" };
-    public int atroLevel = 0;
+    [System.NonSerialized] public List<string> completedQuests = new List<string>();
+    [System.NonSerialized] public List<string> QRQuests = new List<string>() { "Surviving 101" };
+    [System.NonSerialized] public string activeQuest = "Repair Quantum Receptor";
+    [System.NonSerialized] public int activeQuestStep = 0;
+    [System.NonSerialized] public float astroXP = 0;
+    [System.NonSerialized] public string[] atroLevelNames = { "civilian", "engineer", "pilot", "commandar", "specialist", "cosmonaut" };
+    [System.NonSerialized] public int astroLevel = 0;
 
 
     public static GameManager manager;
@@ -79,14 +84,56 @@ public class GameManager : MonoBehaviour
     {
         if(autoSaveTimer <= 0)
         {
-            SaveData();
+            if(autoSaves)
+                SaveData();
             autoSaveTimer = 10;
+            if(Random.Range(0, 2) == 0)
+            {
+                PickRandomQuest();
+            }
         }
         autoSaveTimer -= Time.deltaTime;
+
+        //regeneration
         if(health < maxHealth)
         {
             health += healthRegen * Time.deltaTime;
         }
+        if(armFuel < maxArmFuel)
+        {
+            armFuel += Time.deltaTime / 10.0f;
+        }
+
+        if(!isInSpaceShip)
+        {
+            if(oxygen > 0)
+            {
+                oxygen -= Time.deltaTime;
+            }
+            else
+            {
+                health -= 3 * Time.deltaTime;
+            }
+        }
+        else
+        {
+            oxygen += Time.deltaTime / 3.0f;
+        }
+
+        //setting maximums
+        if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
+        if(armFuel > maxArmFuel)
+        {
+            armFuel = maxArmFuel;
+        }
+        if(oxygen > totalOxygen)
+        {
+            oxygen = totalOxygen;
+        }
+
     }
 
     public void LoadData()
@@ -102,6 +149,7 @@ public class GameManager : MonoBehaviour
         playerLocation = new Vector3(data.playerLocation[0], data.playerLocation[1], data.playerLocation[2]);
 
         destroyed = data.destroyed;
+        completedTutorial = data.completedTutorial;
 
         //armupgrades
         armFuel = data.armFuel;
@@ -127,6 +175,14 @@ public class GameManager : MonoBehaviour
         //material and upgrade data
         materialAmounts = data.materialAmounts;
         upgradeLevels = data.upgradeLevels;
+
+        //quests data
+        completedQuests = data.completedQuests;
+        QRQuests = data.QRQuests;
+        activeQuest = data.activeQuest;
+        activeQuestStep = data.activeQuestStep;
+        astroXP = data.astroXP;
+        astroLevel = data.astroLevel;
     }
 
     public void SaveData()
@@ -140,6 +196,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(Begin());
     }
 
+    //call to start the game
     public IEnumerator Begin()
     {
         CameraShake.Instance.shake(5, 8);
@@ -166,6 +223,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //Call to add an item to the player's inventory
     public bool addItem(string item, int amount)
     {
         if (materialAmounts[materialNames.IndexOf(item)] + amount >= 0)
@@ -179,6 +237,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //Call to add multiple items to the player's inventory
     public bool addItems(string[] items, int[] amounts)
     {
         for(int i = 0; i < items.Length; i++)
@@ -196,11 +255,13 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
+    //Call to recieve the number of a certain item the player has
     public int getItemAmount(string item)
     {
         return materialAmounts[materialNames.IndexOf(item)];
     }
 
+    //call to receive the number of multiple items the player has
     public int[] getItemAmounts(string[] items)
     {
         int[] amounts = new int[items.Length];
@@ -212,7 +273,7 @@ public class GameManager : MonoBehaviour
         return amounts;
     }
 
-
+    //Call to increase the value of a player's upgrade
     public void addUpgrade(string upgrade)
     {
         if(upgradeNames.IndexOf(upgrade) != -1)
@@ -221,6 +282,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //call to recieve the value of a player's upgrade
     public int getUpgradeLevel(string upgrade)
     {
         if (upgradeNames.IndexOf(upgrade) != -1)
@@ -233,5 +295,31 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //call to increase the times a certain craft has been crafted
+    public void addCraft(string craft)
+    {
+        timesCrafted[craftNames.IndexOf(craft)]++;
+    }
+
+    //Call to recieve the number a certain item has been crafted
+    public int getCraftAmount(string craft)
+    {
+        return timesCrafted[craftNames.IndexOf(craft)];
+    }
+
+    private void PickRandomQuest()
+    {
+        questScript quest;
+
+        for(int i = 0; i < transform.Find("QuestManager").childCount; i++)
+        {
+            quest = transform.Find("QuestManager").GetChild(Random.Range(1, transform.Find("QuestManager").childCount)).gameObject.GetComponent<questScript>();
+            if(!QRQuests.Contains(quest.questName))
+            {
+                QRQuests.Add(quest.questName);
+                break;
+            }
+        }   
+    }
 
 }

@@ -9,6 +9,8 @@ public class AnimalInfoScript : MonoBehaviour
     public string animalName;
     public string animalDrop;
     public string animalType;
+
+    public GameObject explosionParticles;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +23,11 @@ public class AnimalInfoScript : MonoBehaviour
         if(currentHealth <= 0)
         {
             AnimalSpawner.Instance.spawnedAnimals.Remove(this.transform);
+            GameObject particles = Instantiate(explosionParticles, this.transform.position, this.transform.rotation);
+            particles.GetComponent<AudioSource>().pitch = Random.Range(0.8f, 1.2f);
+            particles.GetComponent<AudioSource>().volume /= 2;
+            particles.GetComponent<AudioSource>().Play();
+            CameraShake.Instance.shake(0.2f, 1.5f);
             Destroy(this.gameObject);
         }
     }

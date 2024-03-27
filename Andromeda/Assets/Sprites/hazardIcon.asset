@@ -21,7 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 0d9071c19682b4b23bde5518608bcf7d, type: 3}
+        m_Texture: {fileID: 2800000, guid: f0056118b80cd4545a8215fa7ce16991, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84a92b25f83d49b9bc132d206b370281, type: 3}
-  m_Name: icons8-f-key-50
+  m_Name: hazardIcon
   m_EditorClassIdentifier: 
   hashCode: 634795193
   material: {fileID: -7591129986362562015}
@@ -76,7 +76,7 @@ MonoBehaviour:
     m_StrikethroughOffset: 0
     m_StrikethroughThickness: 0
     m_TabWidth: 0
-  spriteSheet: {fileID: 2800000, guid: 0d9071c19682b4b23bde5518608bcf7d, type: 3}
+  spriteSheet: {fileID: 2800000, guid: f0056118b80cd4545a8215fa7ce16991, type: 3}
   m_SpriteCharacterTable:
   - m_ElementType: 2
     m_Unicode: 65534
@@ -84,6 +84,12 @@ MonoBehaviour:
     m_Scale: 1
     m_Name: icons8-f-key-50
     m_HashCode: 634795193
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 1
+    m_Scale: 1
+    m_Name: hazard-sign
+    m_HashCode: 106467450
   m_SpriteGlyphTable:
   - m_Index: 0
     m_Metrics:
@@ -101,5 +107,21 @@ MonoBehaviour:
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: 21300000, guid: 0d9071c19682b4b23bde5518608bcf7d, type: 3}
+  - m_Index: 1
+    m_Metrics:
+      m_Width: 1032.26
+      m_Height: 1432.7
+      m_HorizontalBearingX: -88.9
+      m_HorizontalBearingY: 1258.8
+      m_HorizontalAdvance: 1024
+    m_GlyphRect:
+      m_X: 0
+      m_Y: 0
+      m_Width: 1024
+      m_Height: 1024
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: 21300000, guid: f0056118b80cd4545a8215fa7ce16991, type: 3}
   spriteInfoList: []
   fallbackSpriteAssets: []

@@ -50,10 +50,15 @@ public class MineableObject : MonoBehaviour
             GameObject particles = Instantiate(explosionParticles, this.transform.position, this.transform.rotation);
             particles.GetComponent<AudioSource>().pitch = Random.Range(0.8f, 1.2f);
             particles.GetComponent<AudioSource>().Play();
-            CameraShake.Instance.shake(0.4f, 1.5f);
-            for (int i = 0; i < Random.Range(1, 4); i++)
+            CameraShake.Instance.shake(0.5f, 1.5f);
+            for (int i = 0; i < Random.Range(2, 5); i++)
             {
-                Instantiate(drop, transform.position + 3 * (reverseSpread == false ? transform.up : -transform.up), this.transform.rotation).GetComponent<Rigidbody>().AddRelativeForce(new Vector3(Random.Range(-100 * spreadStrength, 100 * spreadStrength), Random.Range(-100 * spreadStrength, 100 * spreadStrength), Random.Range(300 * spreadStrength, 700 * spreadStrength)));
+                Rigidbody dropRB = Instantiate(drop, this.transform.position + Random.Range(1.0f, 3.0f) * (this.transform.position - GameObject.Find("planet"). transform.position).normalized, this.transform.rotation).GetComponent<Rigidbody>();
+                Vector3 forceRight = (Random.Range(-100, 100) * transform.right);
+                Vector3 forceForward = (Random.Range(100, 300) * (this.transform.position - GameObject.Find("planet").transform.position).normalized);
+                Vector3 forceUp = (Random.Range(-100, 100) * transform.up);
+                dropRB.AddForce(forceRight + forceUp + forceForward);
+                dropRB.AddTorque(forceRight * 3 + forceUp * 3 + forceForward);
             }
             if (manager != null)
             {

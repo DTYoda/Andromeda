@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,12 +25,13 @@ public class PlayerController : MonoBehaviour
     [System.NonSerialized] public bool grounded = false;
     private float currentJumps = 0;
     private Vector2 rotation = Vector2.zero;
-    bool helmetOn = true;
+    bool helmetOn = false;
 
     //Initialzed objects
     private Animator anim;
     private Rigidbody r;
     private Camera playerCamera;
+    //public CinemachineVirtualCamera playerCamera;
     private Transform groundCheck;
     private GameObject flashLight;
     private GameObject helmet;
@@ -53,9 +55,9 @@ public class PlayerController : MonoBehaviour
     {
         anim = gameObject.GetComponentInChildren<Animator>();
         groundCheck = transform.Find("GroundCheck");
+        flashLight = Camera.main.gameObject.transform.Find("Flashlight").gameObject;
+        helmet = Camera.main.gameObject.transform.Find("Helmet").gameObject;
         playerCamera = Camera.main;
-        flashLight = playerCamera.gameObject.transform.Find("Flashlight").gameObject;
-        helmet = playerCamera.gameObject.transform.Find("Helmet").gameObject;
 
         if(GameObject.Find("GameManager") != null)
         {
@@ -63,6 +65,9 @@ public class PlayerController : MonoBehaviour
             manager.gameObject.GetComponent<Animator>().SetTrigger("FadeIn");
             GetManagerData();
         }
+
+        helmet.transform.localEulerAngles = new Vector3(PlayerPrefs.GetInt("helmetOn") == 0 ? -45 : 0, 0, 0);
+        helmetOn = PlayerPrefs.GetInt("helmetOn") == 1 ? true : false;
     }
 
     //Recieves initial data from the game manager
@@ -123,18 +128,27 @@ public class PlayerController : MonoBehaviour
         {
             GetComponent<AudioSource>().Stop();
         }
+        else
+        {
+            PlayerRotation();
 
-        PlayerRotation();
+            AnimateMovement();
 
-        AnimateMovement();
+            SetGrounded();
 
-        SetGrounded();
+            HelmetAnim();
 
-        HelmetAnim();
+            LookingAt();
 
-        LookingAt();
+            FindHologramObject();
 
-        FindHologramObject();
+            //set camera FOV to settings FOV
+            Camera.main.fieldOfView = PlayerPrefs.GetInt("FOV");
+
+            //set Sensitivity to settings
+            lookSpeed = 10 * PlayerPrefs.GetInt("sens") / 100.0f;
+        }
+
 
         if(GameObject.Find("GameManager") != null)
             GetManagerData();
@@ -168,7 +182,7 @@ public class PlayerController : MonoBehaviour
     //Sets the animation perameters
     private void AnimateMovement()
     {
-        if (Input.GetKey("w") || Input.GetKey("s"))
+        if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
         {
             anim.SetInteger("AnimationPar", 1);
         }
@@ -185,9 +199,10 @@ public class PlayerController : MonoBehaviour
     {
         rotation.x += -Input.GetAxis("Mouse Y") * lookSpeed;
         rotation.x = Mathf.Clamp(rotation.x, -lookXLimit, lookXLimit);
-        playerCamera.transform.localRotation = Quaternion.Euler(rotation.x, 0, 0);
+        playerCamera.transform.localEulerAngles = Vector3.right * rotation.x;
+        playerCamera.transform.localEulerAngles = new Vector3(playerCamera.transform.localEulerAngles.x, 0, 0);
         Quaternion localRotation = Quaternion.Euler(0f, Input.GetAxis("Mouse X") * lookSpeed, 0f);
-        transform.rotation = transform.rotation * localRotation;
+        transform.rotation *= localRotation;
     }
 
     //Set the grounded status
@@ -221,13 +236,14 @@ public class PlayerController : MonoBehaviour
     private void HelmetChange(InputAction.CallbackContext context)
     {
         helmetOn = !helmetOn;
+        PlayerPrefs.SetInt("helmetOn", helmetOn ? 1 : 0);
     }
 
     private void HelmetAnim()
     {
-
         if(helmetOn)
         {
+            
             if (helmet.transform.localEulerAngles.x > 3)
             {
                 helmet.transform.localEulerAngles += Vector3.right * Time.deltaTime * 60;
@@ -235,7 +251,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (helmet.transform.localEulerAngles.x < 265 || helmet.transform.localEulerAngles.x > 275)
+            if (helmet.transform.localEulerAngles.x < 310 || helmet.transform.localEulerAngles.x > 315)
             {
                 helmet.transform.localEulerAngles -= Vector3.right * Time.deltaTime * 60;
             }
@@ -283,6 +299,19 @@ public class PlayerController : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 10, hologramMask))
         {
+            if(currentObject != null && hit.transform.gameObject != currentObject)
+            {
+                if (currentObject.GetComponent<MineableObject>() != null)
+                {
+                    MineableObject obj = currentObject.GetComponent<MineableObject>();
+                    hologramParent.transform.Find(obj.itemDrop).gameObject.SetActive(false);
+                }
+                else if (currentObject.GetComponent<AnimalInfoScript>() != null)
+                {
+                    AnimalInfoScript obj = currentObject.GetComponent<AnimalInfoScript>();
+                    hologramParent.transform.Find(obj.animalName).gameObject.SetActive(false);
+                }
+            }
             currentObject = hit.transform.gameObject;
         }
         else

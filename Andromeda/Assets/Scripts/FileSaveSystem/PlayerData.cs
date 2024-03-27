@@ -12,6 +12,7 @@ public class PlayerData
     public bool isInSpaceShip;
     public bool[] unlockedPlanets;
     public List<string> destroyed;
+    public bool completedTutorial;
 
     //ArmUpgrades
     public float armFuel;
@@ -38,6 +39,15 @@ public class PlayerData
     public int[] materialAmounts;
     public int[] upgradeLevels;
 
+    //quest data
+    public List<string> completedQuests;
+    public List<string> QRQuests;
+    public string activeQuest;
+    public int activeQuestStep;
+    public float astroXP;
+    public int astroLevel;
+
+
     public PlayerData(GameManager manager)
     {
         //saving data
@@ -51,8 +61,10 @@ public class PlayerData
         playerLocation[2] = manager.playerLocation.z;
 
         destroyed = manager.destroyed;
+        completedTutorial = manager.completedTutorial;
+        
 
-        //armupgrades
+    //armupgrades
         armFuel = manager.armFuel;
         maxArmFuel = manager.maxArmFuel;
         armDamage = manager.armDamage;
@@ -76,5 +88,13 @@ public class PlayerData
         //material and upgrade data
         materialAmounts = manager.materialAmounts;
         upgradeLevels = manager.upgradeLevels;
+
+        //quest data
+        completedQuests = manager.completedQuests;
+        QRQuests = manager.QRQuests;
+        activeQuest = manager.activeQuest;
+        activeQuestStep = manager.activeQuestStep;
+        astroXP = manager.astroXP;
+        astroLevel = manager.astroLevel;
     }
 }

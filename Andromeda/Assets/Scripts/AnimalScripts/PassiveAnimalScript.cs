@@ -26,35 +26,40 @@ public class PassiveAnimalScript : MonoBehaviour
 
     private void Update()
     {
-        if (Vector3.Distance(transform.position, player.transform.position) < 5 && getsScared)
+        if(Vector3.Distance(transform.position, player.transform.position) > 50 && PlayerPrefs.GetInt("performanceMode") == 1)
         {
-            StartCoroutine(RunAway());
+            Destroy(this.gameObject);
         }
 
-        
-        ScaredAction();
-        Move();
-
-        if(state == "idle" && !isIdleAnim)
+        if(PlayerPrefs.GetInt("performanceMode") == 0 || Vector3.Distance(transform.position, player.transform.position) <= 30)
         {
-            StartCoroutine(IdleAction());
-        }
-        else if (state != "idle")
-        {
-            StopCoroutine(IdleAction());
-        }
+            if (Vector3.Distance(transform.position, player.transform.position) < 5 && getsScared)
+            {
+                StartCoroutine(RunAway());
+            }
 
-        if(isRotating && timer > 0)
-        {
-            transform.rotation = transform.rotation * localRotation;
-            timer -= Time.deltaTime;
-        }
-        else if(isRotating)
-        {
-            isRotating = false;
-        }
+            ScaredAction();
+            Move();
 
+            if (state == "idle" && !isIdleAnim)
+            {
+                StartCoroutine(IdleAction());
+            }
+            else if (state != "idle")
+            {
+                StopCoroutine(IdleAction());
+            }
 
+            if (isRotating && timer > 0)
+            {
+                transform.rotation = transform.rotation * localRotation;
+                timer -= Time.deltaTime;
+            }
+            else if (isRotating)
+            {
+                isRotating = false;
+            }
+        }        
     }
 
     IEnumerator RunAway()
@@ -102,7 +107,7 @@ public class PassiveAnimalScript : MonoBehaviour
     {
         isRotating = true;
         localRotation = Quaternion.Euler(0f, Random.Range(-3f,3f), 0f);
-        timer = Random.Range(0,2f);
+        timer = Random.Range(0,0.5f);
     }
 
     private IEnumerator IdleAction()

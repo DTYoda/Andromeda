@@ -59,6 +59,13 @@ public class AggressiveAnimalScript : MonoBehaviour
                 isRotating = false;
             }
         }
+        else
+        {
+            if(PlayerPrefs.GetInt("performanceMode") == 1)
+            {
+                Destroy(this.gameObject);
+            }
+        }
     }
 
     IEnumerator AttackPlayer()

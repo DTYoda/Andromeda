@@ -33,10 +33,11 @@ public class PlayerArmController: MonoBehaviour
     public LayerMask attackMask;
     public Transform armPosition;
     public LineRenderer line;
-    private GameObject mineParticles;
+    public GameObject mineParticles;
     private GameManager manager = null;
     private PlayerController controller;
     public AudioSource miningAudio;
+    [System.NonSerialized] public bool isAttacking;
 
     //When the game first starts
     private void Awake()
@@ -52,22 +53,16 @@ public class PlayerArmController: MonoBehaviour
         }
             
         controller = GameObject.Find("Player").GetComponent<PlayerController>();
+        if (manager.playerLocation != Vector3.zero)
+            transform.position = manager.playerLocation;
     }
 
     private void GetManagerData()
     {
-        if(manager.playerLocation != Vector3.zero)
-            transform.position = manager.playerLocation;
         armFuel = manager.armFuel;
         maxArmFuel = manager.maxArmFuel;
         miningDamage = manager.armDamage;
         miningForce = manager.armStrength;
-    }
-
-    private void SendManagerData()
-    {
-        manager.playerLocation = this.transform.position;
-        manager.armFuel = armFuel;
     }
 
     //When the input actions are enabled
@@ -109,29 +104,31 @@ public class PlayerArmController: MonoBehaviour
             currentMode = 1;
         }
 
-        if (isFiring && armFuel > 0)
+        if (isFiring && manager.armFuel > 0)
         {
+            isAttacking = true;
             if (currentMode == 0)
             {
                 Melee();
             }
-            else if(canShoot)
+            else if(canShoot && armFuel >= 1)
             {
                 StartCoroutine(Shoot());
             }
         }
         else
         {
-            if(armFuel < 0)
+            isAttacking = false;
+            if(manager.armFuel < 0)
             {
-                armFuel = 0;
+                manager.armFuel = 0;
             }
             DrawRay(new Vector3(0, 0, 0));
         }
 
+        GetManagerData();
+
         FindPickupObjects();
-        if(manager != null)
-            SendManagerData();
     }
 
     //activated whenever the fire key is held down
@@ -149,32 +146,39 @@ public class PlayerArmController: MonoBehaviour
     }
 
     //activated when the user is mining
+
+    public MineableObject mineObj;
+    public AnimalInfoScript animObj;
     private void Melee()
     {
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 2, miningMask))
         {
-            MineableObject obj = hit.transform.gameObject.GetComponent<MineableObject>();
-            if(obj.hardness <= miningForce)
+            mineObj = hit.transform.gameObject.GetComponent<MineableObject>();
+            if(mineObj.hardness <= miningForce)
             {
-                obj.currentHealth -= miningDamage * Time.deltaTime;
+                mineObj.currentHealth -= miningDamage * Time.deltaTime;
             }
             DrawRay(hit.point);
             mineParticles.transform.position = hit.point;
             mineParticles.SetActive(true);
+            animObj = null;
         }
         else if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 2, attackMask))
         {
-            AnimalInfoScript obj = hit.transform.gameObject.GetComponent<AnimalInfoScript>();
-            obj.currentHealth -= miningDamage * Time.deltaTime;
+            animObj = hit.transform.gameObject.GetComponent<AnimalInfoScript>();
+            animObj.currentHealth -= miningDamage * Time.deltaTime;
             DrawRay(hit.point);
             mineParticles.transform.position = hit.point;
             mineParticles.SetActive(true);
+            mineObj = null;
         }
         else
         {
             DrawRay(Camera.main.transform.position + Camera.main.transform.forward * 2);
             mineParticles.SetActive(false);
+            mineObj = null;
+            animObj = null;
         }
     }
 
@@ -184,7 +188,7 @@ public class PlayerArmController: MonoBehaviour
         canShoot = false;
         BulletScript bullet = Instantiate(attackProjectile, Camera.main.transform.position, Camera.main.transform.rotation).GetComponent<BulletScript>();
         bullet.damage = miningDamage / 2.0f;
-        armFuel -= 1;
+        manager.armFuel -= 1;
         yield return new WaitForSeconds(attackSpeed);
         canShoot = true;
     }
@@ -196,7 +200,7 @@ public class PlayerArmController: MonoBehaviour
         {
             line.SetPositions(new Vector3[] { armPosition.transform.position, endLocation });
             miningAudio.Play();
-            armFuel -= Time.deltaTime;
+            manager.armFuel -= Time.deltaTime;
         }  
         else
         {
@@ -212,7 +216,7 @@ public class PlayerArmController: MonoBehaviour
     public GameObject currentPickUp;
     private void FindPickupObjects()
     {
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out itemHit, 2, pickupMask))
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out itemHit, 3, pickupMask))
         {
             currentPickUp = itemHit.transform.gameObject;
             ItemScript obj = itemHit.transform.gameObject.GetComponent<ItemScript>();

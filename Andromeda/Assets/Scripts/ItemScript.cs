@@ -6,23 +6,37 @@ using TMPro;
 public class ItemScript : MonoBehaviour
 {
     public string itemName;
-    private GameObject textObject;
+    public GameObject textObject;
+    private GameObject currentTextObj = null;
     public bool isLooking;
     private PlayerArmController arm;
 
     private void Start()
     {
-        textObject = transform.GetChild(0).gameObject;
         arm = GameObject.Find("Player").GetComponent<PlayerArmController>();
     }
 
     private void Update()
     {
-        textObject.transform.position = this.transform.position + 0.5f * (this.transform.position - GameObject.Find("planet").transform.position).normalized;
-        textObject.transform.eulerAngles = Camera.main.transform.eulerAngles;
+        if (arm.currentPickUp == this.gameObject)
+        {
+            if(currentTextObj == null)
+                currentTextObj = Instantiate(textObject);
+            currentTextObj.SetActive(true);
+            currentTextObj.transform.position = this.transform.position + 0.5f * (this.transform.position - GameObject.Find("planet").transform.position).normalized;
+            currentTextObj.transform.eulerAngles = Camera.main.transform.eulerAngles;
+            currentTextObj.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = itemName;
+        }
+        else if (currentTextObj != null)
+        {
+            Destroy(currentTextObj);
+            currentTextObj = null;
+        }
+        
+    }
 
-        textObject.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = itemName;
-
-        textObject.SetActive((arm.currentPickUp == this.gameObject));
+    public void OnDestroy()
+    {
+        Destroy(currentTextObj);
     }
 }

@@ -28,6 +28,7 @@ public class Spaceship : MonoBehaviour
     public GameObject centerArrow;
     public TMP_Text countdownText;
     public TMP_Text questText;
+    public bool isEnding;
 
     // Start is called before the first frame update
     void Start()
@@ -37,7 +38,7 @@ public class Spaceship : MonoBehaviour
         explosion = transform.Find("Explosion").GetComponent<ParticleSystem>();
         thrust = transform.Find("thrust").GetComponent<ParticleSystem>();
         if(GameObject.Find("GameManager") !=null)
-            StartCoroutine(Begin());
+            GameObject.Find("GameManager").GetComponent<Animator>().SetTrigger("FadeIn");
 
     }
 
@@ -46,7 +47,7 @@ public class Spaceship : MonoBehaviour
     void Update()
     {
 
-        if(Input.GetKey(KeyCode.Space))
+        if(Input.GetKey(KeyCode.Space) && !isEnding)
         {
             speed += 2f * speed * Time.deltaTime;
             thrust.Play();
@@ -59,24 +60,29 @@ public class Spaceship : MonoBehaviour
             speed -= 1.1f * speed * Time.deltaTime;
         }
 
-        pitch = Input.GetAxis("Vertical");
-        roll = -Input.GetAxis("Horizontal");
-
-        questText.text = quests[currentQuest];
+        if(!isEnding)
+        {
+            pitch = Input.GetAxis("Vertical");
+            roll = -Input.GetAxis("Horizontal");
+            questText.text = quests[currentQuest];
+        }
 
         if (transform.eulerAngles.x >= 2 && transform.eulerAngles.x <= 8 && transform.eulerAngles.y >= 20 && transform.eulerAngles.y <= 26 && escaped)
         {
             isLining -= Time.deltaTime;
-            if(isLining > 0)
+            if(isLining > 0 && !isEnding)
             {
                 countdownText.text = isLining.ToString("F1");
             }
-            else
+            else if(!isEnding)
             {
                 countdownText.text = "READY";
                 currentQuest = 2;
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
+                    isEnding = true;
+                    countdownText.text = "";
+                    questText.text = "";
                     StartCoroutine(End());
                 }
             }
@@ -143,14 +149,6 @@ public class Spaceship : MonoBehaviour
         return (onScreen && center.transform.GetChild(0).GetComponent<Renderer>().isVisible);
     }
 
-    IEnumerator Begin()
-    {
-        Time.timeScale = 0;
-        yield return new WaitForSecondsRealtime(10);
-        Time.timeScale = 1;
-        GameObject.Find("GameManager").GetComponent<Animator>().SetTrigger("FadeIn");
-    }
-
     IEnumerator End()
     {
         thrust.Stop();
@@ -177,7 +175,7 @@ public class Spaceship : MonoBehaviour
         rb.isKinematic = true;
         rb.velocity = Vector3.zero;
         this.GetComponent<MeshRenderer>().enabled = false;
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1.5f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

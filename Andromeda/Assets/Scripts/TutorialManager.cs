@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class TutorialManager : MonoBehaviour
 {
-    public string introText = "Kendrick. This is a prerecorded message set to be played in the case of a crash. If you're hearing this, you have crashlanded in an unknown location and need to repair communication with us.";
+    private string introText = "Kendrick. This is a prerecorded message set to be played in the case of a crash. If you're hearing this, you have crashlanded in an unknown location and need to repair communication with us";
     public string[] direction;
     public string displayedText;
     public int currentStep = 0;
@@ -22,7 +23,7 @@ public class TutorialManager : MonoBehaviour
 
     private void Update()
     {
-        isInTutorial = (manager.saveFile != "" && !manager.completedTutorial && manager.unlockedPlanets[1]);
+        isInTutorial = (manager.saveFile != "" && !manager.completedTutorial && manager.unlockedPlanets[1] && SceneManager.GetActiveScene().name != "Mainmenu");
 
         tutorialText.text = displayedText;
 
@@ -79,7 +80,7 @@ public class TutorialManager : MonoBehaviour
     private float walkTime = 0;
     public void Step1()
     {
-        direction = new string[]{"First, you'll need to explore your environment to get a sense of your surroundings."};
+        direction = new string[]{"First, you'll need to explore your environment to get a sense of your surroundings.", "Walk around for a little bit."};
         if (isTyping == 0)
             StartCoroutine(TypeText());
         if (isTyping == 1)
@@ -98,7 +99,7 @@ public class TutorialManager : MonoBehaviour
 
     public void Step2()
     {
-        direction = new string[]{"You need to get materials to repair communication, but you'll need to upgrade your gauntlet first.", "Your gauntlet allows you to fight off enemies and mine objects such as trees and rocks.", "Right now, your Gauntlet can't do much, so collect 20 muchrooms off the ground to upgrade it."};
+        direction = new string[]{"You need to get materials to repair communication, but you'll need to upgrade your gauntlet first.", "Your gauntlet allows you to fight off enemies and mine objects such as trees and rocks.", "Right now, your Gauntlet can't do much, so you'll need to upgrade it", "Collect 20 mushrooms off the ground to upgrade it."};
         if (isTyping == 0)
             StartCoroutine(TypeText());
         if (isTyping == 1 && manager.getItemAmount("mushroom") >= 20)
@@ -129,7 +130,7 @@ public class TutorialManager : MonoBehaviour
 
     public void Step4()
     {
-        direction = new string[] { "The upgrade center can be used to upgrade your spaceship and spacesuit.", "Make sure to consistantly upgrade your gear, or you may not be able to survive for long", "Go to the upgrade center, select your arm, and Upgrade your Gauntlet Strength." };
+        direction = new string[] { "The upgrade center can be used to upgrade your spaceship and spacesuit.", "Make sure to consistantly upgrade your gear, or you may not be able to survive for long", "Go to the upgrade center, select your gauntlet, and Upgrade your Gauntlet Strength." };
         if (isTyping == 0)
             StartCoroutine(TypeText());
         if (isTyping == 1 && manager.getUpgradeLevel("Mining Strength") >= 1)
@@ -141,7 +142,7 @@ public class TutorialManager : MonoBehaviour
 
     public void Step5()
     {
-        direction = new string[] {"With your upgraded Gauntlet, you can now destroy trees and rocks, the exact things you'll need to fix your Quantum Receptor.", "Collects 10 rocks and 10 pieces of wood."};
+        direction = new string[] {"With your upgraded Gauntlet, you can now destroy trees and rocks, the exact things you'll need to fix your Quantum Receptor.", "Mine rocks and trees, they will drop rock and wood that you must pick up. Collect 10 rocks and 10 pieces of wood."};
         if (isTyping == 0)
             StartCoroutine(TypeText());
         if (isTyping == 1 && manager.getItemAmount("wood") >= 10 && manager.getItemAmount("rock") >= 10)
@@ -153,7 +154,7 @@ public class TutorialManager : MonoBehaviour
 
     public void Step6()
     {
-        direction = new string[] { "Return to your spaceship and repair your Quantum Receptor at the upgrade center" };
+        direction = new string[] { "Return to your spaceship and repair your Quantum Receptor at the upgrade center by selecting \"ship\" and then \"communication\"" };
         if (isTyping == 0)
             StartCoroutine(TypeText());
         if (isTyping == 1 && manager.getUpgradeLevel("Quantum Receptor") >= 1)
@@ -165,7 +166,15 @@ public class TutorialManager : MonoBehaviour
 
     public void Step7()
     {
-        direction = new string[] { "Kendrick! I'm glad you were able to repair the quantum receptor!", "Looks like the prerecorded message helped you out a bit.", "You can use this quantum receptor to contact us, and we can give you missions to help your escape.", "The only objective now is to escape. Find a way to repair your spaceship and get out", "Try opening your Quantum Receptor and start your first mission" };
+        direction = new string[] { "Kendrick! I'm glad you were able to repair the quantum receptor!", "Looks like the prerecorded message helped you out a bit.", "You can use this quantum receptor to contact us, and we can give you missions to help your escape.", "The only objective now is to escape. Find a way to repair your spaceship and get out", "Try finding and opening your Quantum Receptor and start your first mission" };
+        if (isTyping == 0)
+            StartCoroutine(TypeText());
+        if (isTyping == 1 && manager.getUpgradeLevel("Quantum Receptor") >= 1)
+        {
+            isTyping = 0;
+            manager.completedTutorial = true;
+            displayedText = "";
+        }
     }
 
     IEnumerator TypeText()
@@ -177,9 +186,9 @@ public class TutorialManager : MonoBehaviour
             for (int i = 0; i < direction[j].Length; i++)
             {
                 displayedText += direction[j][i];
-                yield return new WaitForSeconds(0.05f);
+                yield return new WaitForSecondsRealtime(0.025f);
             }
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSecondsRealtime(4);
             if(j != direction.Length - 1)
                 displayedText = "";
         }

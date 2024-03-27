@@ -715,6 +715,7 @@ MonoBehaviour:
   animalName: monkey
   animalDrop: banana
   animalType: passive
+  explosionParticles: {fileID: 1310534515207199485, guid: 17df1b8144adb436f81a54c8f2fcd18c, type: 3}
 --- !u!114 &278129900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -730,8 +731,6 @@ MonoBehaviour:
   alignToPlanet: 1
   useGravity: 1
   gravityConstant: 9.8
-  hologram: {fileID: 0}
-  useHologram: 0
 --- !u!114 &278129903
 MonoBehaviour:
   m_ObjectHideFlags: 0

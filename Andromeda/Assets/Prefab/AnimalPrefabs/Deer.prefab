@@ -608,8 +608,6 @@ MonoBehaviour:
   alignToPlanet: 1
   useGravity: 1
   gravityConstant: 9.8
-  hologram: {fileID: 0}
-  useHologram: 0
 --- !u!114 &1916062241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -641,6 +639,7 @@ MonoBehaviour:
   animalName: deer
   animalDrop: skin
   animalType: passive
+  explosionParticles: {fileID: 1310534515207199485, guid: 17df1b8144adb436f81a54c8f2fcd18c, type: 3}
 --- !u!1 &5512041106863543837
 GameObject:
   m_ObjectHideFlags: 0
