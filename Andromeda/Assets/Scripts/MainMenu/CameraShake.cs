@@ -14,6 +14,7 @@ public class CameraShake : MonoBehaviour
 
     public bool keepPos = false;
     public bool fade = false;
+    public bool changeFOV;
     private Vector3 originalPosition;
 
     private void Awake()
@@ -58,6 +59,11 @@ public class CameraShake : MonoBehaviour
             shakeTimer -= Time.deltaTime;
             GetComponent<CinemachineBrain>().enabled = true;
         }
-        cam.m_Lens.FieldOfView = Camera.main.fieldOfView;
+
+        if(changeFOV)
+        {
+            cam.m_Lens.FieldOfView = Camera.main.fieldOfView;
+        }
+        
     }
 }

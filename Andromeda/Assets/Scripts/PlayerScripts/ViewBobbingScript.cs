@@ -31,6 +31,6 @@ public class ViewBobbingScript : MonoBehaviour
             //Idle
             timer += Time.deltaTime * walkingBobbingSpeed / 10f;
             transform.localPosition = new Vector3(transform.localPosition.x, defaultPosY + Mathf.Sin(timer) * bobbingAmount, transform.localPosition.z);
-        }
+        }   
     }
 }

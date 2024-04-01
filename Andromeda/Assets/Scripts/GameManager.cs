@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
             armFuel += Time.deltaTime / 10.0f;
         }
 
-        if(!isInSpaceShip)
+        if(!isInSpaceShip && completedTutorial)
         {
             if(oxygen > 0)
             {
@@ -125,13 +125,27 @@ public class GameManager : MonoBehaviour
         {
             health = maxHealth;
         }
+        else if(health < 0)
+        {
+            health = 0;
+        }
+
         if(armFuel > maxArmFuel)
         {
             armFuel = maxArmFuel;
         }
+        else if(armFuel < 0)
+        {
+            armFuel = 0;
+        }
+
         if(oxygen > totalOxygen)
         {
             oxygen = totalOxygen;
+        }
+        else if(oxygen < 0)
+        {
+            oxygen = 0;
         }
 
     }

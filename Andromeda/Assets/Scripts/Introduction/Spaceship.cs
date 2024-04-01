@@ -47,7 +47,7 @@ public class Spaceship : MonoBehaviour
     void Update()
     {
 
-        if(Input.GetKey(KeyCode.Space) && !isEnding)
+        if(Input.GetKey(KeyCode.Space) && !isEnding && speed < 1000)
         {
             speed += 2f * speed * Time.deltaTime;
             thrust.Play();
