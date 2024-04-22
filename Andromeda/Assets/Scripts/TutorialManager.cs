@@ -99,7 +99,7 @@ public class TutorialManager : MonoBehaviour
 
     public void Step2()
     {
-        direction = new string[]{"You need to get materials to repair communication, but you'll need to upgrade your gauntlet first.", "Your gauntlet allows you to fight off enemies and mine objects such as trees and rocks.", "Right now, your Gauntlet can't do much, so you'll need to upgrade it", "Collect 20 mushrooms off the ground to upgrade it."};
+        direction = new string[]{"You need to get materials to repair communication, but you'll need to upgrade your gauntlet first.", "Your gauntlet allows you to fight off enemies and mine objects such as trees and rocks.", "Right now, your Gauntlet can't do much, so you'll need to upgrade it", "Collect 20 red mushrooms off the ground to upgrade it."};
         if (isTyping == 0)
             StartCoroutine(TypeText());
         if (isTyping == 1 && manager.getItemAmount("mushroom") >= 20)

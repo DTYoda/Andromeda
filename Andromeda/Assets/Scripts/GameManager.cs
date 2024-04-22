@@ -80,6 +80,7 @@ public class GameManager : MonoBehaviour
         
     }
 
+    private bool dyingAnim = false;
     private void Update()
     {
         if(autoSaveTimer <= 0)
@@ -128,6 +129,8 @@ public class GameManager : MonoBehaviour
         else if(health < 0)
         {
             health = 0;
+            if(!dyingAnim)
+                StartCoroutine(Death());
         }
 
         if(armFuel > maxArmFuel)
@@ -334,6 +337,18 @@ public class GameManager : MonoBehaviour
                 break;
             }
         }   
+    }
+
+    IEnumerator Death()
+    {
+        dyingAnim = true;
+        GetComponent<Animator>().SetTrigger("FadeOut");
+        yield return new WaitForSecondsRealtime(3);
+        SceneManager.LoadScene("SpaceShip");
+        health = maxHealth;
+        oxygen = totalOxygen;
+        GetComponent<Animator>().SetTrigger("FadeIn");
+        dyingAnim = false;
     }
 
 }
