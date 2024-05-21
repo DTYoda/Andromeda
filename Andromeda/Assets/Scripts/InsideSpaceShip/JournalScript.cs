@@ -6,6 +6,7 @@ using TMPro;
 public class JournalScript : MonoBehaviour
 {
     public GameObject textObject;
+    public GameObject UI;
     public LayerMask mask;
 
     private bool isActive = false;
@@ -49,6 +50,20 @@ public class JournalScript : MonoBehaviour
             textObject.SetActive(false);
         }
         
-            
+        if(isActive && textObject.activeSelf && Input.GetKeyDown(KeyCode.E))
+        {
+            UI.SetActive(true);
+            Time.timeScale = 0;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
+
+    public void ExitJournal()
+    {
+        Time.timeScale = 1;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        UI.SetActive(false);
     }
 }

@@ -65,6 +65,9 @@ public class GameManager : MonoBehaviour
     [System.NonSerialized] public string[] atroLevelNames = { "civilian", "engineer", "pilot", "commandar", "specialist", "cosmonaut" };
     [System.NonSerialized] public int astroLevel = 0;
 
+    //journal data
+    [System.NonSerialized] public int[] totalMaterialsCollected = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
 
     public static GameManager manager;
 
@@ -246,6 +249,10 @@ public class GameManager : MonoBehaviour
         if (materialAmounts[materialNames.IndexOf(item)] + amount >= 0)
         {
             materialAmounts[materialNames.IndexOf(item)] += amount;
+            if (amount > 0)
+            {
+                totalMaterialsCollected[materialNames.IndexOf(item)] += amount;
+            }
             return true;
         }
         else
@@ -268,6 +275,10 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < items.Length; i++)
         {
             materialAmounts[materialNames.IndexOf(items[i])] += amounts[i];
+            if(amounts[i] > 0)
+            {
+                totalMaterialsCollected[materialNames.IndexOf(items[i])] += amounts[i];
+            }
         }
         return true;
     }
@@ -288,6 +299,12 @@ public class GameManager : MonoBehaviour
             amounts[i] = materialAmounts[materialNames.IndexOf(items[i])];
         }
         return amounts;
+    }
+
+    //Call to recieve the number of a certain item the player has ever collected
+    public int getTotalItemAmount(string item)
+    {
+        return totalMaterialsCollected[materialNames.IndexOf(item)];
     }
 
     //Call to increase the value of a player's upgrade

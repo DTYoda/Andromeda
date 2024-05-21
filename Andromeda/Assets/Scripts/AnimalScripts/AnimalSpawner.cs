@@ -24,15 +24,17 @@ public class AnimalSpawner : MonoBehaviour
     {
         Instance = this;
         player = GameObject.Find("Player");
+
+        
     }
 
     private void Update()
     {
-        if(!isSpawningPassive && !(PlayerPrefs.GetInt("performanceMode") == 1 && player.transform.position.x < 0))
+        if(maxAnimalCount > spawnedAnimals.Count && !(PlayerPrefs.GetInt("performanceMode") == 1 && player.transform.position.x < 0))
         {
             StartCoroutine(SpawnPassive());
         }
-        if(!isSpawningAggressive && !(PlayerPrefs.GetInt("performanceMode") == 1 && player.transform.position.x > 0))
+        if(maxAnimalCount > spawnedEnemies.Count && !(PlayerPrefs.GetInt("performanceMode") == 1 && player.transform.position.x > 0))
         {
             StartCoroutine(SpawnHostile());
         }
