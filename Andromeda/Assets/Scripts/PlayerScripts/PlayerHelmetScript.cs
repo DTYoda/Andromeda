@@ -58,10 +58,8 @@ public class PlayerHelmetScript : MonoBehaviour
         
         
 
-        
-
-        oxygenBar.transform.localScale = new Vector3(oxygen / totalOxygen, 1f, 1f);
-        healthBar.transform.localScale = new Vector3(health / totalHealth, 1f, 1f);
+        oxygenBar.transform.localScale = new Vector3((int) oxygen / totalOxygen, 1f, 1f);
+        healthBar.transform.localScale = new Vector3((int) health / totalHealth, 1f, 1f);
         fuelBar.transform.localScale = new Vector3(fuel / totalFuel, 1f, 1f);
     }
 }

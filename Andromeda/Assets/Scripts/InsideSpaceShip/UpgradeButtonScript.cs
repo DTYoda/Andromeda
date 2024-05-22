@@ -51,6 +51,7 @@ public class UpgradeButtonScript : MonoBehaviour
             
             if(upgradeLevel < upgradeItems.Length)
             {
+                text.text += "\n\tRequires Atronaut Level " + (upgradeLevel + 1);
                 text.text += "\n\t" + rewards[upgradeLevel];
                 for (int j = 0; j < upgradeItems[upgradeLevel].Split(",").Length; j++)
                 {
@@ -69,7 +70,7 @@ public class UpgradeButtonScript : MonoBehaviour
 
     public void upgradeButton()
     {
-        if(upgradeLevel < upgradeItems.Length)
+        if(upgradeLevel < upgradeItems.Length && upgradeLevel <= manager.astroLevel)
         {
             if (upgrader.Upgrade(upgradeItems[upgradeLevel].Split(","), upgradeItemsAmounts[upgradeLevel].Split(","), upgradeName, upgradeLevelAmounts[upgradeLevel]))
             {

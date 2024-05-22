@@ -9547,7 +9547,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &407428566
 RectTransform:
   m_ObjectHideFlags: 0
@@ -27812,8 +27812,18 @@ MonoBehaviour:
   maxLevel: 3
   neededAmounts: 0a00000032000000c8000000e8030000
   currentAmount: 0
+  xp:
+  - 10
+  - 15
+  - 30
+  - 70
   slider: {fileID: 621080572}
   amountText: {fileID: 227632786}
+  steps:
+  - {fileID: 347996606}
+  - {fileID: 670511607}
+  - {fileID: 325957872}
+  - {fileID: 1755055128}
   isMaterial: 1
   materialName: wood
   manager: {fileID: 0}
@@ -29085,8 +29095,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 20}
+  m_AnchoredPosition: {x: 0.8897, y: 0.88976}
+  m_SizeDelta: {x: 196.2045, y: 196.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1233087525
 MonoBehaviour:
@@ -37050,7 +37060,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.1, y: 1}
   m_AnchoredPosition: {x: -2.430603, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

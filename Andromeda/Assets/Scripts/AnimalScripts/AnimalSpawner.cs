@@ -6,8 +6,6 @@ public class AnimalSpawner : MonoBehaviour
 {
     public GameObject[] passiveAnimals;
     public GameObject[] aggressiveAnimals;
-    private bool isSpawningPassive;
-    private bool isSpawningAggressive;
     public float passiveSpawnDelay;
     public float aggressiveSpawnDelay;
     public List<Transform> spawnedAnimals = new List<Transform>();
@@ -24,60 +22,46 @@ public class AnimalSpawner : MonoBehaviour
     {
         Instance = this;
         player = GameObject.Find("Player");
-
-        
     }
 
     private void Update()
     {
-        if(maxAnimalCount > spawnedAnimals.Count && !(PlayerPrefs.GetInt("performanceMode") == 1 && player.transform.position.x < 0))
+        if(maxAnimalCount > spawnedAnimals.Count)
         {
-            StartCoroutine(SpawnPassive());
+            SpawnPassive();
         }
-        if(maxAnimalCount > spawnedEnemies.Count && !(PlayerPrefs.GetInt("performanceMode") == 1 && player.transform.position.x > 0))
+        if((player.transform.position.x < 0 ? maxAnimalCount : maxAnimalCount / 3) > spawnedEnemies.Count)
         {
-            StartCoroutine(SpawnHostile());
+            SpawnHostile();
         }
     }
 
-    IEnumerator SpawnPassive()
+    public void SpawnPassive()
     {
-        isSpawningPassive = true;
-        if(Random.Range(0, 2) == 0)
-        {
-            Vector3 spawnLocation = Random.onUnitSphere * 80;
+        Vector3 spawnLocation = Random.onUnitSphere * 80;
 
-            if (spawnLocation.x >= 0)
+        if (spawnLocation.x >= 0)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(spawnLocation, Vector3.zero - spawnLocation, out hit, 80, spawnmask))
             {
-                RaycastHit hit;
-                if (Physics.Raycast(spawnLocation, Vector3.zero - spawnLocation, out hit, 80, spawnmask) && (maxAnimalCount / (PlayerPrefs.GetInt("performaceMode") == 1 ? 2 : 1)) > spawnedAnimals.Count)
-                {
-                    spawnedAnimals.Add(Instantiate(passiveAnimals[Random.Range(0, passiveAnimals.Length)], hit.point, this.transform.rotation, this.transform).transform);
-                }
+                spawnedAnimals.Add(Instantiate(passiveAnimals[Random.Range(0, passiveAnimals.Length)], hit.point, this.transform.rotation, this.transform).transform);
             }
         }
-        yield return new WaitForSeconds(passiveSpawnDelay);
-        isSpawningPassive = false;
     }
-    IEnumerator SpawnHostile()
+    public void SpawnHostile()
     {
-        isSpawningAggressive = true;
-        if (Random.Range(0, 3) == 0)
-        {
-            Vector3 spawnLocation = Random.onUnitSphere * 80;
 
-            if (spawnLocation.x < 0)
+        Vector3 spawnLocation = Random.onUnitSphere * 80;
+
+        if (spawnLocation.x < 0)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(spawnLocation, Vector3.zero - spawnLocation, out hit, 80, spawnmask))
             {
-                RaycastHit hit;
-                if (Physics.Raycast(spawnLocation, Vector3.zero - spawnLocation, out hit, 80, spawnmask) && maxAnimalCount > spawnedEnemies.Count)
-                {
-                    spawnedEnemies.Add(Instantiate(aggressiveAnimals[Random.Range(0, aggressiveAnimals.Length)], hit.point, this.transform.rotation, this.transform).transform);
-                }
+                spawnedEnemies.Add(Instantiate(aggressiveAnimals[Random.Range(0, aggressiveAnimals.Length)], hit.point, this.transform.rotation, this.transform).transform);
             }
 
         }
-        yield return new WaitForSeconds(aggressiveSpawnDelay / (player.transform.position.x < 0 ? 4 : 1) );
-
-        isSpawningAggressive = false;
     }
 }

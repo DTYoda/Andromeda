@@ -77,12 +77,6 @@ public class GameManager : MonoBehaviour
         manager = this;
     }
 
-    private void Start()
-    {
-
-        
-    }
-
     private bool dyingAnim = false;
     private void Update()
     {
@@ -99,7 +93,7 @@ public class GameManager : MonoBehaviour
         autoSaveTimer -= Time.deltaTime;
 
         //regeneration
-        if(health < maxHealth)
+        if(health < maxHealth && !dyingAnim)
         {
             health += healthRegen * Time.deltaTime;
         }
@@ -203,6 +197,9 @@ public class GameManager : MonoBehaviour
         activeQuestStep = data.activeQuestStep;
         astroXP = data.astroXP;
         astroLevel = data.astroLevel;
+
+        //journal data
+        totalMaterialsCollected = data.totalMaterialsCollected;
     }
 
     public void SaveData()
@@ -360,11 +357,18 @@ public class GameManager : MonoBehaviour
     {
         dyingAnim = true;
         GetComponent<Animator>().SetTrigger("FadeOut");
+        Time.timeScale = 0;
         yield return new WaitForSecondsRealtime(3);
+        for(int i = 0; i < materialAmounts.Length; i++)
+        {
+            materialAmounts[i] /= 2;
+        }
         SceneManager.LoadScene("SpaceShip");
         health = maxHealth;
         oxygen = totalOxygen;
+        SaveData();
         GetComponent<Animator>().SetTrigger("FadeIn");
+        Time.timeScale = 1;
         dyingAnim = false;
     }
 

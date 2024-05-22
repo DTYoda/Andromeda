@@ -127,6 +127,7 @@ public class PlayerController : MonoBehaviour
         if(Time.timeScale == 0)
         {
             GetComponent<AudioSource>().Stop();
+            r.velocity = Vector3.zero;
         }
         else
         {
@@ -142,8 +143,9 @@ public class PlayerController : MonoBehaviour
 
             FindHologramObject();
 
-            //set camera FOV to settings FOV
+            //set cameras FOV to settings FOV
             Camera.main.fieldOfView = PlayerPrefs.GetInt("FOV");
+            GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.FieldOfView = Camera.main.fieldOfView;
 
             //set Sensitivity to settings
             lookSpeed = 10 * PlayerPrefs.GetInt("sens") / 100.0f;
@@ -248,12 +250,20 @@ public class PlayerController : MonoBehaviour
             {
                 helmet.transform.localEulerAngles += Vector3.right * Time.deltaTime * 60;
             }
+            else
+            {
+                helmet.transform.localEulerAngles = new Vector3(0, helmet.transform.localEulerAngles.y, helmet.transform.localEulerAngles.z);
+            }
         }
         else
         {
             if (helmet.transform.localEulerAngles.x < 310 || helmet.transform.localEulerAngles.x > 315)
             {
                 helmet.transform.localEulerAngles -= Vector3.right * Time.deltaTime * 60;
+            }
+            else
+            {
+                helmet.transform.localEulerAngles = new Vector3(312.5f, helmet.transform.localEulerAngles.y, helmet.transform.localEulerAngles.z);
             }
         }
     }

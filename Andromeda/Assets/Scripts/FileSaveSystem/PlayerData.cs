@@ -47,6 +47,9 @@ public class PlayerData
     public float astroXP;
     public int astroLevel;
 
+    //Journal data
+    public int[] totalMaterialsCollected;
+
 
     public PlayerData(GameManager manager)
     {
@@ -96,5 +99,8 @@ public class PlayerData
         activeQuestStep = manager.activeQuestStep;
         astroXP = manager.astroXP;
         astroLevel = manager.astroLevel;
+
+        //Journal data
+        totalMaterialsCollected = manager.totalMaterialsCollected;
     }
 }

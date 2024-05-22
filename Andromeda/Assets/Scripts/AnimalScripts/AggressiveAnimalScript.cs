@@ -28,13 +28,22 @@ public class AggressiveAnimalScript : MonoBehaviour
     {
         if(Vector3.Distance(player.transform.position, transform.position) < 50)
         {
-            if ((Vector3.Distance(transform.position, player.transform.position) < attackRange && state != "attacking") || (Vector3.Distance(transform.position, player.transform.position) < 2 * attackRange && state == "running" && state != "attacking"))
+            if ((Vector3.Distance(transform.position, player.transform.position) < attackRange) || (Vector3.Distance(transform.position, player.transform.position) < 2 * attackRange && state == "running"))
             {
-                StartCoroutine(AttackPlayer());
+                if(state != "attacking")
+                    StartCoroutine(AttackPlayer());
+                Vector3 lookingDir = player.transform.position - this.transform.position;
+                lookingDir = transform.InverseTransformDirection(lookingDir);
+                lookingDir.y = 0;
+                lookingDir = transform.TransformDirection(lookingDir);
+
+                Quaternion lookTo = Quaternion.FromToRotation(this.transform.forward, lookingDir);
+                lookTo *= transform.rotation;
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookTo, 1);
             }
             else if (Vector3.Distance(transform.position, player.transform.position) > 30 && transform.position.x > 0)
             {
-                AnimalSpawner.Instance.spawnedAnimals.Remove(this.transform);
+                AnimalSpawner.Instance.spawnedEnemies.Remove(this.transform);
                 Destroy(this.gameObject);
             }
             Move();
@@ -63,6 +72,7 @@ public class AggressiveAnimalScript : MonoBehaviour
         {
             if(PlayerPrefs.GetInt("performanceMode") == 1)
             {
+                AnimalSpawner.Instance.spawnedEnemies.Remove(this.transform);
                 Destroy(this.gameObject);
             }
         }
@@ -71,14 +81,7 @@ public class AggressiveAnimalScript : MonoBehaviour
     IEnumerator AttackPlayer()
     {
         state = "running";
-        Vector3 lookingDir = player.transform.position - this.transform.position;
-        lookingDir = transform.InverseTransformDirection(lookingDir);
-        lookingDir.y = 0;
-        lookingDir = transform.TransformDirection(lookingDir);
-
-        Quaternion lookTo = Quaternion.FromToRotation(this.transform.forward, lookingDir);
-        lookTo *= transform.rotation;
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookTo, 1);
+        
         currentSpeed = speed * 2;
         yield return new WaitForSeconds(3);
         state = "idle";
@@ -88,7 +91,7 @@ public class AggressiveAnimalScript : MonoBehaviour
     {
         state = "attacking";
         anim.SetTrigger("attacking");
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
         state = "idle";
     }
 
@@ -105,7 +108,7 @@ public class AggressiveAnimalScript : MonoBehaviour
     private IEnumerator IdleAction()
     {
         isIdleAnim = true;
-        switch(Random.Range(0, 5))
+        switch(Random.Range(0, 4))
         {
             case (0):
                 currentSpeed = speed;
@@ -129,8 +132,7 @@ public class AggressiveAnimalScript : MonoBehaviour
 
     private void Move()
     {
-        if(state != "attacking")
-            transform.position += transform.forward * currentSpeed * Time.deltaTime;
+        transform.position += transform.forward * currentSpeed * Time.deltaTime;
 
         if(currentSpeed != 0 && state != "attacking")
         {
@@ -166,6 +168,8 @@ public class AggressiveAnimalScript : MonoBehaviour
             {
                 GameObject.Find("GameManager").GetComponent<GameManager>().health -= damage;
             }
+            currentSpeed = speed;
+            CameraShake.Instance.shake(0.3f, 0.5f);
         }
     }
     private void OnCollisionStay(Collision collision)

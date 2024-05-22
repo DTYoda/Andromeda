@@ -28,10 +28,11 @@ public class PassiveAnimalScript : MonoBehaviour
     {
         if(Vector3.Distance(transform.position, player.transform.position) > 50 && PlayerPrefs.GetInt("performanceMode") == 1)
         {
+            AnimalSpawner.Instance.spawnedAnimals.Remove(this.transform);
             Destroy(this.gameObject);
         }
 
-        if(PlayerPrefs.GetInt("performanceMode") == 0 || Vector3.Distance(transform.position, player.transform.position) <= 30)
+        if(Vector3.Distance(transform.position, player.transform.position) <= 30)
         {
             if (Vector3.Distance(transform.position, player.transform.position) < 5 && getsScared)
             {

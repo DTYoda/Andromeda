@@ -16,6 +16,7 @@ public class JournalEntryScript : MonoBehaviour
 
     public Slider slider;
     public TMP_Text amountText;
+    public Toggle[] steps;
 
     public bool isMaterial;
     public string materialName;
@@ -27,6 +28,12 @@ public class JournalEntryScript : MonoBehaviour
         if(GameObject.Find("GameManager") != null)
         {
             manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        }
+
+        for(int i = 0; i < currentLevel; i++)
+        {
+            steps[i].isOn = true;
+            steps[i].transform.GetChild(1).gameObject.SetActive(false);
         }
     }
 
@@ -46,13 +53,9 @@ public class JournalEntryScript : MonoBehaviour
 
         if(currentAmount >= neededAmounts[currentLevel] && currentLevel < maxLevel)
         {
+            steps[currentLevel].isOn = true;
+            steps[currentLevel].transform.GetChild(1).gameObject.SetActive(false);
             currentLevel++;
         }
-    }
-
-
-    public void CollectReward()
-    {
-
     }
 }
