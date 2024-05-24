@@ -161,7 +161,7 @@ public class AggressiveAnimalScript : MonoBehaviour
             StartCoroutine(AttackingReset());
             if(player.GetComponent<PlayerController>().grounded)
             {
-                player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                player.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
                 player.GetComponent<Rigidbody>().AddForce(transform.TransformDirection(new Vector3(0, 1, 1)) * knockBack, ForceMode.Impulse);
             }   
             if(GameObject.Find("GameManager") != null)

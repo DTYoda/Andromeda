@@ -20,6 +20,9 @@ public class DangerTextScript : MonoBehaviour
 
     private void Update()
     {
+        //various error messages for the display to show the player
+
+        //If the player is attempting to mine something too far away
         if (controller.currentObject != null && !armController.mineParticles.activeSelf && armController.isAttacking && !dangers.Contains("TOO FAR"))
         {
             dangers.Add("TOO FAR");
@@ -29,6 +32,7 @@ public class DangerTextScript : MonoBehaviour
             dangers.Remove("TOO FAR");
         }
 
+        //if the player is on the dark side of the planet
         if(controller.gameObject.transform.position.x < 0 && !dangers.Contains("DANGER"))
         {
             dangers.Add("DANGER");
@@ -38,6 +42,7 @@ public class DangerTextScript : MonoBehaviour
             dangers.Remove("DANGER");
         }
 
+        //If the player is low on guantlet fuel
         if(armController.armFuel <= 10 && !dangers.Contains("LOW FUEL"))
         {
             dangers.Add("LOW FUEL");
@@ -47,6 +52,7 @@ public class DangerTextScript : MonoBehaviour
             dangers.Remove("LOW FUEL");
         }
 
+        //If the player is attmepting to mine something they cannot
         if(armController.mineObj != null && armController.mineObj.hardness > armController.miningForce && armController.isAttacking && !dangers.Contains("NOT STRONG ENOUGH"))
         {
             dangers.Add("NOT STRONG ENOUGH");
@@ -56,6 +62,7 @@ public class DangerTextScript : MonoBehaviour
             dangers.Remove("NOT STRONG ENOUGH");
         }
 
+       
         if (dangers.Count != 0 && !isWriting)
         {
             StartCoroutine(CycleDanger());

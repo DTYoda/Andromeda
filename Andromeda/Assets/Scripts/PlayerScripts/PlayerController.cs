@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour
         if(Time.timeScale == 0)
         {
             GetComponent<AudioSource>().Stop();
-            r.velocity = Vector3.zero;
+            r.linearVelocity = Vector3.zero;
         }
         else
         {
@@ -222,7 +222,7 @@ public class PlayerController : MonoBehaviour
     {
         if ((currentJumps < numberOfJumps && canMultiJump) || (!canMultiJump && grounded))
         {
-            r.velocity = Vector3.zero;
+            r.linearVelocity = Vector3.zero;
             r.AddForce(transform.up * jumpHeight, ForceMode.Impulse);
             anim.SetTrigger("jump");
             currentJumps++;

@@ -85,7 +85,7 @@ public class PassiveAnimalScript : MonoBehaviour
         if (state == "scared")
         {
             anim.SetBool("scared", true);
-            if (GetComponent<Rigidbody>().velocity.magnitude > 0.4f)
+            if (GetComponent<Rigidbody>().linearVelocity.magnitude > 0.4f)
             {
                 anim.SetBool("run", true);
             }

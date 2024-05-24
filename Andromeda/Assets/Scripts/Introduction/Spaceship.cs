@@ -113,7 +113,7 @@ public class Spaceship : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity = transform.forward * speed;
+        rb.linearVelocity = transform.forward * speed;
         rb.AddTorque(transform.right * pitch * responsiveness);
         rb.AddTorque(-rb.angularVelocity);
         rb.AddTorque(transform.up * yaw * responsiveness);
@@ -173,7 +173,7 @@ public class Spaceship : MonoBehaviour
         explosion.gameObject.GetComponent<AudioSource>().Play();
         CameraShake.Instance.shake(1, 1);
         rb.isKinematic = true;
-        rb.velocity = Vector3.zero;
+        rb.linearVelocity = Vector3.zero;
         this.GetComponent<MeshRenderer>().enabled = false;
         yield return new WaitForSeconds(1.5f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
