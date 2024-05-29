@@ -41,7 +41,7 @@ public class AggressiveAnimalScript : MonoBehaviour
                 lookTo *= transform.rotation;
                 transform.rotation = Quaternion.Slerp(transform.rotation, lookTo, 1);
             }
-            else if (Vector3.Distance(transform.position, player.transform.position) > 30 && transform.position.x > 0)
+            else if (Vector3.Distance(transform.position, player.transform.position) > 30 && transform.position.y > 0)
             {
                 AnimalSpawner.Instance.spawnedEnemies.Remove(this.transform);
                 Destroy(this.gameObject);

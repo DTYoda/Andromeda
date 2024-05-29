@@ -31,8 +31,8 @@ public class GameManager : MonoBehaviour
     [System.NonSerialized] public float armStrength = 0;
 
     //HelmetUpgrades
-    [System.NonSerialized] public float oxygen = 400;
-    [System.NonSerialized] public float totalOxygen = 400;
+    [System.NonSerialized] public float oxygen = 600;
+    [System.NonSerialized] public float totalOxygen = 600;
 
     //Boot Upgrades
     [System.NonSerialized] public float jumpHeight = 5;

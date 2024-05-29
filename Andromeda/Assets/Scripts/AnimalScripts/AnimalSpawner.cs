@@ -30,7 +30,7 @@ public class AnimalSpawner : MonoBehaviour
         {
             SpawnPassive();
         }
-        if((player.transform.position.x < 0 ? maxAnimalCount : maxAnimalCount / 3) > spawnedEnemies.Count)
+        if((player.transform.position.y < 0 ? maxAnimalCount : maxAnimalCount / 3) > spawnedEnemies.Count)
         {
             SpawnHostile();
         }
@@ -40,7 +40,7 @@ public class AnimalSpawner : MonoBehaviour
     {
         Vector3 spawnLocation = Random.onUnitSphere * 80;
 
-        if (spawnLocation.x >= 0)
+        if (spawnLocation.y >= 0)
         {
             RaycastHit hit;
             if (Physics.Raycast(spawnLocation, Vector3.zero - spawnLocation, out hit, 80, spawnmask))
@@ -54,7 +54,7 @@ public class AnimalSpawner : MonoBehaviour
 
         Vector3 spawnLocation = Random.onUnitSphere * 80;
 
-        if (spawnLocation.x < 0)
+        if (spawnLocation.y < 0)
         {
             RaycastHit hit;
             if (Physics.Raycast(spawnLocation, Vector3.zero - spawnLocation, out hit, 80, spawnmask))

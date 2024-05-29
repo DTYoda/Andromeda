@@ -33,11 +33,11 @@ public class DangerTextScript : MonoBehaviour
         }
 
         //if the player is on the dark side of the planet
-        if(controller.gameObject.transform.position.x < 0 && !dangers.Contains("DANGER"))
+        if(controller.gameObject.transform.position.y < 0 && !dangers.Contains("DANGER"))
         {
             dangers.Add("DANGER");
         }
-        else if(!(controller.gameObject.transform.position.x < 0) &&dangers.Contains("DANGER"))
+        else if(!(controller.gameObject.transform.position.y < 0) &&dangers.Contains("DANGER"))
         {
             dangers.Remove("DANGER");
         }
