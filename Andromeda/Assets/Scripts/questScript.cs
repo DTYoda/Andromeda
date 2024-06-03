@@ -75,6 +75,7 @@ public class questScript : MonoBehaviour
                 {
                     startedStep = false;
                     manager.activeQuestStep++;
+                    manager.astroXP++;
                 }
             }
 
@@ -91,6 +92,7 @@ public class questScript : MonoBehaviour
                     {
                         manager.activeQuestStep++;
                         startedStep = false;
+                        manager.astroXP++;
                     }
                 }
             }
@@ -122,6 +124,7 @@ public class questScript : MonoBehaviour
                             {
                                 manager.activeQuestStep++;
                                 startedStep = false;
+                                manager.astroXP++;
                             }
                         }
                     }

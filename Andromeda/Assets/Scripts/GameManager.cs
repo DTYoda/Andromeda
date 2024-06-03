@@ -148,6 +148,12 @@ public class GameManager : MonoBehaviour
             oxygen = 0;
         }
 
+        //Leveling system
+        if(astroXP >= (astroLevel + 1)  * (astroLevel + 2))
+        {
+            astroXP -= (astroLevel + 1) * (astroLevel + 2);
+            astroLevel++;
+        }
     }
 
     public void LoadData()
