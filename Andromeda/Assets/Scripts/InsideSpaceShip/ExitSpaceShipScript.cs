@@ -12,6 +12,8 @@ public class ExitSpaceShipScript : MonoBehaviour
 
     public LayerMask mask;
 
+    [SerializeField] private ConfirmationWindow confirmWindow;
+
     private void Update()
     {
         
@@ -32,10 +34,13 @@ public class ExitSpaceShipScript : MonoBehaviour
             currentTextObject.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = "press \"E\" to enter";
             if (hit.transform.gameObject == this.gameObject && Input.GetKeyDown(KeyCode.E) && GameObject.Find("GameManager") != null && canEnterSpaceship)
             {
-                GameManager manager = GameObject.Find("GameManager").GetComponent<GameManager>();
-                manager.isInSpaceShip = true;
-                SceneManager.LoadScene("SpaceShip");
-                Destroy(currentTextObject);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                Time.timeScale = 0;
+                confirmWindow.gameObject.SetActive(true);
+                confirmWindow.messageText.text = "Enter spaceship?";
+                confirmWindow.yesButton.onClick.AddListener(yesEnter);
+                confirmWindow.noButton.onClick.AddListener(noEnter);
             }
             else if(hit.transform.gameObject == this.gameObject && Input.GetKeyDown(KeyCode.E))
             {
@@ -49,5 +54,22 @@ public class ExitSpaceShipScript : MonoBehaviour
             currentTextObject = null;
         }
 
+    }
+
+    private void yesEnter()
+    {
+        GameManager manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        manager.isInSpaceShip = true;
+        SceneManager.LoadScene("SpaceShip");
+        Destroy(currentTextObject);
+        Time.timeScale = 1;
+    }
+
+    private void noEnter()
+    {
+        Time.timeScale = 1;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        confirmWindow.gameObject.SetActive(false);
     }
 }

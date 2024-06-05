@@ -7,6 +7,11 @@ public class CraftingItemScript : MonoBehaviour
 {
 
     private GameManager manager;
+
+    //confirm and error windows
+    [SerializeField] private ConfirmationWindow confirmWindow;
+    [SerializeField] private ErrorWindow errorWindow;
+
     //change these variables
     public string craftItem;
     public int craftAmount;
@@ -61,11 +66,19 @@ public class CraftingItemScript : MonoBehaviour
     //Craft Function
     public void Craft()
     {
+        confirmWindow.gameObject.SetActive(true);
+        confirmWindow.yesButton.onClick.AddListener(yesCraft);
+        confirmWindow.noButton.onClick.AddListener(noCraft);
+        confirmWindow.messageText.text = "Craft " + craftItem + "?";
+    }
+
+    private void yesCraft()
+    {
         string[] items = { item1, item2 };
         int[] itemAmounts = { item1Amount, item2Amount };
         if (GameObject.Find("GameManager") != null)
         {
-            if(manager.addItems(items, itemAmounts))
+            if (manager.addItems(items, itemAmounts))
             {
                 switch (craftItem)
                 {
@@ -79,7 +92,20 @@ public class CraftingItemScript : MonoBehaviour
                         break;
                 }
             }
+            else
+            {
+                errorWindow.gameObject.SetActive(true);
+                errorWindow.messageText.text = "You do not have the selected resources to craft this.";
+                errorWindow.exitButton.onClick.AddListener(noCraft);
+            }
         }
+        confirmWindow.gameObject.SetActive(false);
+    }
+
+    private void noCraft()
+    {
+        confirmWindow.gameObject.SetActive(false);
+        errorWindow.gameObject.SetActive(false);
     }
 
 

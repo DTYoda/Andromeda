@@ -5,9 +5,17 @@ using UnityEngine;
 public class AspectRatioPreserve : MonoBehaviour
 {
 
+    public bool changeFOV;
+
     private void Start()
     {
         Adjust();
+
+        //set cameras FOV to settings FOV
+        if(changeFOV)
+        {
+            GetComponent<Camera>().fieldOfView = PlayerPrefs.GetInt("FOV");
+        }
     }
 
     //adjusts the screen when the window is not 16:9

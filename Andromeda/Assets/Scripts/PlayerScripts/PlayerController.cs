@@ -199,12 +199,15 @@ public class PlayerController : MonoBehaviour
     //rotates the player and camera
     private void PlayerRotation()
     {
-        rotation.x += -Input.GetAxis("Mouse Y") * lookSpeed;
-        rotation.x = Mathf.Clamp(rotation.x, -lookXLimit, lookXLimit);
-        playerCamera.transform.localEulerAngles = Vector3.right * rotation.x;
-        playerCamera.transform.localEulerAngles = new Vector3(playerCamera.transform.localEulerAngles.x, 0, 0);
-        Quaternion localRotation = Quaternion.Euler(0f, Input.GetAxis("Mouse X") * lookSpeed, 0f);
-        transform.rotation *= localRotation;
+        if(Cursor.visible == false)
+        {
+            rotation.x += -Input.GetAxis("Mouse Y") * lookSpeed;
+            rotation.x = Mathf.Clamp(rotation.x, -lookXLimit, lookXLimit);
+            playerCamera.transform.localEulerAngles = Vector3.right * rotation.x;
+            playerCamera.transform.localEulerAngles = new Vector3(playerCamera.transform.localEulerAngles.x, 0, 0);
+            Quaternion localRotation = Quaternion.Euler(0f, Input.GetAxis("Mouse X") * lookSpeed, 0f);
+            transform.rotation *= localRotation;
+        }
     }
 
     //Set the grounded status

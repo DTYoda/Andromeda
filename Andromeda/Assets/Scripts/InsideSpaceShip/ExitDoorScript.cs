@@ -9,18 +9,41 @@ public class ExitDoorScript : MonoBehaviour
     public GameObject textObject;
     private bool isInside;
 
+    [SerializeField] private ConfirmationWindow confirmWindow;
+
     private void Update()
     {
         if(isInside)
         {
             if (Input.GetKeyDown(KeyCode.E) && GameObject.Find("GameManager") != null)
             {
-                GameManager manager = GameObject.Find("GameManager").GetComponent<GameManager>();
-                manager.isInSpaceShip = false;
-                SceneManager.LoadScene(manager.currentPlanet);
+                Time.timeScale = 0;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                confirmWindow.gameObject.SetActive(true);
+                confirmWindow.messageText.text = "Exit spaceship?";
+                confirmWindow.yesButton.onClick.AddListener(yesExit);
+                confirmWindow.noButton.onClick.AddListener(noExit);
             }
             textObject.transform.eulerAngles = Camera.main.transform.eulerAngles;
         }
+    }
+
+    private void yesExit()
+    {
+        GameManager manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        manager.isInSpaceShip = false;
+        SceneManager.LoadScene(manager.currentPlanet);
+        confirmWindow.gameObject.SetActive(false);
+        Time.timeScale = 1;
+    }
+
+    private void noExit()
+    {
+        Time.timeScale = 1;
+        confirmWindow.gameObject.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void OnTriggerEnter(Collider other)

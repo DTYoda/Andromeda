@@ -19,6 +19,10 @@ public class UpgradeButtonScript : MonoBehaviour
     private GameManager manager;
     private int upgradeLevel = 0;
 
+    //error and confirmation windows;
+    [SerializeField] private ConfirmationWindow confirmWindow;
+    [SerializeField] private ErrorWindow errorWindow;
+ 
     private void Start()
     {
         upgradeName = this.name;
@@ -70,7 +74,15 @@ public class UpgradeButtonScript : MonoBehaviour
 
     public void upgradeButton()
     {
-        if(upgradeLevel < upgradeItems.Length && upgradeLevel <= manager.astroLevel)
+        confirmWindow.gameObject.SetActive(true);
+        confirmWindow.yesButton.onClick.AddListener(yesUpgrade);
+        confirmWindow.noButton.onClick.AddListener(noUpgrade);
+        confirmWindow.messageText.text = "Upgrade " + upgradeName + "?";
+    }
+
+    private void yesUpgrade()
+    {
+        if (upgradeLevel < upgradeItems.Length && upgradeLevel <= manager.astroLevel)
         {
             if (upgrader.Upgrade(upgradeItems[upgradeLevel].Split(","), upgradeItemsAmounts[upgradeLevel].Split(","), upgradeName, upgradeLevelAmounts[upgradeLevel]))
             {
@@ -80,7 +92,24 @@ public class UpgradeButtonScript : MonoBehaviour
                     manager.addUpgrade(upgradeName);
                 }
             }
+            else
+            {
+                errorWindow.gameObject.SetActive(true);
+                errorWindow.messageText.text = "You do not have enough resources for this upgrade";
+                errorWindow.exitButton.onClick.AddListener(noUpgrade);
+            }
         }
-        
+        else
+        {
+            errorWindow.gameObject.SetActive(true);
+            errorWindow.messageText.text = "You must be level " + (upgradeLevel + 1) + " for this upgrade";
+            errorWindow.exitButton.onClick.AddListener(noUpgrade);
+        }
+        confirmWindow.gameObject.SetActive(false);
+    }
+    private void noUpgrade()
+    {
+        confirmWindow.gameObject.SetActive(false);
+        errorWindow.gameObject.SetActive(false);
     }
 }

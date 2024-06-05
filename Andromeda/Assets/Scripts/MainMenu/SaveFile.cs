@@ -6,6 +6,8 @@ using System.IO;
 
 public class SaveFile : MonoBehaviour
 {
+    [SerializeField] private ConfirmationWindow confirmWindow;
+
     public string fileName;
     public TMP_Text text;
     string path;
@@ -30,31 +32,57 @@ public class SaveFile : MonoBehaviour
 
     private void OnMouseUpAsButton()
     {
-        if(DeleteMode)
+        if(Time.timeScale == 1)
         {
-            File.Delete(path);
-            text.text = "New Game";
+            if (DeleteMode)
+            {
+                Time.timeScale = 0;
+                confirmWindow.gameObject.SetActive(true);
+                confirmWindow.messageText.text = "Delete save file?";
+                confirmWindow.yesButton.onClick.AddListener(Delete);
+                confirmWindow.noButton.onClick.AddListener(Exit);
+                transform.localScale /= 1.2f;
+            }
+            else
+            {
+                manager.saveFile = fileName;
+                manager.StartGame();
+            }
         }
-        else
-        {
-            manager.saveFile = fileName;
-            manager.StartGame();
-        }
-
     }
 
     private void OnMouseEnter()
     {
-        if(!DeleteMode)
-            transform.parent.localScale *= 1.2f;
-        else
-            transform.localScale *= 1.2f;
+        if (Time.timeScale == 1)
+        {
+            if (!DeleteMode)
+                transform.parent.localScale *= 1.2f;
+            else
+                transform.localScale *= 1.2f;
+        }
     }
     private void OnMouseExit()
     {
-        if (!DeleteMode)
-            transform.parent.localScale /= 1.2f;
-        else
-            transform.localScale /= 1.2f;
+        if(Time.timeScale == 1)
+        {
+            if (!DeleteMode)
+                transform.parent.localScale /= 1.2f;
+            else
+                transform.localScale /= 1.2f;
+        }
+    }
+
+    private void Delete()
+    {
+        File.Delete(path);
+        text.text = "New Game";
+        confirmWindow.gameObject.SetActive(false);
+        Time.timeScale = 1;
+    }
+
+    private void Exit()
+    {
+        confirmWindow.gameObject.SetActive(false);
+        Time.timeScale = 1;
     }
 }
