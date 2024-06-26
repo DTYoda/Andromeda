@@ -76,6 +76,7 @@ public class questScript : MonoBehaviour
                     startedStep = false;
                     manager.activeQuestStep++;
                     manager.astroXP++;
+                    GetComponent<AudioSource>().Play();
                 }
             }
 
@@ -93,6 +94,7 @@ public class questScript : MonoBehaviour
                         manager.activeQuestStep++;
                         startedStep = false;
                         manager.astroXP++;
+                        GetComponent<AudioSource>().Play();
                     }
                 }
             }
@@ -125,6 +127,7 @@ public class questScript : MonoBehaviour
                                 manager.activeQuestStep++;
                                 startedStep = false;
                                 manager.astroXP++;
+                                GetComponentInParent<AudioSource>().Play();
                             }
                         }
                     }

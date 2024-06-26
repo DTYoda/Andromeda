@@ -24,6 +24,7 @@ public class CraftingScript : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 craftingUI.SetActive(true);
+                GameObject.Find("PopSound").GetComponent<AudioSource>().Play();
             }
         }
         else

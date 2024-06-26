@@ -16,6 +16,7 @@ public class PassiveAnimalScript : MonoBehaviour
     private string state = "idle";
     private bool isIdleAnim = false;
     private bool isRotating = false;
+    public bool isColliding = false;
 
     private void Start()
     {
@@ -26,13 +27,13 @@ public class PassiveAnimalScript : MonoBehaviour
 
     private void Update()
     {
-        if(Vector3.Distance(transform.position, player.transform.position) > 50 && PlayerPrefs.GetInt("performanceMode") == 1)
+        if(Vector3.Distance(transform.position, player.transform.position) > 50)
         {
             AnimalSpawner.Instance.spawnedAnimals.Remove(this.transform);
             Destroy(this.gameObject);
         }
 
-        if(Vector3.Distance(transform.position, player.transform.position) <= 30)
+        if(Vector3.Distance(transform.position, player.transform.position) <= 30 && Time.timeScale != 0)
         {
             if (Vector3.Distance(transform.position, player.transform.position) < 5 && getsScared)
             {
@@ -51,16 +52,17 @@ public class PassiveAnimalScript : MonoBehaviour
                 StopCoroutine(IdleAction());
             }
 
-            if (isRotating && timer > 0)
+            if (isRotating)
             {
                 transform.rotation = transform.rotation * localRotation;
-                timer -= Time.deltaTime;
             }
-            else if (isRotating)
+
+            if(isColliding)
             {
-                isRotating = false;
+                currentSpeed = speed;
+                transform.rotation = transform.rotation * Quaternion.Euler(0f, 3f, 0f); ;
             }
-        }        
+        }
     }
 
     IEnumerator RunAway()
@@ -103,12 +105,12 @@ public class PassiveAnimalScript : MonoBehaviour
 
 
     Quaternion localRotation;
-    float timer = 0;
-    private void RandomRotation()
+    private IEnumerator RandomRotation()
     {
         isRotating = true;
         localRotation = Quaternion.Euler(0f, Random.Range(-3f,3f), 0f);
-        timer = Random.Range(0,0.5f);
+        yield return new WaitForSeconds(Random.Range(0, 0.5f));
+        isRotating = false;
     }
 
     private IEnumerator IdleAction()
@@ -123,11 +125,11 @@ public class PassiveAnimalScript : MonoBehaviour
                 currentSpeed = speed - 1;
                 break;
             case (2):
-                RandomRotation();
+                StartCoroutine(RandomRotation());
                 currentSpeed = 0;
                 break;
             case (3):
-                RandomRotation();
+                StartCoroutine(RandomRotation());
                 currentSpeed = speed - 1;
                 break;
         }
@@ -149,4 +151,21 @@ public class PassiveAnimalScript : MonoBehaviour
             anim.SetBool("walk", false);
         }
     }
+    private void OnCollisionStay(Collision collision)
+    {
+        if(collision.gameObject.name != "planet")
+        {
+            isColliding = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.name != "planet")
+        {
+            isColliding = false;
+        }
+    }
+
+
 }

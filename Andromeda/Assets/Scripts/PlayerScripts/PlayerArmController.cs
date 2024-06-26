@@ -134,15 +134,19 @@ public class PlayerArmController: MonoBehaviour
     //activated whenever the fire key is held down
     private void Fire(InputAction.CallbackContext context)
     {
-        switch(context.phase)
+        if(Time.timeScale == 1)
         {
-            case (InputActionPhase.Started):
-                isFiring = true;
-                break;
-            case (InputActionPhase.Canceled):
-                isFiring = false;
-                break;
+            switch (context.phase)
+            {
+                case (InputActionPhase.Started):
+                    isFiring = true;
+                    break;
+                case (InputActionPhase.Canceled):
+                    isFiring = false;
+                    break;
+            }
         }
+        
     }
 
     //activated when the user is mining
@@ -224,6 +228,7 @@ public class PlayerArmController: MonoBehaviour
             if(Input.GetKeyDown(KeyCode.E))
             {
                 GameManager.manager.addItem(obj.itemName, 1);
+                transform.Find("PickupSound").gameObject.GetComponent<AudioSource>().Play();
                 Destroy(obj.gameObject);
             }
         }

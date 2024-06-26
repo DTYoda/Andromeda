@@ -557,6 +557,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   getsScared: 1
   speed: 2
+  mask:
+    serializedVersion: 2
+    m_Bits: 448
 --- !u!114 &1879965898
 MonoBehaviour:
   m_ObjectHideFlags: 0

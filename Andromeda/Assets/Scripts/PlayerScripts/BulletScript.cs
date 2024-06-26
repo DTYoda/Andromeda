@@ -5,10 +5,12 @@ using UnityEngine;
 public class BulletScript : MonoBehaviour
 {
     [System.NonSerialized] public float damage;
+    public GameManager manager;
 
     private void Start()
     {
         StartCoroutine(Kill());
+        manager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     private void Update()
@@ -23,7 +25,8 @@ public class BulletScript : MonoBehaviour
             if (hit.transform.gameObject.layer == 7)
             {
                 MineableObject obj = hit.transform.gameObject.GetComponent<MineableObject>();
-                obj.currentHealth -= damage;
+                if(obj.hardness <= manager.armStrength)
+                    obj.currentHealth -= damage;
             }
             if (hit.transform.gameObject.layer == 9)
             {

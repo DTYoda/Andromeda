@@ -9,6 +9,7 @@ public class DoorScript : MonoBehaviour
         if(other.name == "Player")
         {
             GetComponent<Animator>().SetBool("isOpen", true);
+            GetComponent<AudioSource>().Play();
         }
     }
     private void OnTriggerExit(Collider other)
@@ -16,6 +17,7 @@ public class DoorScript : MonoBehaviour
         if (other.name == "Player")
         {
             GetComponent<Animator>().SetBool("isOpen", false);
+            GetComponent<AudioSource>().Play();
         }
     }
 }

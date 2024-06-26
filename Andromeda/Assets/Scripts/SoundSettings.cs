@@ -23,11 +23,12 @@ public class SoundSettings : MonoBehaviour
             source.volume = initialVolume * PlayerPrefs.GetFloat("volume");
         }
 
-        if ((isMusic && PlayerPrefs.GetInt("musicToggle") == 0) || (isSoundEffect && PlayerPrefs.GetInt("soundEffectToggle") == 0))
+        if (!source.mute && (isMusic && PlayerPrefs.GetInt("musicToggle") == 0) || (isSoundEffect && PlayerPrefs.GetInt("soundEffectToggle") == 0))
         {
             source.mute = true;
         }
-        else
+
+        if(source.mute && (isMusic && PlayerPrefs.GetInt("musicToggle") == 1) || (isSoundEffect && PlayerPrefs.GetInt("soundEffectToggle") == 1))
         {
             source.mute = false;
         }

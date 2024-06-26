@@ -64,6 +64,13 @@ public class CameraShake : MonoBehaviour
         {
             cam.m_Lens.FieldOfView = Camera.main.fieldOfView;
         }
+
+        if(Time.timeScale != 1)
+        {
+            Camera.main.gameObject.transform.localPosition = originalPosition;
+            GetComponent<CinemachineBrain>().enabled = false;
+            perlin.m_AmplitudeGain = 0;
+        }
         
     }
 }

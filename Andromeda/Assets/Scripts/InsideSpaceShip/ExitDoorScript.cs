@@ -22,8 +22,11 @@ public class ExitDoorScript : MonoBehaviour
                 Cursor.visible = true;
                 confirmWindow.gameObject.SetActive(true);
                 confirmWindow.messageText.text = "Exit spaceship?";
+                confirmWindow.yesButton.onClick.RemoveAllListeners();
+                confirmWindow.noButton.onClick.RemoveAllListeners();
                 confirmWindow.yesButton.onClick.AddListener(yesExit);
                 confirmWindow.noButton.onClick.AddListener(noExit);
+                GameObject.Find("PopSound").GetComponent<AudioSource>().Play();
             }
             textObject.transform.eulerAngles = Camera.main.transform.eulerAngles;
         }

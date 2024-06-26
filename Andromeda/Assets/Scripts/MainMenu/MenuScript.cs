@@ -5,7 +5,7 @@ using UnityEngine;
 public class MenuScript : MonoBehaviour
 {
 
-    private bool hasStarted;
+    private bool hasStarted = false;
     public Animator anim;
     public GameObject startText;
 

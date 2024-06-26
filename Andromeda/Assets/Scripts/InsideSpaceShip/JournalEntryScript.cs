@@ -16,7 +16,8 @@ public class JournalEntryScript : MonoBehaviour
 
     public Slider slider;
     public TMP_Text amountText;
-    public Toggle[] steps;
+    public TMP_Text rewardText;
+    public RawImage[] steps;
 
     public bool isMaterial;
     public string materialName;
@@ -32,8 +33,7 @@ public class JournalEntryScript : MonoBehaviour
 
         for(int i = 0; i < currentLevel; i++)
         {
-            steps[i].isOn = true;
-            steps[i].transform.GetChild(1).gameObject.SetActive(false);
+            steps[i].color = Color.white;
         }
     }
 
@@ -42,6 +42,7 @@ public class JournalEntryScript : MonoBehaviour
         if(manager != null)
         {
             amountText.text = currentAmount + "/" + neededAmounts[currentLevel];
+            rewardText.text = xp[currentLevel] + " XP";
             slider.value = (float)currentAmount / (float)neededAmounts[currentLevel];
 
             if (isMaterial)
@@ -53,8 +54,7 @@ public class JournalEntryScript : MonoBehaviour
 
         if(currentAmount >= neededAmounts[currentLevel] && currentLevel < maxLevel)
         {
-            steps[currentLevel].isOn = true;
-            steps[currentLevel].transform.GetChild(1).gameObject.SetActive(false);
+            steps[currentLevel].color = Color.white;
             currentLevel++;
         }
     }

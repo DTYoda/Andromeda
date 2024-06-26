@@ -11,6 +11,7 @@ public class AnimalSpawner : MonoBehaviour
     public List<Transform> spawnedAnimals = new List<Transform>();
     public List<Transform> spawnedEnemies = new List<Transform>();
     public int maxAnimalCount;
+    public int originalMaxAnimalCount;
 
     public LayerMask spawnmask;
 
@@ -26,13 +27,18 @@ public class AnimalSpawner : MonoBehaviour
 
     private void Update()
     {
-        if(maxAnimalCount > spawnedAnimals.Count)
+        if(((player.transform.position.y > 0 ? maxAnimalCount : maxAnimalCount + 2 * player.transform.position.y) > spawnedAnimals.Count))
         {
             SpawnPassive();
         }
-        if((player.transform.position.y < 0 ? maxAnimalCount : maxAnimalCount / 3) > spawnedEnemies.Count)
+        if((player.transform.position.y < 0 ? maxAnimalCount / 5: (maxAnimalCount / 5)- 2 * (player.transform.position.y + 10) ) > spawnedEnemies.Count)
         {
             SpawnHostile();
+        }
+
+        if(player.transform.position.y < 10 && player.transform.position.y > -10)
+        {
+
         }
     }
 

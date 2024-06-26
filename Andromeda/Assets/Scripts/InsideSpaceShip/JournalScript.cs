@@ -56,6 +56,7 @@ public class JournalScript : MonoBehaviour
             Time.timeScale = 0;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            GameObject.Find("PopSound").GetComponent<AudioSource>().Play();
         }
     }
 

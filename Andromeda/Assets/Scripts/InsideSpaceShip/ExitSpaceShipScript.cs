@@ -39,6 +39,8 @@ public class ExitSpaceShipScript : MonoBehaviour
                 Time.timeScale = 0;
                 confirmWindow.gameObject.SetActive(true);
                 confirmWindow.messageText.text = "Enter spaceship?";
+                confirmWindow.yesButton.onClick.RemoveAllListeners();
+                confirmWindow.noButton.onClick.RemoveAllListeners();
                 confirmWindow.yesButton.onClick.AddListener(yesEnter);
                 confirmWindow.noButton.onClick.AddListener(noEnter);
             }

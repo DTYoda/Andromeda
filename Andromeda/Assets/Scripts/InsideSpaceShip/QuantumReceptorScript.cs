@@ -14,6 +14,8 @@ public class QuantumReceptorScript : MonoBehaviour
     private GameManager manager;
     private questScript selectedQuest;
 
+    [SerializeField] private ConfirmationWindow confirmWindow;
+
     private void Start()
     {
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -52,7 +54,24 @@ public class QuantumReceptorScript : MonoBehaviour
 
     public void StartQuest()
     {
+        confirmWindow.gameObject.SetActive(true);
+        confirmWindow.yesButton.onClick.RemoveAllListeners();
+        confirmWindow.noButton.onClick.RemoveAllListeners();
+        confirmWindow.yesButton.onClick.AddListener(YesStartQuest);
+        confirmWindow.noButton.onClick.AddListener(NoStartQuest);
+        confirmWindow.messageText.text = "Start Quest?";
+    }
+
+    public void YesStartQuest()
+    {
         manager.activeQuest = selectedQuest.questName;
         manager.activeQuestStep = 0;
+        startButtonText.text = "Ongoing Quest!";
+        confirmWindow.gameObject.SetActive(false);
+    }
+
+    public void NoStartQuest()
+    {
+        confirmWindow.gameObject.SetActive(false);
     }
 }

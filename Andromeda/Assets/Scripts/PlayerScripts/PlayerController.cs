@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
         if(GameObject.Find("GameManager") != null)
         {
             manager = GameObject.Find("GameManager").GetComponent<GameManager>();
-            manager.gameObject.GetComponent<Animator>().SetTrigger("FadeIn");
+            GameObject.Find("FadeCanvas").GetComponent<Animator>().SetTrigger("FadeIn");
             GetManagerData();
         }
 
@@ -199,15 +199,12 @@ public class PlayerController : MonoBehaviour
     //rotates the player and camera
     private void PlayerRotation()
     {
-        if(Cursor.visible == false)
-        {
-            rotation.x += -Input.GetAxis("Mouse Y") * lookSpeed;
-            rotation.x = Mathf.Clamp(rotation.x, -lookXLimit, lookXLimit);
-            playerCamera.transform.localEulerAngles = Vector3.right * rotation.x;
-            playerCamera.transform.localEulerAngles = new Vector3(playerCamera.transform.localEulerAngles.x, 0, 0);
-            Quaternion localRotation = Quaternion.Euler(0f, Input.GetAxis("Mouse X") * lookSpeed, 0f);
-            transform.rotation *= localRotation;
-        }
+        rotation.x += -Input.GetAxis("Mouse Y") * lookSpeed;
+        rotation.x = Mathf.Clamp(rotation.x, -lookXLimit, lookXLimit);
+        playerCamera.transform.localEulerAngles = Vector3.right * rotation.x;
+        playerCamera.transform.localEulerAngles = new Vector3(playerCamera.transform.localEulerAngles.x, 0, 0);
+        Quaternion localRotation = Quaternion.Euler(0f, Input.GetAxis("Mouse X") * lookSpeed, 0f);
+        transform.rotation *= localRotation;
     }
 
     //Set the grounded status
@@ -235,6 +232,7 @@ public class PlayerController : MonoBehaviour
     //Flashlight controls with Input System
     private void FlashLightControl(InputAction.CallbackContext context)
     {
+        GameObject.Find("ClickSound").GetComponent<AudioSource>().Play();
         flashLight.SetActive(!flashLight.activeSelf);
     }
 

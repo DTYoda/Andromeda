@@ -75,6 +75,8 @@ public class UpgradeButtonScript : MonoBehaviour
     public void upgradeButton()
     {
         confirmWindow.gameObject.SetActive(true);
+        confirmWindow.yesButton.onClick.RemoveAllListeners();
+        confirmWindow.noButton.onClick.RemoveAllListeners();
         confirmWindow.yesButton.onClick.AddListener(yesUpgrade);
         confirmWindow.noButton.onClick.AddListener(noUpgrade);
         confirmWindow.messageText.text = "Upgrade " + upgradeName + "?";
@@ -90,12 +92,14 @@ public class UpgradeButtonScript : MonoBehaviour
                 if (GameObject.Find("GameManager") != null)
                 {
                     manager.addUpgrade(upgradeName);
+                    GameObject.Find("UpgradeSound").GetComponent<AudioSource>().Play();
                 }
             }
             else
             {
                 errorWindow.gameObject.SetActive(true);
                 errorWindow.messageText.text = "You do not have enough resources for this upgrade";
+                errorWindow.exitButton.onClick.RemoveAllListeners();
                 errorWindow.exitButton.onClick.AddListener(noUpgrade);
             }
         }
@@ -103,12 +107,14 @@ public class UpgradeButtonScript : MonoBehaviour
         {
             errorWindow.gameObject.SetActive(true);
             errorWindow.messageText.text = "You must be level " + (upgradeLevel + 1) + " for this upgrade";
+            errorWindow.exitButton.onClick.RemoveAllListeners();
             errorWindow.exitButton.onClick.AddListener(noUpgrade);
         }
         confirmWindow.gameObject.SetActive(false);
     }
     private void noUpgrade()
     {
+        errorWindow.messageText.text = "";
         confirmWindow.gameObject.SetActive(false);
         errorWindow.gameObject.SetActive(false);
     }

@@ -168,7 +168,11 @@ public class TutorialManager : MonoBehaviour
     {
         direction = new string[] { "Kendrick! I'm glad you were able to repair the quantum receptor!", "Looks like the prerecorded message helped you out a bit.", "You can use this quantum receptor to contact us, and we can give you missions to help your escape.", "The only objective now is to escape. Find a way to repair your spaceship and get out", "Try finding and opening your Quantum Receptor and start your first mission" };
         if (isTyping == 0)
+        {
             StartCoroutine(TypeText());
+            StartCoroutine(Dissapear());
+        }
+            
         if (isTyping == 1 && manager.getUpgradeLevel("Quantum Receptor") >= 1)
         {
             isTyping = 0;
@@ -193,5 +197,12 @@ public class TutorialManager : MonoBehaviour
                 displayedText = "";
         }
         isTyping = 1;
+    }
+
+    IEnumerator Dissapear()
+    {
+        yield return new WaitForSecondsRealtime(5);
+        manager.activeQuest = "";
+
     }
 }

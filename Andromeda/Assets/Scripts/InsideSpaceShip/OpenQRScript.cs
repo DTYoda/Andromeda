@@ -40,6 +40,7 @@ public class OpenQRScript : MonoBehaviour
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
                     qrUI.SetActive(true);
+                    GameObject.Find("PopSound").GetComponent<AudioSource>().Play();
                 }
             }
             else

@@ -236,7 +236,7 @@ public class GameManager : MonoBehaviour
         GameObject.Find("1.5").GetComponent<Animator>().SetTrigger("start");
 
         yield return new WaitForSeconds(5);
-        GetComponent<Animator>().SetTrigger("FadeOut");
+        GameObject.Find("FadeCanvas").GetComponent<Animator>().SetTrigger("FadeOut");
         yield return new WaitForSeconds(3);
         if(isInSpaceShip)
             SceneManager.LoadScene("SpaceShip");
@@ -362,7 +362,7 @@ public class GameManager : MonoBehaviour
     IEnumerator Death()
     {
         dyingAnim = true;
-        GetComponent<Animator>().SetTrigger("FadeOut");
+        GameObject.Find("FadeCanvas").GetComponent<Animator>().SetTrigger("FadeOut");
         Time.timeScale = 0;
         yield return new WaitForSecondsRealtime(3);
         for(int i = 0; i < materialAmounts.Length; i++)
@@ -373,7 +373,7 @@ public class GameManager : MonoBehaviour
         health = maxHealth;
         oxygen = totalOxygen;
         SaveData();
-        GetComponent<Animator>().SetTrigger("FadeIn");
+        GameObject.Find("FadeCanvas").GetComponent<Animator>().SetTrigger("FadeIn");
         Time.timeScale = 1;
         dyingAnim = false;
     }

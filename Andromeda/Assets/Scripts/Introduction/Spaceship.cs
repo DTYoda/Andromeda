@@ -38,7 +38,7 @@ public class Spaceship : MonoBehaviour
         explosion = transform.Find("Explosion").GetComponent<ParticleSystem>();
         thrust = transform.Find("thrust").GetComponent<ParticleSystem>();
         if(GameObject.Find("GameManager") !=null)
-            GameObject.Find("GameManager").GetComponent<Animator>().SetTrigger("FadeIn");
+            GameObject.Find("FadeCanvas").GetComponent<Animator>().SetTrigger("FadeIn");
 
     }
 
@@ -158,8 +158,10 @@ public class Spaceship : MonoBehaviour
         thrust.Play();
         yield return new WaitForSeconds(3);
         speed *= 10;
-        GameObject.Find("GameManager").GetComponent<Animator>().SetTrigger("FadeOut");
+        GameObject.Find("FadeCanvas").GetComponent<Animator>().SetTrigger("FadeOut");
         yield return new WaitForSeconds(4);
+        explosion.gameObject.GetComponent<AudioSource>().Play();
+        yield return new WaitForSeconds(2);
         GameObject.Find("GameManager").GetComponent<GameManager>().currentPlanet = 2;
         GameObject.Find("GameManager").GetComponent<GameManager>().unlockedPlanets[1] = true;
         GameObject.Find("GameManager").GetComponent<GameManager>().isInSpaceShip = false;

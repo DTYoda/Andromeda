@@ -70,11 +70,8 @@ public class AggressiveAnimalScript : MonoBehaviour
         }
         else
         {
-            if(PlayerPrefs.GetInt("performanceMode") == 1)
-            {
-                AnimalSpawner.Instance.spawnedEnemies.Remove(this.transform);
-                Destroy(this.gameObject);
-            }
+            AnimalSpawner.Instance.spawnedEnemies.Remove(this.transform);
+            Destroy(this.gameObject);
         }
     }
 
@@ -163,6 +160,7 @@ public class AggressiveAnimalScript : MonoBehaviour
             {
                 player.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
                 player.GetComponent<Rigidbody>().AddForce(transform.TransformDirection(new Vector3(0, 1, 1)) * knockBack, ForceMode.Impulse);
+                GameObject.Find("GruntSound").GetComponent<AudioSource>().Play();
             }   
             if(GameObject.Find("GameManager") != null)
             {

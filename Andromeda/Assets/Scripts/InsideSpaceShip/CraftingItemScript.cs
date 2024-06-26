@@ -67,6 +67,8 @@ public class CraftingItemScript : MonoBehaviour
     public void Craft()
     {
         confirmWindow.gameObject.SetActive(true);
+        confirmWindow.yesButton.onClick.RemoveAllListeners();
+        confirmWindow.noButton.onClick.RemoveAllListeners();
         confirmWindow.yesButton.onClick.AddListener(yesCraft);
         confirmWindow.noButton.onClick.AddListener(noCraft);
         confirmWindow.messageText.text = "Craft " + craftItem + "?";
@@ -91,11 +93,13 @@ public class CraftingItemScript : MonoBehaviour
                         manager.addCraft(craftItem);
                         break;
                 }
+                GameObject.Find("CraftingSound").GetComponent<AudioSource>().Play();
             }
             else
             {
                 errorWindow.gameObject.SetActive(true);
                 errorWindow.messageText.text = "You do not have the selected resources to craft this.";
+                errorWindow.exitButton.onClick.RemoveAllListeners();
                 errorWindow.exitButton.onClick.AddListener(noCraft);
             }
         }

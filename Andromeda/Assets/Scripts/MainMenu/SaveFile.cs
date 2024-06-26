@@ -48,6 +48,8 @@ public class SaveFile : MonoBehaviour
                 manager.saveFile = fileName;
                 manager.StartGame();
             }
+
+            GameObject.Find("ClickSound").GetComponent<AudioSource>().Play();
         }
     }
 
