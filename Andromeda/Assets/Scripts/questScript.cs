@@ -89,7 +89,7 @@ public class questScript : MonoBehaviour
                 }
                 else
                 {
-                    if(manager.getCraftAmount(stepRequirements[manager.activeQuestStep]) == currentValues[0] + 1)
+                    if(manager.getCraftAmount(stepRequirements[manager.activeQuestStep]) >=  1)
                     {
                         manager.activeQuestStep++;
                         startedStep = false;

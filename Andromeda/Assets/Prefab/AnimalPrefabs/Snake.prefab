@@ -652,8 +652,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3dea3230a2984faa93c11b515f5e728, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalHealth: 10
-  currentHealth: 10
+  totalHealth: 7
+  currentHealth: 7
   animalName: snake
   animalDrop: scales
   animalType: aggressive

@@ -9,13 +9,17 @@ EditorBuildSettings:
     path: Assets/Scenes/Mainmenu.unity
     guid: 8600742bb74774a36acf95484d58a39b
   - enabled: 1
-    path: Assets/Scenes/Introduction.unity
-    guid: 378031c21ca3641be91c1418f896ef56
+    path: Assets/Scenes/Trailer.unity
+    guid: cdb37d22ee7244511b71e7f226f8487a
   - enabled: 1
     path: Assets/Scenes/Planet1.unity
     guid: d385096ac5431a44698a5ea30262008a
   - enabled: 1
     path: Assets/Scenes/SpaceShip.unity
     guid: 3c57493696ab342a69ed74b02013f2c2
+  - enabled: 1
+    path: Assets/Scenes/Introduction.unity
+    guid: 378031c21ca3641be91c1418f896ef56
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 2e9f6fc49f6ce4bb0a19460d016a8541, type: 2}
+  m_UseUCBPForAssetBundles: 0

@@ -11,6 +11,8 @@ public class ItemScript : MonoBehaviour
     public bool isLooking;
     private PlayerArmController arm;
 
+    public GameObject pickupParticles;
+
     private void Start()
     {
         arm = GameObject.Find("Player").GetComponent<PlayerArmController>();
@@ -38,5 +40,9 @@ public class ItemScript : MonoBehaviour
     public void OnDestroy()
     {
         Destroy(currentTextObj);
+        if(this.name.Contains("Mushroom"))
+        {
+            Instantiate(pickupParticles, this.transform.position, this.transform.rotation);
+        }
     }
 }

@@ -62,7 +62,14 @@ public class PlayerController : MonoBehaviour
         if(GameObject.Find("GameManager") != null)
         {
             manager = GameObject.Find("GameManager").GetComponent<GameManager>();
-            GameObject.Find("FadeCanvas").GetComponent<Animator>().SetTrigger("FadeIn");
+            if(!manager.completedTutorial && manager.activeQuestStep == 0)
+            {
+                GameObject.Find("FadeCanvas").GetComponent<Animator>().SetTrigger("Blink");
+            }
+            else
+            {
+                GameObject.Find("FadeCanvas").GetComponent<Animator>().SetTrigger("FadeIn");
+            }
             GetManagerData();
         }
 
